@@ -2,6 +2,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
+import 'package:kawaiii_coffee/binding/DashboardAdminBinding.dart';
 import 'package:kawaiii_coffee/binding/LoginBinding.dart';
 
 class AppPages {
@@ -11,9 +12,11 @@ class AppPages {
       page: () => LoginPage(),
       binding: LoginBinding(),
     ),
-    GetPage(
-      name: AppRoutes.dashboardadmin, 
+     GetPage(
+      name: AppRoutes.dashboardAdminPage,
       page: () => DashboardAdminPage(),
+      binding: Dashboardadminbinding(),
     ),
+
   ];
 }
