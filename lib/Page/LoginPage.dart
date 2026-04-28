@@ -67,7 +67,7 @@ class LoginPage extends GetView<LoginController> {
                 label: 'NAMA PENGGUNA',
                 hint: 'Masukkan nama pengguna',
                 prefixIcon: Icons.person_outline,
-                controller: controller.emailController, // Hubungkan dengan controllermu
+                controller: controller.nameController, // Hubungkan dengan controllermu
               ),
               const SizedBox(height: 16),
               

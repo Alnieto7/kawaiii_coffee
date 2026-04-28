@@ -5,7 +5,7 @@ import 'package:kawaiii_coffee/Model/LoginModel.dart';
 class AuthProvider {
   static const String baseUrl = 'http://202.10.48.252/api/auth';
 
-  Future<LoginResponse> login(String email, String password) async {
+  Future<LoginResponse> login(String name, String password) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/login'),
@@ -14,7 +14,7 @@ class AuthProvider {
           'Accept': 'application/json', // <-- TAMBAHAN 1: Wajib agar server tidak membalas pakai HTML
         },
         body: jsonEncode({
-          'name': email,
+          'name': name,
           'password': password,
         }),
       );
