@@ -18,7 +18,7 @@ class MainView extends GetView<MainAdminController> {
     // Daftar halaman yang akan ditampilkan di dalam body
     final List<Widget> pages = [
       const DashboardAdminPage(),
-      const Analisispage(),
+      const AnalisisPage(),
       const HppMarginPage(),
       const Settingspage(),
     ];
