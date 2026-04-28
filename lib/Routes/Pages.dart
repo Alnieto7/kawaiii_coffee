@@ -5,8 +5,6 @@ import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/DashboardAdminBinding.dart';
 import 'package:kawaiii_coffee/binding/LoginBinding.dart';
 
-
-
 class AppPages {
   static final pages = [
     GetPage(

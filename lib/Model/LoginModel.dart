@@ -1,30 +1,40 @@
 class LoginResponse {
-  final bool? success;
-  final String? message;
-  final String? token;
+  String? message;
+  String? token;
+  String? tokenType;
+  UserModel? user;
 
   LoginResponse({
-    this.success,
     this.message,
     this.token,
+    this.tokenType,
+    this.user,
   });
 
-  // Fungsi untuk mengubah JSON (Map) dari API menjadi Object Dart
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      success: json['success'] ?? true, // Sesuaikan dengan response API-mu
-      message: json['message'] ?? '',
-      // Menangkap key 'token' atau 'access_token' agar lebih aman
-      token: json['token'] ?? json['access_token'], 
+      message: json['message'],
+      token: json['token'],
+      tokenType: json['token_type'],
+      user: json['user'] != null
+          ? UserModel.fromJson(json['user'])
+          : null,
     );
   }
+}
 
-  // Fungsi opsional jika kamu butuh mengirim data ini kembali sebagai JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'success': success,
-      'message': message,
-      'token': token,
-    };
+class UserModel {
+  int? id;
+  String? name;
+  String? role;
+
+  UserModel({this.id, this.name, this.role});
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'],
+      name: json['name'],
+      role: json['role'],
+    );
   }
 }
