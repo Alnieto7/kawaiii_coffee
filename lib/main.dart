@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
     // 2. GANTI MaterialApp MENJADI GetMaterialApp
     return GetMaterialApp(
       debugShowCheckedModeBanner: false, // Opsional: untuk menghilangkan pita "Debug" di pojok
-      initialRoute: AppRoutes.loginPage,
+      initialRoute: AppRoutes.kasir,
       getPages: AppPages.pages,
     );
   }

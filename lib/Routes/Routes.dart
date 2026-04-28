@@ -1,4 +1,6 @@
 class AppRoutes {
   static const String loginPage = '/loginpage';
-  static const String dashboardAdminPage = '/dashboardAdminPage';
+  static const String dashboardadmin = '/dashboardadmin';
+  static const String kasir = '/kasir';
+  
 }
