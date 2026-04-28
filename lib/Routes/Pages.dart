@@ -15,7 +15,7 @@ class AppPages {
       binding: LoginBinding(),
     ),
      GetPage(
-      name: AppRoutes.dashboardAdminPage,
+      name: AppRoutes.dashboardadmin,
       page: () => DashboardAdminPage(),
       binding: Dashboardadminbinding(),
     ),
