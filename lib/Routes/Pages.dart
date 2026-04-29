@@ -2,6 +2,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:kawaiii_coffee/Page/Admin/AnalisisPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
+import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
@@ -9,6 +10,7 @@ import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/AnalisisBinding.dart';
 import 'package:kawaiii_coffee/binding/DashboardAdminBinding.dart';
+import 'package:kawaiii_coffee/binding/HPPMarginBinding.dart';
 import 'package:kawaiii_coffee/binding/LoginBinding.dart';
 import 'package:kawaiii_coffee/binding/dashboardKasirBinding.dart';
 
@@ -45,6 +47,11 @@ class AppPages {
         GetPage(
           name: AppRoutes.MAIN, 
           page: () => MainPage(),
+        ),
+          GetPage(
+          name: AppRoutes.HPP, 
+          page: () => HppMarginPage(),
+            binding: HppMarginBinding(),
         ),
   ];
 }

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 class AnalisisController extends GetxController {
   // --- FILTER STATE ---
   var selectedFilter = "7 Hari Terakhir".obs;
