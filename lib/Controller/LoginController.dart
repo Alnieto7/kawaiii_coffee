@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Database/LoginReq.dart';
+import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -43,7 +44,7 @@ class LoginController extends GetxController {
     if (r == 'admin') {
       Get.offAllNamed('/dashboardadmin');
     } else if (r == 'cashier') {
-      Get.offAllNamed('/kasir');
+      Get.offAll(() => MainPage());
     } else {
       Get.snackbar('Error', 'Role tidak dikenali: $r');
     }

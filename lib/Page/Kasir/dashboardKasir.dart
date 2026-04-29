@@ -5,8 +5,8 @@ import 'package:kawaiii_coffee/Component/dashboardkasir/actioncard.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/bottomnav.dart';
 import 'package:kawaiii_coffee/Controller/Kasir/dashboardControllerKasir.dart';
 
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
+class DashboardkasirPage extends StatelessWidget {
+  const DashboardkasirPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,6 @@ class DashboardPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      bottomNavigationBar: const BottomNav(),
       body: SafeArea(
         child: Column(
           children: [

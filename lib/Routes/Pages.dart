@@ -2,6 +2,8 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:kawaiii_coffee/Page/Admin/AnalisisPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
@@ -24,7 +26,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.kasir, 
-      page: () => DashboardPage(),
+      page: () => DashboardkasirPage(),
       binding: Dashboardkasirbinding(),
     ),
      GetPage(
@@ -36,5 +38,13 @@ class AppPages {
       name: AppRoutes.BNAdmin, 
       page: () => MainView(),
     ),
+      GetPage(
+        name: AppRoutes.POS, 
+        page: () => PosPage(),
+      ),
+        GetPage(
+          name: AppRoutes.MAIN, 
+          page: () => MainPage(),
+        ),
   ];
 }
