@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Controller/Kasir/maincontroller.dart';
+import 'package:kawaiii_coffee/Page/Kasir/HistoryPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
 
@@ -14,7 +15,7 @@ class MainPage extends StatelessWidget {
   final pages = [
     const DashboardkasirPage(),
     const PosPage(),
-    const Center(child: Text("Riwayat Page")),
+    const HistoryPage(),
     const Center(child: Text("Profil Page")),
   ];
 

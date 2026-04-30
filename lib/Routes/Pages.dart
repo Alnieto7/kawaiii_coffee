@@ -2,6 +2,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:kawaiii_coffee/Page/Admin/AnalisisPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/HistoryPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
 import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
