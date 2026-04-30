@@ -4,6 +4,7 @@ import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/HistoryPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
+import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
@@ -13,6 +14,8 @@ import 'package:kawaiii_coffee/binding/AnalisisBinding.dart';
 import 'package:kawaiii_coffee/binding/DashboardAdminBinding.dart';
 import 'package:kawaiii_coffee/binding/HPPMarginBinding.dart';
 import 'package:kawaiii_coffee/binding/LoginBinding.dart';
+import 'package:kawaiii_coffee/binding/MainAdminBinding.dart';
+import 'package:kawaiii_coffee/binding/SettingBinding.dart';
 import 'package:kawaiii_coffee/binding/dashboardKasirBinding.dart';
 
 class AppPages {
@@ -22,40 +25,37 @@ class AppPages {
       page: () => LoginPage(),
       binding: LoginBinding(),
     ),
-     GetPage(
+    GetPage(
       name: AppRoutes.dashboardadmin,
       page: () => DashboardAdminPage(),
       binding: Dashboardadminbinding(),
     ),
     GetPage(
-      name: AppRoutes.kasir, 
+      name: AppRoutes.kasir,
       page: () => DashboardkasirPage(),
       binding: Dashboardkasirbinding(),
     ),
-     GetPage(
-      name: AppRoutes.analisis, 
+    GetPage(
+      name: AppRoutes.analisis,
       page: () => AnalisisPage(),
       binding: AnalisisBinding(),
     ),
-     GetPage(
-      name: AppRoutes.BNAdmin, 
+    GetPage(
+      name: AppRoutes.BNAdmin,
       page: () => MainView(),
+      binding: MainAdminBinding(),
     ),
-      GetPage(
-        name: AppRoutes.POS, 
-        page: () => PosPage(),
-      ),
-        GetPage(
-          name: AppRoutes.MAIN, 
-          page: () => MainPage(),
-        ),
-        GetPage(
-          name: AppRoutes.history, 
-          page: () => const HistoryPage(),
-          GetPage(
-          name: AppRoutes.HPP, 
-          page: () => HppMarginPage(),
-            binding: HppMarginBinding(),
-        ),
+    GetPage(name: AppRoutes.POS, page: () => PosPage()),
+    GetPage(name: AppRoutes.MAIN, page: () => MainPage()),
+    GetPage(
+      name: AppRoutes.HPP,
+      page: () => HppMarginPage(),
+      binding: HppMarginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.setting,
+      page: () => SettingsPage(),
+      binding: SettingsBinding(),
+    ),
   ];
 }

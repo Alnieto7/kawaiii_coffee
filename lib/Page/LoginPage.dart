@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Component/CustomPrimaryButton.dart';
-import 'package:kawaiii_coffee/Component/CustomTextField.dart';
+import 'package:kawaiii_coffee/Component/AdminComponent/CustomPrimaryButton.dart';
+import 'package:kawaiii_coffee/Component/AdminComponent/CustomTextField.dart';
 import 'package:kawaiii_coffee/Controller/LoginController.dart';
 
 class LoginPage extends GetView<LoginController> {

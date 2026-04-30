@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Component/Custom_Button.dart';
-import 'package:kawaiii_coffee/Component/MarginProduct.dart';
-import 'package:kawaiii_coffee/Component/SummaryCard.dart';
+import 'package:kawaiii_coffee/Component/AdminComponent/Custom_Button.dart';
+import 'package:kawaiii_coffee/Component/AdminComponent/MarginProduct.dart';
+import 'package:kawaiii_coffee/Component/AdminComponent/SummaryCard.dart';
 import 'package:kawaiii_coffee/Controller/HppMarginController.dart';
 
 class HppMarginPage extends GetView<HppMarginController> {

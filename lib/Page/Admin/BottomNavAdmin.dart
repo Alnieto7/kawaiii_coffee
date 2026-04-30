@@ -20,7 +20,7 @@ class MainView extends GetView<MainAdminController> {
       const DashboardAdminPage(),
       const AnalisisPage(),
       const HppMarginPage(),
-      const Settingspage(),
+      const SettingsPage(),
     ];
 
     return Scaffold(
