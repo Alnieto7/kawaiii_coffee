@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/actioncard.dart';
-import 'package:kawaiii_coffee/Component/dashboardkasir/bottomnav.dart';
 import 'package:kawaiii_coffee/Controller/Kasir/dashboardControllerKasir.dart';
 
 class DashboardkasirPage extends StatelessWidget {

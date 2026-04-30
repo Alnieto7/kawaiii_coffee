@@ -6,5 +6,6 @@ class AppRoutes {
   static const String BNAdmin = '/BNAdmin';
   static const String POS = '/POS';
   static const String MAIN = '/main';
+  static const String history = '/history';
   static const String HPP = '/hpp';
 }
