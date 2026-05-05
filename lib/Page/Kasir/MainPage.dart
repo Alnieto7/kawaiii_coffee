@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/Admin/maincontroller.dart';
+import 'package:kawaiii_coffee/Controller/maincontroller.dart';
 import 'package:kawaiii_coffee/Page/Kasir/HistoryPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
