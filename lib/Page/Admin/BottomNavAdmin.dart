@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/MainAdminController.dart';
+import 'package:kawaiii_coffee/Controller/Admin/MainAdminController.dart';
 import 'package:kawaiii_coffee/Page/Admin/AnalisisPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
@@ -17,7 +17,6 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Daftar halaman yang akan ditampilkan di dalam body
     final List<Widget> pages = [
       DashboardAdminPage(),
       AnalisisPage(),
@@ -26,7 +25,6 @@ class MainView extends StatelessWidget {
     ];
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
-      // IndexedStack menumpuk semua halaman tapi hanya menampilkan index yang aktif
       body: Obx(() => IndexedStack(
             index: controller.currentIndex.value,
             children: pages,
@@ -47,14 +45,14 @@ class MainView extends StatelessWidget {
           ),
           child: BottomNavigationBar(
             currentIndex: controller.currentIndex.value,
-            onTap: controller.changePage, // Panggil fungsi ganti halaman
+            onTap: controller.changePage, 
             backgroundColor: Colors.white,
-            type: BottomNavigationBarType.fixed, // Penting agar semua text muncul
+            type: BottomNavigationBarType.fixed, 
             elevation: 0,
             
             // --- PENGATURAN WARNA ---
-            selectedItemColor: const Color(0xFFD97217), // Warna orange saat aktif
-            unselectedItemColor: const Color(0xFFAFAFAF), // Warna abu-abu saat tidak aktif
+            selectedItemColor: const Color(0xFFD97217), 
+            unselectedItemColor: const Color(0xFFAFAFAF), 
             
             // --- PENGATURAN TEXT ---
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -62,13 +60,11 @@ class MainView extends StatelessWidget {
             
             items: const [
               BottomNavigationBarItem(
-                // Ikon yang mirip dengan kotak 4 (Dashboard)
                 icon: Icon(Icons.space_dashboard_outlined), 
                 activeIcon: Icon(Icons.space_dashboard_rounded),
                 label: 'Dashboard',
               ),
               BottomNavigationBarItem(
-                // Ikon bar chart (Analisis)
                 icon: Icon(Icons.bar_chart_rounded),
                 activeIcon: Icon(Icons.poll_rounded),
                 label: 'Analisis',

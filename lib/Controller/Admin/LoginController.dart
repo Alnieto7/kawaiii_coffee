@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Database/LoginReq.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
+import 'package:kawaiii_coffee/Routes/Routes.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -17,7 +18,7 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    checkLogin(); // ✅ pindah dari AuthController
+    checkLogin(); 
   }
 
   @override
@@ -37,12 +38,13 @@ class LoginController extends GetxController {
     }
   }
 
-  // ✅ pindah dari AuthController
+  
   void redirectByRole(String role) {
     final r = role.trim().toLowerCase();
 
     if (r == 'admin') {
       Get.offAllNamed('/BNAdmin');
+      Get.offAllNamed(AppRoutes.BNAdmin);
     } else if (r == 'cashier') {
       Get.offAllNamed('/main');
     } else {
@@ -85,7 +87,6 @@ class LoginController extends GetxController {
     }
   }
 
-  // ✅ pindah dari AuthController
   void logout() {
     box.erase();
     Get.offAllNamed('/login');
