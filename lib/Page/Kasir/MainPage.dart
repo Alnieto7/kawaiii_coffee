@@ -10,11 +10,11 @@ import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
 class MainPage extends StatelessWidget {
   MainPage({super.key});
 
-  final controller = Get.put(MainController());
+  final controller = Get.find<MainController>();
 
   final pages = [
     const DashboardkasirPage(),
-    const PosPage(),
+    PosPage(),
     const HistoryPage(),
     const Center(child: Text("Profil Page")),
   ];

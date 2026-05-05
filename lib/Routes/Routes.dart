@@ -9,4 +9,5 @@ class AppRoutes {
   static const String history = '/history';
   static const String HPP = '/hpp';
   static const String setting = '/setting';
+  static const String cartMenu = '/cartmenu';
 }

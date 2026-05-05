@@ -10,19 +10,20 @@ import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
 // Import halaman-halaman dummy (akan kita buat di langkah 4)
 
 
-class MainView extends GetView<MainAdminController> {
-  const MainView({Key? key}) : super(key: key);
+class MainView extends StatelessWidget {
+   MainView({super.key});
+
+   final MainAdminController controller = Get.find<MainAdminController>();
 
   @override
   Widget build(BuildContext context) {
     // Daftar halaman yang akan ditampilkan di dalam body
     final List<Widget> pages = [
-      const DashboardAdminPage(),
-      const AnalisisPage(),
-      const HppMarginPage(),
-      const SettingsPage(),
+      DashboardAdminPage(),
+      AnalisisPage(),
+      HppMarginPage(),
+      SettingsPage(),
     ];
-
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       // IndexedStack menumpuk semua halaman tapi hanya menampilkan index yang aktif

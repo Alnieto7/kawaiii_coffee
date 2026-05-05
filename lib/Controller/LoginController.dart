@@ -42,9 +42,9 @@ class LoginController extends GetxController {
     final r = role.trim().toLowerCase();
 
     if (r == 'admin') {
-      Get.offAllNamed('/dashboardadmin');
+      Get.offAllNamed('/BNAdmin');
     } else if (r == 'cashier') {
-      Get.offAll(() => MainPage());
+      Get.offAllNamed('/main');
     } else {
       Get.snackbar('Error', 'Role tidak dikenali: $r');
     }
