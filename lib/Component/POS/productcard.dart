@@ -4,17 +4,21 @@ class ProductCard extends StatelessWidget {
   final String title;
   final String price;
   final String image;
+  final VoidCallback? onAddToCart;
 
   const ProductCard({
     super.key,
     required this.title,
     required this.price,
     required this.image,
+    this.onAddToCart,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: onAddToCart,
+      child: Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -33,6 +37,19 @@ class ProductCard extends StatelessWidget {
                     image,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey.shade200,
+                        child: const Icon(Icons.image_not_supported, size: 50),
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        color: Colors.grey.shade100,
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
+                    },
                   ),
                 ),
                 Positioned(
@@ -71,6 +88,7 @@ class ProductCard extends StatelessWidget {
           )
         ],
       ),
+      )
     );
   }
 }

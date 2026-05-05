@@ -30,6 +30,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Disable window extensions on API levels below 30 to prevent crashes -->
+        <meta-data
+            android:name="androidx.window.EXTENSION_TYPE"
+            android:value="NONE" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

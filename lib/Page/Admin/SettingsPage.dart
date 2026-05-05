@@ -5,9 +5,11 @@ import 'package:kawaiii_coffee/Component/AdminComponent/setting_text_field.dart'
 import 'package:kawaiii_coffee/Controller/Admin/SettingController.dart';
 
 
-class SettingsPage extends GetView<SettingsController> {
-  const SettingsPage({super.key});
-
+class SettingsPage extends StatelessWidget {
+   SettingsPage({super.key});
+   
+  final SettingsController controller = Get.find<SettingsController>();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
