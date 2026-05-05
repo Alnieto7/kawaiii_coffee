@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/LoginController.dart';
+import 'package:kawaiii_coffee/Controller/Admin/LoginController.dart';
 
 class LoginBinding extends Bindings {
   @override
