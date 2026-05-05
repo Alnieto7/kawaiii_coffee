@@ -18,7 +18,7 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    checkLogin(); // ✅ pindah dari AuthController
+    checkLogin(); 
   }
 
   @override
@@ -38,7 +38,7 @@ class LoginController extends GetxController {
     }
   }
 
-  // ✅ pindah dari AuthController
+  
   void redirectByRole(String role) {
     final r = role.trim().toLowerCase();
 
@@ -86,7 +86,6 @@ class LoginController extends GetxController {
     }
   }
 
-  // ✅ pindah dari AuthController
   void logout() {
     box.erase();
     Get.offAllNamed('/login');

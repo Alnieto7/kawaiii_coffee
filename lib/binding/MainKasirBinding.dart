@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:kawaiii_coffee/Controller/Kasir/dashboardControllerKasir.dart';
-import 'package:kawaiii_coffee/Controller/Kasir/maincontroller.dart';
+import 'package:kawaiii_coffee/Controller/Admin/dashboardControllerKasir.dart';
+import 'package:kawaiii_coffee/Controller/Admin/maincontroller.dart';
 
 class MainKasirBinding extends Bindings {
   @override

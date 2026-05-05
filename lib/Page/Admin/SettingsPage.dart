@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/setting_section_card.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/setting_text_field.dart';
-import 'package:kawaiii_coffee/Controller/SettingController.dart';
+import 'package:kawaiii_coffee/Controller/Admin/SettingController.dart';
 
 
 class SettingsPage extends GetView<SettingsController> {
