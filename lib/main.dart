@@ -3,7 +3,11 @@ import 'package:get/get.dart'; // 1. JANGAN LUPA IMPORT GETX DI SINI
 import 'package:kawaiii_coffee/Routes/Pages.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 
-void main() {
+import 'package:get_storage/get_storage.dart'; // Pastikan di-import
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const MainApp());
 }
 
