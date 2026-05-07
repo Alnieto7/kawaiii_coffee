@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/Kasir/POScontroller.dart';
-import 'package:kawaiii_coffee/Controller/Kasir/cart_menuController.dart';
+import 'package:kawaiii_coffee/Controller/POScontroller.dart';
+import 'package:kawaiii_coffee/Controller/cart_menuController.dart';
+
 
 class Posbinding extends Bindings {
   @override

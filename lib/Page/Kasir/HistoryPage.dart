@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/History/filter_chip.dart';
 import 'package:kawaiii_coffee/Component/History/sectiontitle.dart';
 import 'package:kawaiii_coffee/Component/History/summary_card.dart';
 import 'package:kawaiii_coffee/Component/History/transactioncard.dart';
+import 'package:kawaiii_coffee/Controller/HistoryController.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Menggunakan Get.find untuk mengambil instance controller yang sudah ada
+    final HistoryController controller = Get.find<HistoryController>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       body: SafeArea(
         child: Column(
           children: [
-
             // 🔙 HEADER
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 children: const [
-                  Icon(Icons.arrow_back),
-                  SizedBox(width: 12),
+                  Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFFD97217), size: 20),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Text(
                       "Riwayat Transaksi",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFF1F2937)),
                     ),
                   ),
-                  Icon(Icons.search),
+                  Icon(Icons.search, color: Color(0xFFD97217)),
                 ],
               ),
             ),
@@ -39,93 +40,72 @@ class HistoryPage extends StatelessWidget {
             // 🔘 FILTER
             SizedBox(
               height: 40,
-              child: ListView(
+              child: Obx(() => ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: const [
-                  FilterChipItem(label: "Hari Ini", selected: true),
-                  FilterChipItem(label: "Kemarin"),
-                  FilterChipItem(label: "7 Hari Terakhir"),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            // 📊 SUMMARY
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: SummaryCard(),
-            ),
-
-            const SizedBox(height: 12),
-
-            // 📋 LIST
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: const [
-
-                  SectionTitle("TERBARU"),
-
-                  TransactionCard(
-                    code: "#CS-1082",
-                    price: "Rp 85.000",
-                    time: "14:20",
-                    items: "3 items",
-                    cashier: "Andi",
-                    status: "done",
+                children: [
+                  GestureDetector(
+                    onTap: () => controller.changeFilter("Hari Ini"),
+                    child: FilterChipItem(label: "Hari Ini", selected: controller.selectedFilter.value == "Hari Ini"),
                   ),
-
-                  TransactionCard(
-                    code: "#CS-1081",
-                    price: "Rp 32.000",
-                    time: "13:45",
-                    items: "1 item",
-                    cashier: "Andi",
-                    status: "done",
+                  GestureDetector(
+                    onTap: () => controller.changeFilter("Kemarin"),
+                    child: FilterChipItem(label: "Kemarin", selected: controller.selectedFilter.value == "Kemarin"),
                   ),
-
-                  TransactionCard(
-                    code: "#CS-1080",
-                    price: "Rp 125.000",
-                    time: "13:10",
-                    items: "5 items",
-                    cashier: "Andi",
-                    status: "void",
-                  ),
-
-                  SectionTitle("TADI PAGI"),
-
-                  TransactionCard(
-                    code: "#CS-1079",
-                    price: "Rp 56.500",
-                    time: "09:15",
-                    items: "2 items",
-                    cashier: "Andi",
-                    status: "done",
-                  ),
-
-                  TransactionCard(
-                    code: "#CS-1078",
-                    price: "Rp 18.000",
-                    time: "08:50",
-                    items: "1 item",
-                    cashier: "Andi",
-                    status: "done",
+                  GestureDetector(
+                    onTap: () => controller.changeFilter("7 Hari Terakhir"),
+                    child: FilterChipItem(label: "7 Hari Terakhir", selected: controller.selectedFilter.value == "7 Hari Terakhir"),
                   ),
                 ],
-              ),
+              )),
             ),
 
-            // 🔽 BUTTON
+            const SizedBox(height: 16),
+
+            // 📊 SUMMARY CARD
             Padding(
-              padding: const EdgeInsets.all(16),
-              child: OutlinedButton(
-                onPressed: () {},
-                child: const Text("Tampilkan Lebih Banyak"),
-              ),
-            )
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Obx(() => SummaryCard(
+                totalPendapatan: controller.totalPendapatan.value,
+                totalTransaksi: "${controller.totalTransaksi.value} TRANSAKSI",
+                lastUpdated: controller.lastUpdated.value,
+              )),
+            ),
+
+            const SizedBox(height: 16),
+
+            // 📋 LIST TRANSAKSI
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator(color: Color(0xFFD97217)));
+                }
+
+                if (controller.transactions.isEmpty) {
+                  return const Center(
+                    child: Text("Belum ada riwayat transaksi.", style: TextStyle(color: Colors.grey)),
+                  );
+                }
+
+                return ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  children: [
+                    const SectionTitle("TERBARU"),
+                    ...controller.transactions.map((trx) {
+                      return TransactionCard(
+                        code: "#${trx.invoiceNumber}",
+                        price: controller.formatRupiah(trx.total ?? 0),
+                        time: controller.formatTime(trx.createdAt!),
+                        items: "1 Item", 
+                        cashier: trx.cashierName ?? "Kasir",
+                        status: "done", 
+                      );
+                    }).toList(),
+                    const SizedBox(height: 24),
+                  ],
+                );
+              }),
+            ),
           ],
         ),
       ),

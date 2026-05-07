@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/Admin/DashboardAdminController.dart';
+import 'package:kawaiii_coffee/Controller/DashboardAdminController.dart';
 
 
 class Dashboardadminbinding extends Bindings {
