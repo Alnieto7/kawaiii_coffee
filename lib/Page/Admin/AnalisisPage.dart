@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/Admin/AnalisisController.dart';
+import 'package:kawaiii_coffee/Controller/AnalisisController.dart';
 
 
 class AnalisisPage extends GetView<AnalisisController> {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/Kasir/POScontroller.dart';
+import 'package:kawaiii_coffee/Controller/POScontroller.dart';
+import 'package:kawaiii_coffee/Controller/cart_menuController.dart';
 import 'package:kawaiii_coffee/Component/POS/category_chip.dart';
 import 'package:kawaiii_coffee/Component/POS/productcard.dart';
-import 'package:kawaiii_coffee/Controller/Kasir/cart_menuController.dart';
 import 'package:kawaiii_coffee/Page/Kasir/cart_menu.dart';
 
 class PosPage extends StatelessWidget {

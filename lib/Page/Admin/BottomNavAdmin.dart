@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/Admin/MainAdminController.dart';
+import 'package:kawaiii_coffee/Controller/MainAdminController.dart';
 import 'package:kawaiii_coffee/Page/Admin/AnalisisPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';

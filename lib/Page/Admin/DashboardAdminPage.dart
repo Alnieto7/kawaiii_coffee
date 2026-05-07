@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/ActivityTile.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/mini_stat_card.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/revenue_card.dart'; // <-- Pastikan import ini ada
-import 'package:kawaiii_coffee/Controller/Admin/DashboardAdminController.dart';
+import 'package:kawaiii_coffee/Controller/DashboardAdminController.dart';
 
 class DashboardAdminPage extends GetView<DashboardAdminController> {
   const DashboardAdminPage({super.key});
