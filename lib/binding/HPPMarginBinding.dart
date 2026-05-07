@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../Controller/HppMarginController.dart';
+import 'package:kawaiii_coffee/Controller/HPPMarginController.dart';
 
 class HppMarginBinding extends Bindings {
   @override
