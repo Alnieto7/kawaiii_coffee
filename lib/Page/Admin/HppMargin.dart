@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/Custom_Button.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/MarginProduct.dart';
 import 'package:kawaiii_coffee/Component/AdminComponent/SummaryCard.dart';
-import 'package:kawaiii_coffee/Controller/HppMarginController.dart';
+import 'package:kawaiii_coffee/Controller/HPPMarginController.dart';
 
 class HppMarginPage extends GetView<HppMarginController> {
   const HppMarginPage({super.key});

@@ -1,106 +1,92 @@
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/cart_menuController.dart';
-
+import 'package:kawaiii_coffee/Controller/cart_menuController.dart'; 
+import 'package:kawaiii_coffee/Model/product_model.dart';
+import 'package:kawaiii_coffee/Services/product_service.dart';
 
 class PosController extends GetxController {
 
-  late CartController cart;
+  final CartController cart = Get.put(CartController());
 
-  // 🔍 search
+  var isLoading = false.obs;
+
   var searchQuery = ''.obs;
-
-  // 🏷 kategori
   var selectedCategory = 'Semua'.obs;
 
-  final List<String> categories = [
+  var products = <ProductModel>[].obs;
+
+  final categories = [
     "Semua",
-    "Espresso Base",
-    "Manual Brew",
+    "Coffee",
     "Non Coffee",
   ];
 
-  // 📦 DATA PRODUK (dummy)
-  final List<Map<String, dynamic>> products = [
-    {
-      "name": "Espresso Double",
-      "price": 18000,
-      "category": "Espresso Base",
-      "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6H7LtT9HjVA3eoSFRGhFxt0ifngIlXRCmCw&s",
-    },
-    {
-      "name": "Caffè Latte",
-      "price": 25000,
-      "category": "Espresso Base",
-      "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6H7LtT9HjVA3eoSFRGhFxt0ifngIlXRCmCw&s",
-    },
-    {
-      "name": "Cold Brew Signature",
-      "price": 28000,
-      "category": "Manual Brew",
-      "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6H7LtT9HjVA3eoSFRGhFxt0ifngIlXRCmCw&s",
-    },
-    {
-      "name": "Cappuccino",
-      "price": 24000,
-      "category": "Espresso Base",
-      "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6H7LtT9HjVA3eoSFRGhFxt0ifngIlXRCmCw&s",
-    },
-  ];
-
-  // 🔥 LIST HASIL FILTER (REACTIVE)
-  var filteredProducts = <Map<String, dynamic>>[].obs;
-
-  // 🔄 INIT
   @override
   void onInit() {
     super.onInit();
-    cart = Get.put(CartController());
-    filterProducts();
-      print("=== PosController onInit ===");
-      print("CartController registered: ${Get.isRegistered<CartController>()}");
-     
+    fetchProducts();
   }
 
-  // 🔎 FILTER LOGIC
-  void filterProducts() {
+  // 🔥 FETCH API
+  Future<void> fetchProducts() async {
+
+    try {
+
+      isLoading.value = true;
+
+      final result = await ProductService.fetchProducts();
+
+      products.assignAll(result);
+
+    } catch (e) {
+
+      Get.snackbar(
+        "Error",
+        e.toString(),
+      );
+
+    } finally {
+
+      isLoading.value = false;
+
+    }
+  }
+
+  // 🔍 FILTER
+  List<ProductModel> get filteredProducts {
+
     final query = searchQuery.value.toLowerCase();
 
-    final result = products.where((p) {
-      final name = (p["name"] ?? "").toString().toLowerCase();
-      final category = (p["category"] ?? "").toString();
+    return products.where((p) {
 
-      final matchSearch = name.contains(query);
-      final matchCategory = selectedCategory.value == "Semua"
-          ? true
-          : category == selectedCategory.value;
+      final matchSearch =
+          p.name.toLowerCase().contains(query);
+
+      final matchCategory =
+          selectedCategory.value == "Semua"
+              ? true
+              : p.categoryName == selectedCategory.value;
 
       return matchSearch && matchCategory;
-    }).toList();
 
-    filteredProducts.assignAll(result);
+    }).toList();
   }
 
-  // 🔍 UPDATE SEARCH
+  // 🔍 SEARCH
   void updateSearch(String value) {
     searchQuery.value = value;
-    filterProducts();
   }
 
-  // 🏷 GANTI CATEGORY
+  // 🏷 CATEGORY
   void changeCategory(String category) {
     selectedCategory.value = category;
-    filterProducts();
   }
 
-  // 🛒 ADD TO CART
-  void addToCart(Map<String, dynamic> product) {
+  // 🛒 CART
+  void addToCart(ProductModel product) {
+
     cart.addItem(
-      product["name"] ?? "",
-      product["price"] ?? 0,
+      product.name,
+      product.sellingPrice,
     );
   }
 }

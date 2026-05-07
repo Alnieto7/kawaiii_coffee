@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Controller/POScontroller.dart';
-import 'package:kawaiii_coffee/Controller/cart_menuController.dart';
+import 'package:kawaiii_coffee/Controller/cart_menuController.dart'; 
 import 'package:kawaiii_coffee/Component/POS/category_chip.dart';
 import 'package:kawaiii_coffee/Component/POS/productcard.dart';
 import 'package:kawaiii_coffee/Page/Kasir/cart_menu.dart';
@@ -11,6 +11,7 @@ class PosPage extends StatelessWidget {
    
   final PosController posController = Get.find<PosController>();
   final CartController cartController = Get.put(CartController());
+  
   
   @override
   Widget build(BuildContext context) {
@@ -117,38 +118,53 @@ class PosPage extends StatelessWidget {
 
                 // 🛍 PRODUCT GRID
                 Expanded(
-                child: Obx(() {
-                  final products = posController.filteredProducts;
+                  child: Obx(() {
 
-                  if (products.isEmpty) {
-                    return const Center(
-                      child: Text("Produk tidak ditemukan"),
-                    );
-                  }
-
-                  return GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.72,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                    ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-
-                      return ProductCard(
-                        title: product["name"],
-                        price: "Rp ${product["price"]}",
-                        image: product["image"],
-                        onAddToCart: () => posController .addToCart(product),
+                    // 🔄 LOADING
+                    if (posController.isLoading.value) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    },
-                  );
-                }),
-              )
+                    }
+
+                    final products = posController.filteredProducts;
+
+                    // 📭 EMPTY
+                    if (products.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          "Produk tidak ditemukan",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      );
+                    }
+
+                    // 🛍 PRODUCT GRID
+                    return GridView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.72,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+
+                        final product = products[index];
+
+                        return ProductCard(
+                          title: product.name,
+                          price: "Rp ${product.sellingPrice}",
+                          image: product.image,
+                          onAddToCart: () =>
+                              posController.addToCart(product),
+                        );
+                      },
+                    );
+                  }),
+                )
               ]
             ),
             // 🔥 CART OVERLAY (WAJIB align di dalam widgetnya)
