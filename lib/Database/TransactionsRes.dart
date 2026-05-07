@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
-import 'package:kawaiii_coffee/Model/TransactionsModel.dart'; // Pastikan path ini sesuai
+import 'package:kawaiii_coffee/Model/TransactionsModel.dart'; 
 
 class TransactionProvider {
   static const String baseUrl = 'http://202.10.48.252/api/transactions';
@@ -9,24 +9,29 @@ class TransactionProvider {
 
   // Fungsi untuk mengambil list transaksi
   Future<List<TransactionModel>> getTransactions() async {
+    // 1. Baca token dari memori HP
     final token = box.read('auth_token');
+    
+    // --- TAMBAHKAN BARIS INI UNTUK DEBUGGING ---
+    print('=== CEK TOKEN API ===');
+    print('Token saat ini: $token');
+    print('=====================');
     
     try {
       final response = await http.get(
         Uri.parse(baseUrl),
         headers: {
+          'Content-Type': 'application/json', // Tambahan aman untuk Laravel
           'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
 
+      print('Status Code API: ${response.statusCode}'); // Cek status code-nya
+
       if (response.statusCode == 200) {
         final jsonBody = jsonDecode(response.body);
-        
-        // Mengambil array dari dalam key 'data' (Sesuai paginasi Laravel)
         final List dataList = jsonBody['data']; 
-        
-        // Mengubah list Map/JSON mentah menjadi List of Object (Model)
         return dataList.map((e) => TransactionModel.fromJson(e)).toList();
       } else {
         throw Exception('Gagal mengambil data dari server (Status: ${response.statusCode})');

@@ -23,7 +23,8 @@ class TransactionModel {
       invoiceNumber: json['invoice_number'] ?? json['invoice'] ?? "CS-${json['id'] ?? '000'}",
       
       // Mengambil total harga. Backend biasanya pakai 'total' atau 'total_price'
-      total: json['total'] ?? json['total_price'] ?? 0,
+     // Pakai double.tryParse lalu di-.toInt() untuk jaga-jaga kalau Laravel ngirim "4000.00"
+total: json['total'] != null ? double.tryParse(json['total'].toString())?.toInt() : null,
       
       // Mengambil nama kasir.
       // Kadang backend mengirimnya di dalam object relasi: user -> name
