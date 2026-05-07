@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Controller/cart_menuController.dart';
+import 'package:kawaiii_coffee/Model/product_model.dart';
 
 class PosController extends GetxController {
 
@@ -96,10 +97,12 @@ class PosController extends GetxController {
   }
 
   // 🛒 ADD TO CART
-  void addToCart(Map<String, dynamic> product) {
-    cart.addItem(
-      product["name"] ?? "",
-      product["price"] ?? 0,
-    );
-  }
+void addToCart(ProductModel product) {
+  cart.addItem(
+    id: product.id,
+    name: product.name,
+    price: product.sellingPrice,
+    image: product.image,
+  );
+}
 }

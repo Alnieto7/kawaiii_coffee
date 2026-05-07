@@ -19,7 +19,7 @@ class ProductService {
       return data
           .map((e) => ProductModel.fromJson(e))
           .toList();
-
+  
     } else {
       throw Exception("Gagal mengambil produk");
     }
