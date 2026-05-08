@@ -29,7 +29,7 @@ total: json['total'] != null ? double.tryParse(json['total'].toString())?.toInt(
       // Mengambil nama kasir.
       // Kadang backend mengirimnya di dalam object relasi: user -> name
       // Kadang langsung: cashier_name
-      cashierName: json['user']?['name'] ?? json['cashier_name'] ?? "Kasir Kamo",
+      cashierName: json['user']?['name'] ,
       
       // Mengubah string tanggal dari database menjadi tipe DateTime di Flutter
       createdAt: json['created_at'] != null 

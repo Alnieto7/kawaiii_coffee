@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/actioncard.dart';
@@ -9,7 +8,8 @@ class DashboardkasirPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.put(DashboardController());
+    // Menggunakan Get.find untuk mencari controller yang sudah di-binding
+    final c = Get.find<DashboardController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -65,7 +65,7 @@ class DashboardkasirPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       const Text('Status Shift', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                                      Text('AKTIF', style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text(c.isActive.value ? 'AKTIF' : 'NONAKTIF', style: const TextStyle(fontWeight: FontWeight.bold)),
                                     ],
                                   )
                                 ],
@@ -163,9 +163,9 @@ class DashboardkasirPage extends StatelessWidget {
 
                     // ACTION CARDS
                     Row(
-                      children: [
+                      children: const [
                         Expanded(child: ActionCard(title: 'Input Stok Harian', icon: Icons.inventory)),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Expanded(child: ActionCard(title: 'Riwayat Transaksi', icon: Icons.history)),
                       ],
                     ),
@@ -213,7 +213,6 @@ class DashboardkasirPage extends StatelessWidget {
                           }).toList(),
                         )),
 
-
                     const SizedBox(height: 70),
                   ],
                 ),
@@ -228,11 +227,12 @@ class DashboardkasirPage extends StatelessWidget {
                 color: Colors.orange,
                 borderRadius: BorderRadius.circular(30),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('TOTAL HARI INI', style: TextStyle(color: Colors.white)),
-                  Text('Rp 1.250k', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  const Text('TOTAL HARI INI', style: TextStyle(color: Colors.white)),
+                  // Menggunakan variabel dari controller yang dibungkus Obx
+                  Obx(() => Text(c.totalHariIni.value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
                 ],
               ),
             )
@@ -242,4 +242,3 @@ class DashboardkasirPage extends StatelessWidget {
     );
   }
 }
-

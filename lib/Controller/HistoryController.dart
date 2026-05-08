@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Database/TransactionsRes.dart';
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart';
 
-
 class HistoryController extends GetxController {
   // State Loading & Data
   var isLoading = true.obs;
@@ -32,16 +31,31 @@ class HistoryController extends GetxController {
       final data = await _transactionProvider.getTransactions();
       transactions.value = data;
 
-      // Hitung Kalkulasi Summary Card
-      int totalUang = 0;
+      // Hitung Kalkulasi Summary Card (KHUSUS HARI INI)
+      int totalUangHariIni = 0;
+      int jumlahTransaksiHariIni = 0;
+      final now = DateTime.now();
+
       for (var trx in data) {
-        totalUang += (trx.total ?? 0);
+        // Pastikan tanggal tidak null
+        if (trx.createdAt != null) {
+          // Cek apakah tahun, bulan, dan hari sama dengan hari ini
+          bool isToday =
+              trx.createdAt!.year == now.year &&
+              trx.createdAt!.month == now.month &&
+              trx.createdAt!.day == now.day;
+
+          if (isToday) {
+            totalUangHariIni += (trx.total ?? 0);
+            jumlahTransaksiHariIni++;
+          }
+        }
       }
 
-      totalPendapatan.value = formatRupiah(totalUang);
-      totalTransaksi.value = data.length;
+      // Masukkan hasil hitungan ke variabel UI
+      totalPendapatan.value = formatRupiah(totalUangHariIni);
+      totalTransaksi.value = jumlahTransaksiHariIni;
       lastUpdated.value = "Terakhir diperbarui baru saja";
-
     } catch (e) {
       print('Error fetching history: $e');
       lastUpdated.value = "Gagal memuat data";
@@ -57,7 +71,11 @@ class HistoryController extends GetxController {
 
   // --- HELPER FORMATTER ---
   String formatRupiah(int amount) {
-    return NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0).format(amount);
+    return NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    ).format(amount);
   }
 
   String formatTime(DateTime date) {
