@@ -17,23 +17,29 @@ class TransactionModel {
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(
       id: json['id'],
-      
+
       // Mengambil nomor struk. Jika dari backend namanya 'invoice', akan tetap terbaca.
       // Jika kosong, kita buatkan default "CS-{id}"
-      invoiceNumber: json['invoice_number'] ?? json['invoice'] ?? "CS-${json['id'] ?? '000'}",
-      
+      invoiceNumber:
+          json['invoice_number'] ??
+          json['invoice'] ??
+          "CS-${json['id'] ?? '000'}",
+
       // Mengambil total harga. Backend biasanya pakai 'total' atau 'total_price'
-     // Pakai double.tryParse lalu di-.toInt() untuk jaga-jaga kalau Laravel ngirim "4000.00"
-total: json['total'] != null ? double.tryParse(json['total'].toString())?.toInt() : null,
-      
+      // Pakai double.tryParse lalu di-.toInt() untuk jaga-jaga kalau Laravel ngirim "4000.00"
+      total: json['total'] != null
+          ? double.tryParse(json['total'].toString())?.toInt()
+          : null,
+
       // Mengambil nama kasir.
       // Kadang backend mengirimnya di dalam object relasi: user -> name
       // Kadang langsung: cashier_name
-      cashierName: json['user']?['name'] ,
-      
+      cashierName:
+          json['user']?['name'] ?? json['cashier_name'] ?? "Kasir Kamo",
+
       // Mengubah string tanggal dari database menjadi tipe DateTime di Flutter
-      createdAt: json['created_at'] != null 
-          ? DateTime.tryParse(json['created_at'].toString()) 
+      createdAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'].toString())
           : DateTime.now(),
     );
   }

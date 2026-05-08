@@ -17,7 +17,7 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    checkLogin(); 
+    // checkLogin(); 
   }
 
   @override
@@ -38,18 +38,30 @@ class LoginController extends GetxController {
   }
 
   
-  void redirectByRole(String role) {
-    final r = role.trim().toLowerCase();
+   void redirectByRole(String role) {
+  final r = role.trim().toLowerCase();
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
 
     if (r == 'admin') {
-      Get.offAllNamed('/BNAdmin');
+
       Get.offAllNamed(AppRoutes.BNAdmin);
+
     } else if (r == 'cashier') {
-      Get.offAllNamed('/main');
+
+      Get.offAllNamed(AppRoutes.MAIN);
+
     } else {
-      Get.snackbar('Error', 'Role tidak dikenali: $r');
+
+      Get.snackbar(
+        'Error',
+        'Role tidak dikenali: $r',
+      );
+
     }
-  }
+
+  });
+}
 
   Future<void> doLogin() async {
     final name = nameController.text.trim();

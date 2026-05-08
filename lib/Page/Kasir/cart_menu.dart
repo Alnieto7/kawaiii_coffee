@@ -160,7 +160,7 @@ class CartSheet extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       )),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: cart.checkout,
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
                           const Color(0xFFD97706),
