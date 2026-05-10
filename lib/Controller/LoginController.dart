@@ -27,7 +27,7 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
-  // ✅ pindah dari AuthController
+
   void checkLogin() {
     final token = box.read('auth_token');
     final role = box.read('role') ?? '';

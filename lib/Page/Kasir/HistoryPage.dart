@@ -11,7 +11,6 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Menggunakan Get.find untuk mengambil instance controller yang sudah ada
     final HistoryController controller = Get.find<HistoryController>();
 
     return Scaffold(
@@ -37,7 +36,7 @@ class HistoryPage extends StatelessWidget {
               ),
             ),
 
-            // 🔘 FILTER
+            
             SizedBox(
               height: 40,
               child: Obx(() => ListView(
@@ -46,15 +45,21 @@ class HistoryPage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () => controller.changeFilter("Hari Ini"),
-                    child: FilterChipItem(label: "Hari Ini", selected: controller.selectedFilter.value == "Hari Ini"),
+                    child: FilterChipItem(
+                        label: "Hari Ini", 
+                        selected: controller.selectedFilter.value == "Hari Ini"),
                   ),
                   GestureDetector(
-                    onTap: () => controller.changeFilter("Kemarin"),
-                    child: FilterChipItem(label: "Kemarin", selected: controller.selectedFilter.value == "Kemarin"),
+                    onTap: () => controller.changeFilter("Seminggu Terakhir"),
+                    child: FilterChipItem(
+                        label: "Seminggu Terakhir", 
+                        selected: controller.selectedFilter.value == "Seminggu Terakhir"), 
                   ),
                   GestureDetector(
-                    onTap: () => controller.changeFilter("7 Hari Terakhir"),
-                    child: FilterChipItem(label: "7 Hari Terakhir", selected: controller.selectedFilter.value == "7 Hari Terakhir"),
+                    onTap: () => controller.changeFilter("Bulanan"),
+                    child: FilterChipItem(
+                        label: "Bulanan", 
+                        selected: controller.selectedFilter.value == "Bulanan"), 
                   ),
                 ],
               )),
@@ -62,7 +67,7 @@ class HistoryPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // 📊 SUMMARY CARD
+         
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Obx(() => SummaryCard(
@@ -74,7 +79,7 @@ class HistoryPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // 📋 LIST TRANSAKSI
+            
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
