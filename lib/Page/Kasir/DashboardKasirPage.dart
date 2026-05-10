@@ -8,7 +8,6 @@ class DashboardkasirPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Menggunakan Get.find untuk mencari controller yang sudah di-binding
     final c = Get.find<DashboardController>();
 
     return Scaffold(
@@ -47,7 +46,7 @@ class DashboardkasirPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    // INFO CARD
+                    // INFO CARD SHIFT
                     Obx(() => Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -59,13 +58,15 @@ class DashboardkasirPage extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  const CircleAvatar(radius: 5, backgroundColor: Colors.green),
+                                  // 🔥 LOGIKA WARNA DIAMBIL DARI CONTROLLER 🔥
+                                  CircleAvatar(radius: 5, backgroundColor: c.shiftStatusColor),
                                   const SizedBox(width: 8),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       const Text('Status Shift', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                                      Text(c.isActive.value ? 'AKTIF' : 'NONAKTIF', style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      // 🔥 LOGIKA TEKS DIAMBIL DARI CONTROLLER 🔥
+                                      Text(c.shiftStatusText, style: const TextStyle(fontWeight: FontWeight.bold)),
                                     ],
                                   )
                                 ],
@@ -83,26 +84,30 @@ class DashboardkasirPage extends StatelessWidget {
 
                     const SizedBox(height: 16),
 
-                    // MENU ORANGE
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE67E22),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Transaksi Penjualan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                              SizedBox(height: 4),
-                              Text('Input pesanan baru sekarang', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios, color: Colors.white)
-                        ],
+                    // MENU ORANGE (TRANSAKSI PENJUALAN)
+                    // 🔥 LOGIKA KLIK / ROUTING DIAMBIL DARI CONTROLLER 🔥
+                    GestureDetector(
+                      onTap: c.goToPos, 
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE67E22),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Transaksi Penjualan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                SizedBox(height: 4),
+                                Text('Input pesanan baru sekarang', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                              ],
+                            ),
+                            Icon(Icons.arrow_forward_ios, color: Colors.white)
+                          ],
+                        ),
                       ),
                     ),
 
@@ -142,10 +147,12 @@ class DashboardkasirPage extends StatelessWidget {
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                         decoration: BoxDecoration(
-                                          color: status == 'AMAN' ? Colors.green[100] : Colors.red[100],
+                                          // 🔥 LOGIKA WARNA BACKGROUND DIAMBIL DARI CONTROLLER 🔥
+                                          color: c.getStockBgColor(status),
                                           borderRadius: BorderRadius.circular(6),
                                         ),
-                                        child: Text(status, style: TextStyle(fontSize: 10, color: status == 'AMAN' ? Colors.green : Colors.red)),
+                                        // 🔥 LOGIKA WARNA TEKS DIAMBIL DARI CONTROLLER 🔥
+                                        child: Text(status, style: TextStyle(fontSize: 10, color: c.getStockTextColor(status))),
                                       ),
                                     ),
                                     const SizedBox(height: 8),
@@ -163,16 +170,23 @@ class DashboardkasirPage extends StatelessWidget {
 
                     // ACTION CARDS
                     Row(
-                      children: const [
-                        Expanded(child: ActionCard(title: 'Input Stok Harian', icon: Icons.inventory)),
-                        SizedBox(width: 8),
-                        Expanded(child: ActionCard(title: 'Riwayat Transaksi', icon: Icons.history)),
+                      children: [
+                        // 🔥 LOGIKA KLIK / ROUTING DIAMBIL DARI CONTROLLER 🔥
+                        Expanded(child: GestureDetector(
+                          onTap: c.goToInputStok,
+                          child: const ActionCard(title: 'Input Stok Harian', icon: Icons.inventory),
+                        )),
+                        const SizedBox(width: 8),
+                        Expanded(child: GestureDetector(
+                          onTap: c.goToRiwayat,
+                          child: const ActionCard(title: 'Riwayat Transaksi', icon: Icons.history),
+                        )),
                       ],
                     ),
 
                     const SizedBox(height: 16),
 
-                    // TRANSAKSI
+                    // TRANSAKSI LIST HEADER
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
@@ -183,6 +197,7 @@ class DashboardkasirPage extends StatelessWidget {
 
                     const SizedBox(height: 8),
 
+                    // TRANSAKSI LIST ITEMS
                     Obx(() => Column(
                           children: c.transactions.map((e) {
                             final title = e['title'] ?? '';
@@ -231,7 +246,6 @@ class DashboardkasirPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('TOTAL HARI INI', style: TextStyle(color: Colors.white)),
-                  // Menggunakan variabel dari controller yang dibungkus Obx
                   Obx(() => Text(c.totalHariIni.value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
                 ],
               ),
