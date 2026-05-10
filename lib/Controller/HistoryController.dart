@@ -1,75 +1,89 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
+import 'package:kawaiii_coffee/Provider/SalesSummaryProvider.dart';
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart';
 
 class HistoryController extends GetxController {
   // State Loading & Data
   var isLoading = true.obs;
+  var isSummaryLoading = false.obs;
   var transactions = <TransactionModel>[].obs;
 
-  // State untuk Summary Card
-  var totalPendapatan = "Rp 0".obs;
+  // State Summary Card
+  var totalPendapatan = 'Rp 0'.obs;
   var totalTransaksi = 0.obs;
-  var lastUpdated = "Menunggu data...".obs;
+  var lastUpdated = 'Menunggu data...'.obs;
 
-  // State untuk Filter
-  var selectedFilter = "Hari Ini".obs;
+  // State Filter
+  var selectedFilter = 'Hari Ini'.obs;
 
   final TransactionProvider _transactionProvider = TransactionProvider();
+  final SalesSummaryProvider _summaryProvider = SalesSummaryProvider();
 
   @override
   void onInit() {
     super.onInit();
     fetchHistory();
+    fetchSummaryCard('Hari Ini');
   }
 
-  // --- LOGIKA MENGAMBIL DATA API ---
+  // =========================
+  // Fetch List Transaksi
+  // =========================
   Future<void> fetchHistory() async {
     isLoading.value = true;
     try {
       final data = await _transactionProvider.getTransactions();
       transactions.value = data;
-
-      // Hitung Kalkulasi Summary Card (KHUSUS HARI INI)
-      int totalUangHariIni = 0;
-      int jumlahTransaksiHariIni = 0;
-      final now = DateTime.now();
-
-      for (var trx in data) {
-        // Pastikan tanggal tidak null
-        if (trx.createdAt != null) {
-          // Cek apakah tahun, bulan, dan hari sama dengan hari ini
-          bool isToday =
-              trx.createdAt!.year == now.year &&
-              trx.createdAt!.month == now.month &&
-              trx.createdAt!.day == now.day;
-
-          if (isToday) {
-            totalUangHariIni += (trx.total ?? 0);
-            jumlahTransaksiHariIni++;
-          }
-        }
-      }
-
-      // Masukkan hasil hitungan ke variabel UI
-      totalPendapatan.value = formatRupiah(totalUangHariIni);
-      totalTransaksi.value = jumlahTransaksiHariIni;
-      lastUpdated.value = "Terakhir diperbarui baru saja";
     } catch (e) {
       print('Error fetching history: $e');
-      lastUpdated.value = "Gagal memuat data";
+      lastUpdated.value = 'Gagal memuat data';
     } finally {
       isLoading.value = false;
     }
   }
 
-  // Fungsi untuk mengganti filter (Bisa dikembangkan nanti untuk nembak API lagi)
-  void changeFilter(String filter) {
-    selectedFilter.value = filter;
+  // =========================
+  // Fetch Summary Card dari API
+  // =========================
+  Future<void> fetchSummaryCard(String filterName) async {
+    isSummaryLoading.value = true;
+    lastUpdated.value = 'Memperbarui...';
+
+    final apiPeriod = switch (filterName) {
+      'Seminggu Terakhir' => 'weekly',
+      'Bulanan' => 'monthly',
+      _ => 'daily',
+    };
+
+    try {
+      final summaryData = await _summaryProvider.getSalesSummary(apiPeriod);
+      totalPendapatan.value = formatRupiah(summaryData['total_revenue'] ?? 0);
+      totalTransaksi.value = summaryData['total_transactions'] ?? 0;
+      lastUpdated.value = 'Terakhir diperbarui baru saja';
+    } catch (e) {
+      print('Error fetching summary: $e');
+      lastUpdated.value = 'Gagal memuat data';
+      totalPendapatan.value = 'Rp 0';
+      totalTransaksi.value = 0;
+    } finally {
+      isSummaryLoading.value = false;
+    }
   }
 
-  // --- HELPER FORMATTER ---
+  // =========================
+  // Ganti Filter
+  // =========================
+  void changeFilter(String filter) {
+    if (selectedFilter.value == filter) return;
+    selectedFilter.value = filter;
+    fetchSummaryCard(filter);
+  }
+
+  // =========================
+  // Helper Formatter
+  // =========================
   String formatRupiah(int amount) {
     return NumberFormat.currency(
       locale: 'id',
