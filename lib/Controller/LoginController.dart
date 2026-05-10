@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:kawaiii_coffee/Database/LoginReq.dart';
+import 'package:kawaiii_coffee/Provider/AuthProvider.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 
 class LoginController extends GetxController {

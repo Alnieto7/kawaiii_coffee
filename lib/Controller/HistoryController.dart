@@ -1,35 +1,36 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kawaiii_coffee/Database/SalesSumRes.dart';
-import 'package:kawaiii_coffee/Database/TransactionsRes.dart'; 
+import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
+import 'package:kawaiii_coffee/Provider/SalesSummaryProvider.dart';
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart';
 
-
 class HistoryController extends GetxController {
-  // State Loading & Data List
+  // State Loading & Data
   var isLoading = true.obs;
+  var isSummaryLoading = false.obs;
   var transactions = <TransactionModel>[].obs;
 
-  // State untuk Summary Card
-  var isSummaryLoading = false.obs;
-  var totalPendapatan = "Rp 0".obs;
+  // State Summary Card
+  var totalPendapatan = 'Rp 0'.obs;
   var totalTransaksi = 0.obs;
-  var lastUpdated = "Menunggu data...".obs;
+  var lastUpdated = 'Menunggu data...'.obs;
 
-  // State untuk Filter
-  var selectedFilter = "Hari Ini".obs;
+  // State Filter
+  var selectedFilter = 'Hari Ini'.obs;
 
-  // PANGGIL KEDUA PROVIDER SECARA TERPISAH
   final TransactionProvider _transactionProvider = TransactionProvider();
   final SalesSummaryProvider _summaryProvider = SalesSummaryProvider();
 
   @override
   void onInit() {
     super.onInit();
-    fetchHistory(); 
-    fetchSummaryCard("Hari Ini"); 
+    fetchHistory();
+    fetchSummaryCard('Hari Ini');
   }
 
+  // =========================
+  // Fetch List Transaksi
+  // =========================
   Future<void> fetchHistory() async {
     isLoading.value = true;
     try {
@@ -37,46 +38,52 @@ class HistoryController extends GetxController {
       transactions.value = data;
     } catch (e) {
       print('Error fetching history: $e');
+      lastUpdated.value = 'Gagal memuat data';
     } finally {
       isLoading.value = false;
     }
   }
 
-  // --- LOGIKA MENGAMBIL KARTU PENDAPATAN ---
+  // =========================
+  // Fetch Summary Card dari API
+  // =========================
   Future<void> fetchSummaryCard(String filterName) async {
     isSummaryLoading.value = true;
-    lastUpdated.value = "Memperbarui...";
+    lastUpdated.value = 'Memperbarui...';
 
-    String apiPeriod = 'daily';
-    if (filterName == 'Seminggu Terakhir') {
-      apiPeriod = 'weekly';
-    } else if (filterName == 'Bulanan') {
-      apiPeriod = 'monthly';
-    }
+    final apiPeriod = switch (filterName) {
+      'Seminggu Terakhir' => 'weekly',
+      'Bulanan' => 'monthly',
+      _ => 'daily',
+    };
 
     try {
-      // GUNAKAN PROVIDER SUMMARY DI SINI
       final summaryData = await _summaryProvider.getSalesSummary(apiPeriod);
-
-      totalPendapatan.value = formatRupiah(summaryData['total_revenue']);
-      totalTransaksi.value = summaryData['total_transactions'];
-      lastUpdated.value = "Terakhir diperbarui baru saja";
+      totalPendapatan.value = formatRupiah(summaryData['total_revenue'] ?? 0);
+      totalTransaksi.value = summaryData['total_transactions'] ?? 0;
+      lastUpdated.value = 'Terakhir diperbarui baru saja';
     } catch (e) {
-      print('Error fetching summary card: $e');
-      lastUpdated.value = "Gagal memuat data";
-      totalPendapatan.value = "Rp 0";
+      print('Error fetching summary: $e');
+      lastUpdated.value = 'Gagal memuat data';
+      totalPendapatan.value = 'Rp 0';
       totalTransaksi.value = 0;
     } finally {
       isSummaryLoading.value = false;
     }
   }
 
+  // =========================
+  // Ganti Filter
+  // =========================
   void changeFilter(String filter) {
-    if (selectedFilter.value == filter) return; 
+    if (selectedFilter.value == filter) return;
     selectedFilter.value = filter;
-    fetchSummaryCard(filter); 
+    fetchSummaryCard(filter);
   }
 
+  // =========================
+  // Helper Formatter
+  // =========================
   String formatRupiah(int amount) {
     return NumberFormat.currency(
       locale: 'id',
@@ -88,5 +95,4 @@ class HistoryController extends GetxController {
   String formatTime(DateTime date) {
     return DateFormat('HH:mm').format(date);
   }
-
 }

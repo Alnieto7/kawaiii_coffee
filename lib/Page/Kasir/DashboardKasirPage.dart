@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/actioncard.dart';
-import 'package:kawaiii_coffee/Controller/dashboardControllerKasir.dart';
+import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 
 class DashboardkasirPage extends StatelessWidget {
   const DashboardkasirPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<DashboardController>();
+    final c = Get.find<DashboardKasirController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),

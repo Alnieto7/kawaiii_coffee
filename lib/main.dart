@@ -1,12 +1,26 @@
+import 'dart:io'; // Penting: Untuk HttpOverrides
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // 1. JANGAN LUPA IMPORT GETX DI SINI
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Routes/Pages.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 
-import 'package:get_storage/get_storage.dart'; // Pastikan di-import
+// Class untuk mengizinkan sertifikat SSL (Bypass SSL)
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Aktifkan SSL Bypass agar gambar dari server sandbox bisa dimuat
+  HttpOverrides.global = MyHttpOverrides();
+
   await GetStorage.init();
   runApp(const MainApp());
 }

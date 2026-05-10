@@ -4,9 +4,9 @@ import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 import 'package:kawaiii_coffee/Model/ProductModel.dart';
 import 'package:kawaiii_coffee/Provider/ProductProvider.dart';
 
+
 class PosController extends GetxController {
-  // Gunakan find jika CartController sudah di-inject di binding/main
-  // atau put jika belum ada
+  // Logic tetap sama, pastikan CartController di-import dengan benar
   final CartController cart = Get.isRegistered<CartController>()
       ? Get.find<CartController>()
       : Get.put(CartController());
@@ -14,6 +14,8 @@ class PosController extends GetxController {
   var isLoading = false.obs;
   var searchQuery = ''.obs;
   var selectedCategory = 'Semua'.obs;
+
+  // Menggunakan List<ProductModel> yang sudah ter-import
   var products = <ProductModel>[].obs;
 
   final categories = ["Semua", "Coffee", "Non Coffee"];
@@ -28,7 +30,10 @@ class PosController extends GetxController {
   Future<void> fetchProducts() async {
     try {
       isLoading.value = true;
-      final result = await ProductProvider.fetchProducts();
+      // Pastikan class di ProductProvider bernama ProductProvider (bukan ProductService)
+      final List<ProductModel> result = await ProductProvider.fetchProducts();
+
+      // Menggunakan .assignAll untuk mengupdate RxList
       products.assignAll(result);
     } catch (e) {
       Get.snackbar(
@@ -43,14 +48,13 @@ class PosController extends GetxController {
     }
   }
 
-  // 🔍 FILTERED PRODUCTS (Gunakan .where untuk reaktivitas)
+  // 🔍 FILTERED PRODUCTS
   List<ProductModel> get filteredProducts {
     return products.where((p) {
       final matchSearch = p.name.toLowerCase().contains(
         searchQuery.value.toLowerCase(),
       );
 
-      // Normalisasi kategori agar case-insensitive jika perlu
       final matchCategory = selectedCategory.value == "Semua"
           ? true
           : p.categoryName.toLowerCase() ==
