@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/cart_menuController.dart';
-import 'package:kawaiii_coffee/Model/product_model.dart';
+import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
+import 'package:kawaiii_coffee/Model/ProductModel.dart';
 
 class PosController extends GetxController {
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/POScontroller.dart';
-import 'package:kawaiii_coffee/Controller/cart_menuController.dart'; 
+import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
+import 'package:kawaiii_coffee/Controller/CartMenuController.dart'; 
 import 'package:kawaiii_coffee/Component/POS/category_chip.dart';
 import 'package:kawaiii_coffee/Component/POS/productcard.dart';
-import 'package:kawaiii_coffee/Page/Kasir/cart_menu.dart';
+import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
 
 class PosPage extends StatelessWidget {
    PosPage({super.key});
@@ -168,7 +168,7 @@ class PosPage extends StatelessWidget {
               ]
             ),
             // 🔥 CART OVERLAY (WAJIB align di dalam widgetnya)
-            const CartSheet(),
+            const CartSheetPage(),
           ],
         ),
       ),

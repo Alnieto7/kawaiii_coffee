@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Controller/maincontroller.dart';
 import 'package:kawaiii_coffee/Page/Kasir/HistoryPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
-import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
+import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
 
 // import page lain nanti
 

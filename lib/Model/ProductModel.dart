@@ -19,12 +19,13 @@ class ProductModel {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json["id"],
+      id: json["id"] is int ? json["id"] : int.parse(json["id"].toString()),
       name: json["name"] ?? "",
       categoryName: json["category_name"] ?? "",
-      sellingPrice: json["selling_price"] ?? 0,
-      costPrice: json["cost_price"] ?? 0,
-      profit: json["profit"] ?? 0,
+      // Trik aman: Ubah ke num dulu baru ke int untuk menangani double/int
+      sellingPrice: (json["selling_price"] as num? ?? 0).toInt(),
+      costPrice: (json["cost_price"] as num? ?? 0).toInt(),
+      profit: (json["profit"] as num? ?? 0).toInt(),
       image: json["image"] ?? "",
     );
   }

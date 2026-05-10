@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:kawaiii_coffee/Controller/HistoryController.dart';
-import 'package:kawaiii_coffee/Controller/POScontroller.dart';
-import 'package:kawaiii_coffee/Controller/dashboardControllerKasir.dart';
+import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
+import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 import 'package:kawaiii_coffee/Controller/maincontroller.dart';
 
 

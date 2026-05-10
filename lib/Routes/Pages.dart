@@ -6,8 +6,9 @@ import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
 import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
-import 'package:kawaiii_coffee/Page/Kasir/cart_menu.dart';
-import 'package:kawaiii_coffee/Page/Kasir/dashboardKasir.dart';
+import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/AnalisisBinding.dart';
@@ -70,8 +71,12 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.cartMenu,
-      page: () => CartSheet(),
+      page: () => CartSheetPage(),
       binding: CartMenubinding(),
+    ),
+    GetPage(
+      name: AppRoutes.QrisDisplayPage,
+      page: () => QrisDisplayPage(),
     ),
   ];
 }

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kawaiii_coffee/Database/TransactionsRes.dart';
+import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart'; 
 
 class DashboardController extends GetxController {

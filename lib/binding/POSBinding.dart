@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Controller/POScontroller.dart';
-import 'package:kawaiii_coffee/Controller/cart_menuController.dart';
+import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
+import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
 
 class Posbinding extends Bindings {
