@@ -4,6 +4,6 @@ import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 
 class Dashboardkasirbinding extends Bindings {
   void dependencies() {
-    Get.lazyPut<DashboardController>(() => DashboardController(),);
+    Get.lazyPut<DashboardKasirController>(() => DashboardKasirController(),);
   }
 }

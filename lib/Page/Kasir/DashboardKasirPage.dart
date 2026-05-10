@@ -8,7 +8,7 @@ class DashboardkasirPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<DashboardController>();
+    final c = Get.find<DashboardKasirController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),

@@ -11,7 +11,7 @@ class MainKasirBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<MainController>(() => MainController());
-    Get.lazyPut<DashboardController>(() => DashboardController(), fenix: true);
+    Get.lazyPut<DashboardKasirController>(() => DashboardKasirController(), fenix: true);
     Get.lazyPut<MainController>(() => MainController(), fenix: true); 
     Get.lazyPut<PosController>(() => PosController(), fenix: true);
     Get.lazyPut<HistoryController>(() => HistoryController());
