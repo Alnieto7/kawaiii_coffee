@@ -1,14 +1,17 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kawaiii_coffee/Database/TransactionsRes.dart';
+import 'package:kawaiii_coffee/Database/SalesSumRes.dart';
+import 'package:kawaiii_coffee/Database/TransactionsRes.dart'; 
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart';
 
+
 class HistoryController extends GetxController {
-  // State Loading & Data
+  // State Loading & Data List
   var isLoading = true.obs;
   var transactions = <TransactionModel>[].obs;
 
   // State untuk Summary Card
+  var isSummaryLoading = false.obs;
   var totalPendapatan = "Rp 0".obs;
   var totalTransaksi = 0.obs;
   var lastUpdated = "Menunggu data...".obs;
@@ -16,60 +19,64 @@ class HistoryController extends GetxController {
   // State untuk Filter
   var selectedFilter = "Hari Ini".obs;
 
+  // PANGGIL KEDUA PROVIDER SECARA TERPISAH
   final TransactionProvider _transactionProvider = TransactionProvider();
+  final SalesSummaryProvider _summaryProvider = SalesSummaryProvider();
 
   @override
   void onInit() {
     super.onInit();
-    fetchHistory();
+    fetchHistory(); 
+    fetchSummaryCard("Hari Ini"); 
   }
 
-  // --- LOGIKA MENGAMBIL DATA API ---
   Future<void> fetchHistory() async {
     isLoading.value = true;
     try {
       final data = await _transactionProvider.getTransactions();
       transactions.value = data;
-
-      // Hitung Kalkulasi Summary Card (KHUSUS HARI INI)
-      int totalUangHariIni = 0;
-      int jumlahTransaksiHariIni = 0;
-      final now = DateTime.now();
-
-      for (var trx in data) {
-        // Pastikan tanggal tidak null
-        if (trx.createdAt != null) {
-          // Cek apakah tahun, bulan, dan hari sama dengan hari ini
-          bool isToday =
-              trx.createdAt!.year == now.year &&
-              trx.createdAt!.month == now.month &&
-              trx.createdAt!.day == now.day;
-
-          if (isToday) {
-            totalUangHariIni += (trx.total ?? 0);
-            jumlahTransaksiHariIni++;
-          }
-        }
-      }
-
-      // Masukkan hasil hitungan ke variabel UI
-      totalPendapatan.value = formatRupiah(totalUangHariIni);
-      totalTransaksi.value = jumlahTransaksiHariIni;
-      lastUpdated.value = "Terakhir diperbarui baru saja";
     } catch (e) {
       print('Error fetching history: $e');
-      lastUpdated.value = "Gagal memuat data";
     } finally {
       isLoading.value = false;
     }
   }
 
-  // Fungsi untuk mengganti filter (Bisa dikembangkan nanti untuk nembak API lagi)
-  void changeFilter(String filter) {
-    selectedFilter.value = filter;
+  // --- LOGIKA MENGAMBIL KARTU PENDAPATAN ---
+  Future<void> fetchSummaryCard(String filterName) async {
+    isSummaryLoading.value = true;
+    lastUpdated.value = "Memperbarui...";
+
+    String apiPeriod = 'daily';
+    if (filterName == 'Seminggu Terakhir') {
+      apiPeriod = 'weekly';
+    } else if (filterName == 'Bulanan') {
+      apiPeriod = 'monthly';
+    }
+
+    try {
+      // GUNAKAN PROVIDER SUMMARY DI SINI
+      final summaryData = await _summaryProvider.getSalesSummary(apiPeriod);
+
+      totalPendapatan.value = formatRupiah(summaryData['total_revenue']);
+      totalTransaksi.value = summaryData['total_transactions'];
+      lastUpdated.value = "Terakhir diperbarui baru saja";
+    } catch (e) {
+      print('Error fetching summary card: $e');
+      lastUpdated.value = "Gagal memuat data";
+      totalPendapatan.value = "Rp 0";
+      totalTransaksi.value = 0;
+    } finally {
+      isSummaryLoading.value = false;
+    }
   }
 
-  // --- HELPER FORMATTER ---
+  void changeFilter(String filter) {
+    if (selectedFilter.value == filter) return; 
+    selectedFilter.value = filter;
+    fetchSummaryCard(filter); 
+  }
+
   String formatRupiah(int amount) {
     return NumberFormat.currency(
       locale: 'id',
@@ -81,4 +88,5 @@ class HistoryController extends GetxController {
   String formatTime(DateTime date) {
     return DateFormat('HH:mm').format(date);
   }
+
 }

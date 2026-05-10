@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/POS/carditem.dart';
+import 'package:kawaiii_coffee/Controller/HistoryController.dart';
 import 'package:kawaiii_coffee/services/transaction_service.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -70,48 +71,48 @@ class CartController extends GetxController {
 
   Future<void> checkout() async {
     final box = GetStorage();
-  try {
+    try {
+      // 🔥 token login
+      final token = box.read('auth_token');
 
-    // 🔥 token login
-    final token = box.read('auth_token');
+      // 🔥 payload items
+      final itemsPayload = items.map((e) {
+        return {
+          "product_id": e.id,
+          "quantity": e.qty,
+        };
+      }).toList();
 
-    // 🔥 payload items
-    final itemsPayload = items.map((e) {
+      final response = await TransactionService.checkout(
+        token: token,
+        paymentMethod: paymentMethod.value,
+        paidAmount: total,
+        items: itemsPayload,
+      );
 
-      return {
-        "product_id": e.id,
-        "quantity": e.qty,
-      };
+      // ✅ SUCCESS
+      Get.snackbar(
+        "Sukses",
+        response["message"],
+      );
 
-    }).toList();
+      // 👇👇👇 TAMBAHAN KODE AUTO-UPDATE DI SINI 👇👇👇
+      if (Get.isRegistered<HistoryController>()) {
+        final historyCtrl = Get.find<HistoryController>();
+        historyCtrl.fetchHistory(); 
+        historyCtrl.fetchSummaryCard(historyCtrl.selectedFilter.value);
+      }
+      // 👆👆👆 ===================================== 👆👆👆
 
-    final response = await TransactionService.checkout(
+      // 🔥 kosongin cart
+      clearCart();
 
-      token: token,
-
-      paymentMethod: paymentMethod.value,
-
-      paidAmount: total,
-
-      items: itemsPayload,
-    );
-
-    // ✅ SUCCESS
-    Get.snackbar(
-      "Sukses",
-      response["message"],
-    );
-
-    // 🔥 kosongin cart
-    clearCart();
-
-  } catch (e) {
-
-    Get.snackbar(
-      "Error",
-      e.toString(),
-    );
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        e.toString(),
+      );
+    }
   }
-}
 
 }
