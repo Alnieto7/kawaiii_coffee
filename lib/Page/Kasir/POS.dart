@@ -4,7 +4,6 @@ import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart'; 
 import 'package:kawaiii_coffee/Component/POS/category_chip.dart';
 import 'package:kawaiii_coffee/Component/POS/productcard.dart';
-import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
 
 class PosPage extends StatelessWidget {
    PosPage({super.key});
@@ -57,7 +56,53 @@ class PosPage extends StatelessWidget {
                         ],
                       ),
                       const Spacer(),
-                      const Icon(Icons.notifications_none)
+                     Row(
+  children: [
+
+    IconButton(
+      onPressed: () {
+        Get.toNamed('/cartpage');
+      },
+      icon: Stack(
+        children: [
+
+          const Icon(Icons.shopping_cart_outlined),
+
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Obx(() {
+
+              final count =
+                  cartController.items.length;
+
+              if (count == 0) {
+                return const SizedBox();
+              }
+
+              return Container(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  count.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    ),
+
+    const Icon(Icons.notifications_none),
+  ],
+)
                     ],
                   ),
                 ),
@@ -168,7 +213,7 @@ class PosPage extends StatelessWidget {
               ]
             ),
             // 🔥 CART OVERLAY (WAJIB align di dalam widgetnya)
-            const CartSheetPage(),
+            
           ],
         ),
       ),
