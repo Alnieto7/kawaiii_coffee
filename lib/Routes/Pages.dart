@@ -4,6 +4,7 @@ import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
 import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/Cart_Page.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
@@ -69,14 +70,19 @@ class AppPages {
       page: () => SettingsPage(),
       binding: SettingsBinding(),   
     ),
-    GetPage(
-      name: AppRoutes.cartMenu,
-      page: () => CartSheetPage(),
-      binding: CartMenubinding(),
-    ),
+    // GetPage(
+    //   name: AppRoutes.cartMenu,
+    //   page: () => CartSheetPage(),
+    //   binding: CartMenubinding(),
+    // ),
     GetPage(
       name: AppRoutes.QrisDisplayPage,
       page: () => QrisDisplayPage(),
+    ),
+    GetPage(
+      name: AppRoutes.cartpage,
+      page: () => CartPage(),
+      binding: CartMenubinding()
     ),
   ];
 }
