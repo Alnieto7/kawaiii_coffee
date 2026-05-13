@@ -92,9 +92,9 @@ class TransactionProvider {
 
       // Karena respons backend kamu flat, langsung ambil key-nya
       return {
-        'qr_url':
-            jsonBody['qr_url'], // Mengambil https://api.sandbox.midtrans.com/...
+        'qr_url':jsonBody['qr_url'], // Mengambil https://api.sandbox.midtrans.com/...
         'total': jsonBody['total'], // Mengambil 25000
+        'transaction_code' :jsonBody['transaction_code'],
       };
     } catch (e) {
       print("Provider Error: $e");

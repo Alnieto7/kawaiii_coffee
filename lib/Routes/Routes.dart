@@ -12,4 +12,5 @@ class AppRoutes {
   static const String cartMenu = '/cartmenu';
   static const String QrisDisplayPage = '/qrisDisplayPage';
   static const String cartpage = '/cartpage';
+  static const String PaymentSuccess = '/paymentSuccess';
 }

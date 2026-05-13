@@ -1,33 +1,36 @@
+// lib/Page/Kasir/PosPage.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/CartSheet/CardFab.dart';
+import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
-import 'package:kawaiii_coffee/Controller/CartMenuController.dart'; 
 import 'package:kawaiii_coffee/Component/POS/category_chip.dart';
 import 'package:kawaiii_coffee/Component/POS/productcard.dart';
+import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
 
 class PosPage extends StatelessWidget {
-   PosPage({super.key});
-   
+  PosPage({super.key});
+
   final PosController posController = Get.find<PosController>();
-  final CartController cartController = Get.put(CartController());
-  
-  
+  final CartController cartController = Get.find<CartController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
-
       body: SafeArea(
         child: Stack(
           children: [
-
-            // 🔻 MAIN CONTENT
+            // ── Main content ─────────────────────────────────────────────
             Column(
               children: [
-
-                // 🔽 HEADER
+                // ── Header ────────────────────────────────────────────────
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -36,7 +39,10 @@ class PosPage extends StatelessWidget {
                           color: Color(0xFFFCECDD),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.coffee, color: Color(0xFFD97706)),
+                        child: const Icon(
+                          Icons.coffee,
+                          color: Color(0xFFD97706),
+                        ),
                       ),
                       const SizedBox(width: 12),
                       const Column(
@@ -56,58 +62,18 @@ class PosPage extends StatelessWidget {
                         ],
                       ),
                       const Spacer(),
-                     Row(
-  children: [
 
-    IconButton(
-      onPressed: () {
-        Get.toNamed('/cartpage');
-      },
-      icon: Stack(
-        children: [
-
-          const Icon(Icons.shopping_cart_outlined),
-
-          Positioned(
-            right: 0,
-            top: 0,
-            child: Obx(() {
-
-              final count =
-                  cartController.items.length;
-
-              if (count == 0) {
-                return const SizedBox();
-              }
-
-              return Container(
-                padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  count.toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                  ),
-                ),
-              );
-            }),
-          ),
-        ],
-      ),
-    ),
-
-    const Icon(Icons.notifications_none),
-  ],
-)
+                      // Notifikasi saja — icon keranjang diganti FAB
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.notifications_none_rounded),
+                        tooltip: "Notifikasi",
+                      ),
                     ],
                   ),
                 ),
 
-                // 🔍 SEARCH
+                // ── Search ─────────────────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Container(
@@ -130,7 +96,7 @@ class PosPage extends StatelessWidget {
                               onPressed: () => posController.updateSearch(''),
                             );
                           }
-                          return const SizedBox.shrink(); // 🔥 FIX
+                          return const SizedBox.shrink();
                         }),
                       ),
                     ),
@@ -139,42 +105,37 @@ class PosPage extends StatelessWidget {
 
                 const SizedBox(height: 12),
 
-                // 🏷 CATEGORY
+                // ── Category chips ─────────────────────────────────────────
                 SizedBox(
                   height: 40,
                   child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: posController.categories.length,
-                        itemBuilder: (context, index) {
-                          final cat = posController.categories[index];
-
-                          return Obx(() => CategoryChip(
-                            label: cat,
-                            selected:
-                                posController.selectedCategory.value == cat,
-                            onTap: () => posController.changeCategory(cat),
-                          ));
-                        },
-                      ),
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: posController.categories.length,
+                    itemBuilder: (context, index) {
+                      final cat = posController.categories[index];
+                      return Obx(
+                        () => CategoryChip(
+                          label: cat,
+                          selected: posController.selectedCategory.value == cat,
+                          onTap: () => posController.changeCategory(cat),
+                        ),
+                      );
+                    },
+                  ),
                 ),
 
                 const SizedBox(height: 12),
 
-                // 🛍 PRODUCT GRID
+                // ── Product grid ───────────────────────────────────────────
                 Expanded(
                   child: Obx(() {
-
-                    // 🔄 LOADING
                     if (posController.isLoading.value) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     final products = posController.filteredProducts;
 
-                    // 📭 EMPTY
                     if (products.isEmpty) {
                       return const Center(
                         child: Text(
@@ -184,36 +145,37 @@ class PosPage extends StatelessWidget {
                       );
                     }
 
-                    // 🛍 PRODUCT GRID
                     return GridView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      // Padding bawah biar produk tidak tertutup FAB
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.72,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                      ),
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.72,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
                       itemCount: products.length,
                       itemBuilder: (context, index) {
-
                         final product = products[index];
-
                         return ProductCard(
                           title: product.name,
                           price: "Rp ${product.sellingPrice}",
                           image: product.image,
-                          onAddToCart: () =>
-                              posController.addToCart(product),
+                          onAddToCart: () => posController.addToCart(product),
                         );
                       },
                     );
                   }),
-                )
-              ]
+                ),
+              ],
             ),
-            // 🔥 CART OVERLAY (WAJIB align di dalam widgetnya)
-            
+
+            // ── Cart sheet overlay ────────────────────────────────────────
+            const CartSheetPage(),
+
+            // ── Floating cart button ──────────────────────────────────────
+            const CartFab(),
           ],
         ),
       ),
