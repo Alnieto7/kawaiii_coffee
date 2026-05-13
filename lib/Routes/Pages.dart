@@ -4,11 +4,11 @@ import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
 import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
-import 'package:kawaiii_coffee/Page/Kasir/Cart_Page.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/PaymentSuccess.dart';
 import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
@@ -70,19 +70,20 @@ class AppPages {
       page: () => SettingsPage(),
       binding: SettingsBinding(),   
     ),
-    // GetPage(
-    //   name: AppRoutes.cartMenu,
-    //   page: () => CartSheetPage(),
-    //   binding: CartMenubinding(),
-    // ),
+    GetPage(
+      name: AppRoutes.cartMenu,
+      page: () => CartSheetPage(),
+      binding: CartMenubinding(),
+    ),
     GetPage(
       name: AppRoutes.QrisDisplayPage,
+      binding: Posbinding(),
       page: () => QrisDisplayPage(),
     ),
     GetPage(
-      name: AppRoutes.cartpage,
-      page: () => CartPage(),
-      binding: CartMenubinding()
+      name: AppRoutes.PaymentSuccess,
+      page: () => PaymentSuccessPage(),
+      binding: Posbinding()
     ),
   ];
 }

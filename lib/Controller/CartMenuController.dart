@@ -1,374 +1,157 @@
+import 'dart:ui';
+
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/POS/carditem.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
-import 'package:kawaiii_coffee/Routes/Routes.dart';
-
-// 🔥 Uncomment kalau file udah ada
-// import 'package:kawaiii_coffee/View/midtrans_webview.dart';
 
 class CartController extends GetxController {
-
-  // 🛒 CART ITEMS
   var items = <CartItem>[].obs;
-
-  // 💳 PAYMENT METHOD
   var paymentMethod = 'cash'.obs;
-
-  // 🔥 PANEL STATE
   var isOpen = false.obs;
-
-  // ⏳ LOADING
   var isLoading = false.obs;
 
-  final _transactionProvider =
-      TransactionProvider();
+  final _transactionProvider = TransactionProvider();
 
-  // ==========================================
-  // ➕ ADD ITEM
-  // ==========================================
+  // ── Cart Operations ────────────────────────────────────────────────────
+
   void addItem({
-
     required int id,
-
     required String name,
-
     required int price,
-
     required String image,
   }) {
-
-    final index =
-        items.indexWhere(
-      (e) => e.id == id,
-    );
-
+    final index = items.indexWhere((e) => e.id == id);
     if (index >= 0) {
-
       items[index].qty++;
-
       items.refresh();
-
     } else {
-
-      items.add(
-
-        CartItem(
-
-          id: id,
-
-          name: name,
-
-          price: price,
-
-          image: image,
-        ),
-      );
+      items.add(CartItem(id: id, name: name, price: price, image: image));
     }
-
-    if (!isOpen.value) {
-
-      isOpen.value = true;
-    }
+    // Sheet TIDAK dibuka otomatis — user buka lewat FAB
   }
 
-  // ==========================================
-  // ➕ INCREASE QTY
-  // ==========================================
   void increase(int index) {
-
     items[index].qty++;
-
     items.refresh();
   }
 
-  // ==========================================
-  // ➖ DECREASE QTY
-  // ==========================================
   void decrease(int index) {
-
     if (items[index].qty > 1) {
-
       items[index].qty--;
-
     } else {
-
       items.removeAt(index);
     }
-
     items.refresh();
-
-    _checkCart();
+    _checkIfEmpty();
   }
 
-  // ==========================================
-  // 🔥 AUTO CLOSE CART
-  // ==========================================
-  void _checkCart() {
-
+  void _checkIfEmpty() {
     if (items.isEmpty) {
-
       Future.delayed(
-
-        const Duration(
-          milliseconds: 200,
-        ),
-
-        () {
-
-          isOpen.value = false;
-        },
+        const Duration(milliseconds: 200),
+        () => isOpen.value = false,
       );
     }
   }
 
-  // ==========================================
-  // 💰 TOTAL
-  // ==========================================
-  int get total {
-
-    return items.fold(
-
-      0,
-
-      (sum, item) =>
-          sum +
-          (item.price * item.qty),
-    );
-  }
-
-  // ==========================================
-  // 🗑 CLEAR CART
-  // ==========================================
   void clearCart() {
-
     items.clear();
-
     isOpen.value = false;
   }
 
-  // ==========================================
-  // 💳 CHANGE PAYMENT METHOD
-  // ==========================================
-  void changePayment(
-    String method,
-  ) {
+  void changePayment(String method) => paymentMethod.value = method;
 
-    paymentMethod.value = method;
-  }
+  int get total => items.fold(0, (sum, item) => sum + (item.price * item.qty));
 
-  // ==========================================
-  // 📦 ITEMS PAYLOAD
-  // ==========================================
-  List<Map<String, dynamic>>
-      _generateItemsPayload() {
+  List<Map<String, dynamic>> _buildItemsPayload() =>
+      items.map((e) => {'product_id': e.id, 'quantity': e.qty}).toList();
 
-    return items.map((e) {
+  // ── Cash Checkout ──────────────────────────────────────────────────────
 
-      return {
-
-        "product_id": e.id,
-
-        "quantity": e.qty,
-      };
-
-    }).toList();
-  }
-
-  // ==========================================
-  // 💵 CASH CHECKOUT
-  // ==========================================
   Future<void> checkout() async {
-
     if (items.isEmpty) {
-
-      Get.snackbar(
-        "Info",
-        "Keranjang kosong",
-      );
-
+      Get.snackbar('Info', 'Keranjang kosong');
       return;
     }
-
     try {
-
       isLoading.value = true;
-
-      final response =
-          await _transactionProvider
-              .checkout(
-
-        paymentMethod:
-            paymentMethod.value,
-
-        paidAmount:
-            total,
-
-        items:
-            _generateItemsPayload(),
+      final response = await _transactionProvider.checkout(
+        paymentMethod: paymentMethod.value,
+        paidAmount: total,
+        items: _buildItemsPayload(),
       );
-
-      Get.snackbar(
-
-        "Sukses",
-
-        response['message'] ??
-            "Transaksi berhasil",
-      );
-
       clearCart();
-
+      Get.snackbar(
+        'Sukses 🎉',
+        response['message'] ?? 'Transaksi berhasil',
+        backgroundColor: const Color(0xFFD97706),
+        colorText: const Color(0xFFFFFFFF),
+        duration: const Duration(seconds: 3),
+      );
       Get.offAllNamed('/main');
-
     } catch (e) {
-
-      print(e);
-
-      Get.snackbar(
-        "Error",
-        e.toString(),
-      );
-
+      Get.snackbar('Transaksi Gagal', e.toString());
     } finally {
-
       isLoading.value = false;
     }
   }
 
-  // ==========================================
-  // 💳 MIDTRANS SNAP
-  // ==========================================
-  Future<void>
-      startMidtransPayment() async {
+  // ── Midtrans Snap (E-Wallet) ───────────────────────────────────────────
 
+  Future<void> startMidtransPayment() async {
     if (items.isEmpty) {
-
-      Get.snackbar(
-        "Info",
-        "Keranjang kosong",
-      );
-
+      Get.snackbar('Info', 'Keranjang kosong');
       return;
     }
-
     try {
-
       isLoading.value = true;
-
-      final response =
-          await _transactionProvider
-              .initiateSnap(
-
-        items:
-            _generateItemsPayload(),
+      final response = await _transactionProvider.initiateSnap(
+        items: _buildItemsPayload(),
       );
-
-      if (response != null &&
-          response['snap_token'] != null) {
-
-        final token =
-            response['snap_token'];
-
+      if (response['snap_token'] != null) {
         final redirectUrl =
-            "https://app.sandbox.midtrans.com/snap/v2/vtweb/$token";
-
-        print(
-          "MIDTRANS URL: $redirectUrl",
-        );
-
-        // 🔥 Uncomment kalau page webview udah ada
-        // Get.to(
-        //   () => MidtransWebViewPage(
-        //     url: redirectUrl,
-        //   ),
-        // );
-
+            'https://app.sandbox.midtrans.com/snap/v2/vtweb/${response['snap_token']}';
+        // TODO: Navigasi ke MidtransWebViewPage
+        // Get.to(() => MidtransWebViewPage(url: redirectUrl));
       } else {
-
-        throw Exception(
-          "Snap token tidak ditemukan",
-        );
+        throw Exception('Snap token tidak ditemukan');
       }
-
     } catch (e) {
-
-      print(e);
-
-      Get.snackbar(
-        "Midtrans Error",
-        e.toString(),
-      );
-
+      Get.snackbar('Midtrans Error', e.toString());
     } finally {
-
       isLoading.value = false;
     }
   }
 
-  // ==========================================
-  // 🔳 QRIS PAYMENT
-  // ==========================================
-  Future<void>
-      startQrisPayment() async {
+  // ── QRIS Dynamic ──────────────────────────────────────────────────────
 
+  Future<void> startQrisPayment() async {
     if (items.isEmpty) {
-
-      Get.snackbar(
-        "Info",
-        "Keranjang kosong",
-      );
-
+      Get.snackbar('Info', 'Keranjang kosong');
       return;
     }
-
     try {
-
       isLoading.value = true;
-
-      final response =
-          await _transactionProvider
-              .initiateQris(
-
-        items:
-            _generateItemsPayload(),
+      final response = await _transactionProvider.initiateQris(
+        items: _buildItemsPayload(),
       );
-
-      print(response);
-
-      if (response != null &&
-          response['qr_url'] != null) {
-
+      if (response['qr_url'] != null) {
+        final int currentTotal = total;
+        clearCart();
         Get.toNamed(
-
-          AppRoutes.QrisDisplayPage,
-
+          '/qrisDisplayPage',
           arguments: {
-
-            'qr_url':
-                response['qr_url'],
-
-            'total':
-                total,
+            'qr_url': response['qr_url'],
+            'total': currentTotal,
+            'transaction_code': response['transaction_code'],
           },
         );
-
       } else {
-
-        throw Exception(
-          "QR URL tidak ditemukan",
-        );
+        throw Exception('QR URL tidak ditemukan');
       }
-
     } catch (e) {
-
-      print(e);
-
-      Get.snackbar(
-        "QRIS Error",
-        e.toString(),
-      );
-
+      Get.snackbar('QRIS Error', e.toString());
     } finally {
-
       isLoading.value = false;
     }
   }
