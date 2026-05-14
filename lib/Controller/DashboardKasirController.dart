@@ -1,88 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
+import 'package:kawaiii_coffee/Model/TransactionsModel.dart'; 
+import 'package:kawaiii_coffee/Model/IngredientModel.dart';
+import 'package:kawaiii_coffee/Provider/IngredientsProvider.dart';
 import 'package:kawaiii_coffee/Provider/SalesSummaryProvider.dart';
-import 'package:kawaiii_coffee/Model/TransactionsModel.dart';
+import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
+import 'package:kawaiii_coffee/Routes/Routes.dart'; 
 
 class DashboardKasirController extends GetxController {
+  // --- STATE VARIABEL ---
   var isActive = true.obs;
   var duration = '04:25:12'.obs;
-  var totalHariIni = 'Rp 0'.obs;
+  var totalHariIni = 'Rp 0'.obs; 
   var isLoading = true.obs;
 
-  var stocks = [
-    {'name': 'Biji Kopi', 'value': '12.5 kg', 'status': 'AMAN'},
-    {'name': 'Susu UHT', 'value': '4.2 L', 'status': 'RENDAH'},
-  ].obs;
-
+  var stocks = <Map<String, String>>[].obs;
   var transactions = <Map<String, dynamic>>[].obs;
 
   final TransactionProvider _transactionProvider = TransactionProvider();
   final SalesSummaryProvider _summaryProvider = SalesSummaryProvider();
+  final IngredientProvider _ingredientProvider = IngredientProvider();
 
   @override
   void onInit() {
     super.onInit();
-    fetchDashboardData();
+    fetchDashboardData(); 
   }
 
-  // =========================
-  // Logika UI
-  // =========================
+  // ==========================================
+  // 🔥 LOGIKA UI 🔥
+  // ==========================================
+  
+  // 1. Logika Teks & Warna Status Shift
   String get shiftStatusText => isActive.value ? 'AKTIF' : 'NONAKTIF';
   Color get shiftStatusColor => isActive.value ? Colors.green : Colors.red;
 
-  Color getStockBgColor(String status) =>
-      status == 'AMAN' ? Colors.green[100]! : Colors.red[100]!;
+  // 2. Logika Warna Label Stok
+  Color getStockBgColor(String status) => status == 'AMAN' ? Colors.green[100]! : Colors.red[100]!;
+  Color getStockTextColor(String status) => status == 'AMAN' ? Colors.green : Colors.red;
 
-  Color getStockTextColor(String status) =>
-      status == 'AMAN' ? Colors.green : Colors.red;
+  // 3. Logika Navigasi Pindah Halaman
+  void goToPos() => Get.toNamed('/pos'); 
+  void goToInputStok() => Get.toNamed(AppRoutes.InputStock); 
+  void goToRiwayat() => Get.toNamed('/history'); 
 
-  void goToPos() => Get.toNamed('/pos');
-  void goToInputStok() => Get.toNamed('/input-stok');
-  void goToRiwayat() => Get.toNamed('/history');
-
-  // =========================
-  // Fetch Data Dashboard
-  // =========================
   Future<void> fetchDashboardData() async {
     isLoading.value = true;
     try {
-      // Ambil transaksi & summary secara paralel
-      final results = await Future.wait([
-        _transactionProvider.getTransactions(),
-        _summaryProvider.getSalesSummary('daily'),
-      ]);
+      // 1. Tarik semua API secara paralel/bersamaan agar loading lebih cepat
+      final List<TransactionModel> data = await _transactionProvider.getTransactions();
+      final summaryData = await _summaryProvider.getSalesSummary('daily');
+      final List<IngredientModel> ingredientData = await _ingredientProvider.getIngredients(); 
 
-      final List<TransactionModel> data = results[0] as List<TransactionModel>;
-      final Map<String, dynamic> summaryData =
-          results[1] as Map<String, dynamic>;
-
-      // Total dari API summary (lebih akurat)
-      final int totalRevenue = summaryData['total_revenue'] ?? 0;
+      // 2. Olah Data Summary (Total Hari Ini)
+      int totalRevenue = summaryData['total_revenue'] ?? 0;
       totalHariIni.value = NumberFormat.currency(
-        locale: 'id',
-        symbol: 'Rp ',
-        decimalDigits: 0,
+        locale: 'id', 
+        symbol: 'Rp ', 
+        decimalDigits: 0
       ).format(totalRevenue);
 
-      // 3 transaksi terbaru
-      transactions.value = data.take(3).map((trx) {
+      // 3. Olah Data Transaksi (Ambil 3 Teratas)
+      var recentData = data.take(3).toList();
+      transactions.value = recentData.map((trx) {
         return {
-          'title': 'Trx #${trx.invoiceNumber}',
-          'time': trx.createdAt != null
-              ? DateFormat('HH:mm').format(trx.createdAt!)
-              : '-',
-          'price': NumberFormat.currency(
-            locale: 'id',
-            symbol: '',
-            decimalDigits: 0,
-          ).format(trx.total ?? 0),
+          'title': 'Trx #${trx.invoiceNumber}', 
+          'time': trx.createdAt != null ? DateFormat('HH:mm').format(trx.createdAt!) : '-',
+          'price': NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0).format(trx.total ?? 0)
         };
       }).toList();
+
+      // 4. Olah Data Stok Bahan Baku (Ambil 2 Teratas)
+      var topIngredients = ingredientData.take(2).toList();
+      stocks.value = topIngredients.map((item) {
+        // Logika penentuan status AMAN / RENDAH menggunakan Model
+        String status = item.stock > item.minStock ? 'AMAN' : 'RENDAH';
+
+        return {
+          'name': item.name,
+          'value': '${item.stock} ${item.unit}', 
+          'status': status,
+        };
+      }).toList();
+
     } catch (e) {
-      print('Error fetching dashboard data: $e');
+      print("Error fetching dashboard data: $e");
       totalHariIni.value = 'Rp 0';
     } finally {
       isLoading.value = false;

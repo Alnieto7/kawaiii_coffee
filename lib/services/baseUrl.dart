@@ -23,6 +23,7 @@ class ApiConfig {
 
   // Stock Movements
   static const String stockMovements = '$apiUrl/stock-movements';
+  static const String adjustStock = '$apiUrl/stock-movements/adjust';
 
   // Reports
   static const String salesSummary = '$apiUrl/reports/sales-summary';
