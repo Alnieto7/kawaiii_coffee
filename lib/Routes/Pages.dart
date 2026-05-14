@@ -4,6 +4,7 @@ import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
 import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/InputStockPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
@@ -15,6 +16,7 @@ import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/AnalisisBinding.dart';
 import 'package:kawaiii_coffee/binding/DashboardAdminBinding.dart';
 import 'package:kawaiii_coffee/binding/HPPMarginBinding.dart';
+import 'package:kawaiii_coffee/binding/InputStockBinding.dart';
 import 'package:kawaiii_coffee/binding/LoginBinding.dart';
 import 'package:kawaiii_coffee/binding/MainAdminBinding.dart';
 import 'package:kawaiii_coffee/binding/MainKasirBinding.dart';
@@ -84,6 +86,11 @@ class AppPages {
       name: AppRoutes.PaymentSuccess,
       page: () => PaymentSuccessPage(),
       binding: Posbinding()
+    ),
+     GetPage(
+      name: AppRoutes.InputStock,
+      page: () => InputStokPage(),
+      binding: InputStokBinding()
     ),
   ];
 }
