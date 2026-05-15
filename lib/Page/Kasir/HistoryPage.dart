@@ -5,6 +5,9 @@ import 'package:kawaiii_coffee/Component/History/sectiontitle.dart';
 import 'package:kawaiii_coffee/Component/History/summary_card.dart';
 import 'package:kawaiii_coffee/Component/History/transactioncard.dart';
 import 'package:kawaiii_coffee/Controller/HistoryController.dart';
+import 'package:kawaiii_coffee/Binding/TransactionDetailBinding.dart';
+import 'package:kawaiii_coffee/Page/Kasir/TransactionDetailPage.dart'; 
+
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -36,7 +39,6 @@ class HistoryPage extends StatelessWidget {
               ),
             ),
 
-            
             SizedBox(
               height: 40,
               child: Obx(() => ListView(
@@ -67,7 +69,6 @@ class HistoryPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-         
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Obx(() => SummaryCard(
@@ -79,7 +80,6 @@ class HistoryPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
@@ -97,14 +97,29 @@ class HistoryPage extends StatelessWidget {
                   children: [
                     const SectionTitle("TERBARU"),
                     ...controller.transactions.map((trx) {
-                      return TransactionCard(
-                        code: "#${trx.invoiceNumber}",
-                        price: controller.formatRupiah(trx.total ?? 0),
-                        time: controller.formatTime(trx.createdAt!),
-                        items: "1 Item", 
-                        cashier: trx.cashierName ?? "Kasir",
-                        status: "done", 
+                      
+                      // BUNGKUS DENGAN GESTURE DETECTOR
+                      return GestureDetector(
+                        onTap: () {
+                          // Pastikan atribut ID-nya bernama 'id' di TransactionModel kamu
+                          if(trx.id != null) {
+                            Get.to(
+                              () => const TransactionDetailPage(), 
+                              binding: TransactionDetailBinding(), 
+                              arguments: trx.id, // Mengirimkan ID ke halaman detail
+                            );
+                          }
+                        },
+                        child: TransactionCard(
+                          code: "#${trx.invoiceNumber}",
+                          price: controller.formatRupiah(trx.total ?? 0),
+                          time: controller.formatTime(trx.createdAt!),
+                          items: "1 Item", 
+                          cashier: trx.cashierName ?? "Kasir",
+                          status: "done", 
+                        ),
                       );
+
                     }).toList(),
                     const SizedBox(height: 24),
                   ],
