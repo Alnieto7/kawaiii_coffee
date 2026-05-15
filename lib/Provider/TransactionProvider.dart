@@ -40,6 +40,33 @@ class TransactionProvider {
   }
 
   // =========================
+  // GET — Detail Transaksi (UNTUK STRUK)
+  // =========================
+  Future<Map<String, dynamic>> getTransactionDetail(int id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${ApiConfig.transactions}/$id'),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonBody = jsonDecode(response.body);
+        
+        // 👇 CEK BUNGKUS DATA: Jika ada key 'data', ambil isinya. Jika tidak, ambil jsonBody langsung.
+        if (jsonBody.containsKey('data') && jsonBody['data'] != null) {
+          return jsonBody['data'] as Map<String, dynamic>;
+        }
+        
+        return jsonBody; // Mengembalikan data flat
+      } else {
+        throw Exception('Gagal mengambil detail (Status: ${response.statusCode})');
+      }
+    } catch (e) {
+      throw Exception('Terjadi kesalahan koneksi: $e');
+    }
+  }
+
+  // =========================
   // POST — Checkout (Cash/QRIS/Transfer)
   // =========================
   Future<Map<String, dynamic>> checkout({
@@ -84,16 +111,13 @@ class TransactionProvider {
         body: jsonEncode({'items': items}),
       );
 
-      // Decode response body
       final Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
-      // Debug untuk memastikan data masuk di console
       print("Respons Backend: $jsonBody");
 
-      // Karena respons backend kamu flat, langsung ambil key-nya
       return {
-        'qr_url':jsonBody['qr_url'], // Mengambil https://api.sandbox.midtrans.com/...
-        'total': jsonBody['total'], // Mengambil 25000
+        'qr_url':jsonBody['qr_url'], 
+        'total': jsonBody['total'], 
         'transaction_code' :jsonBody['transaction_code'],
       };
     } catch (e) {

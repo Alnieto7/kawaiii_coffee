@@ -14,21 +14,15 @@ class InputStokController extends GetxController {
   final box = GetStorage();
   var userName = ''.obs;
 
-  // Data Dropdown
- // Data Dropdown
 var ingredients = <IngredientModel>[].obs;
 var movementTypes = [
-  // 👇 value-nya diganti huruf besar sesuai permintaan backend
-  {'label': 'Masuk (in)', 'value': 'in'}, 
-  {'label': 'Keluar (out)', 'value': 'out'},
+  {'label': 'Masuk (In)', 'value': 'IN'}, 
+  {'label': 'Keluar (Out)', 'value': 'OUT'},
   {'label': 'Penyesuaian', 'value': 'ADJUSTMENT'}
 ];
 
-  // Variabel Pilihan User
   var selectedIngredient = Rxn<IngredientModel>();
   var selectedType = Rxn<String>();
-
-  // Text Controllers
   final qtyController = TextEditingController();
   final refController = TextEditingController();
   final notesController = TextEditingController();
@@ -65,7 +59,7 @@ var movementTypes = [
     }
   }
 
-  // Fungsi Submit Form
+
   Future<void> submitData() async {
     // 1. Validasi
     if (selectedIngredient.value == null) {
@@ -99,7 +93,7 @@ var movementTypes = [
           backgroundColor: Colors.green, 
           colorText: Colors.white
         );
-        Get.back(); // Kembali ke halaman sebelumnya
+        Get.back(); 
       }
     } catch (e) {
       Get.snackbar(
