@@ -14,4 +14,5 @@ class AppRoutes {
   static const String cartpage = '/cartpage';
   static const String PaymentSuccess = '/paymentSuccess';
    static const String InputStock = '/InputStock';
+   static const String receipt = '/receipt';
 }

@@ -59,6 +59,13 @@ class CartController extends GetxController {
     isOpen.value = false;
   }
 
+  void resetForNewTransaction() {
+    items.clear();
+    isOpen.value = false;
+    paymentMethod.value = 'cash';
+    isLoading.value = false;
+  }
+
   void changePayment(String method) => paymentMethod.value = method;
 
   int get total => items.fold(0, (sum, item) => sum + (item.price * item.qty));
@@ -68,33 +75,56 @@ class CartController extends GetxController {
 
   // ── Cash Checkout ──────────────────────────────────────────────────────
 
-  Future<void> checkout() async {
-    if (items.isEmpty) {
-      Get.snackbar('Info', 'Keranjang kosong');
-      return;
-    }
-    try {
-      isLoading.value = true;
-      final response = await _transactionProvider.checkout(
-        paymentMethod: paymentMethod.value,
-        paidAmount: total,
-        items: _buildItemsPayload(),
-      );
-      clearCart();
-      Get.snackbar(
-        'Sukses 🎉',
-        response['message'] ?? 'Transaksi berhasil',
-        backgroundColor: const Color(0xFFD97706),
-        colorText: const Color(0xFFFFFFFF),
-        duration: const Duration(seconds: 3),
-      );
-      Get.offAllNamed('/main');
-    } catch (e) {
-      Get.snackbar('Transaksi Gagal', e.toString());
-    } finally {
-      isLoading.value = false;
-    }
+       Future<void> checkout() async {
+  if (items.isEmpty) {
+    Get.snackbar('Info', 'Keranjang kosong');
+    return;
   }
+
+  try {
+    isLoading.value = true;
+
+    final response = await _transactionProvider.checkout(
+      paymentMethod: paymentMethod.value,
+      paidAmount: total,
+      items: _buildItemsPayload(),
+    );
+
+    // DEBUG
+    print('CHECKOUT RESPONSE = $response');
+
+    // VALIDASI
+    if (response['data'] == null) {
+      throw Exception(
+        response['message'] ?? 'Data transaksi tidak ditemukan',
+      );
+    }
+
+    // AMBIL ID
+    final int transactionId = response['data']['id'];
+
+    print('TRANSACTION ID = $transactionId');
+
+    resetForNewTransaction();
+
+    Get.offNamed(
+      '/receipt',
+      arguments: transactionId,
+    );
+
+  } catch (e) {
+
+    print('CHECKOUT ERROR = $e');
+
+    Get.snackbar(
+      'Transaksi Gagal',
+      e.toString(),
+    );
+
+  } finally {
+    isLoading.value = false;
+  }
+}
 
   // ── Midtrans Snap (E-Wallet) ───────────────────────────────────────────
 
@@ -126,33 +156,58 @@ class CartController extends GetxController {
   // ── QRIS Dynamic ──────────────────────────────────────────────────────
 
   Future<void> startQrisPayment() async {
-    if (items.isEmpty) {
-      Get.snackbar('Info', 'Keranjang kosong');
-      return;
-    }
-    try {
-      isLoading.value = true;
-      final response = await _transactionProvider.initiateQris(
-        items: _buildItemsPayload(),
-      );
-      if (response['qr_url'] != null) {
-        final int currentTotal = total;
-        clearCart();
-        Get.toNamed(
-          '/qrisDisplayPage',
-          arguments: {
-            'qr_url': response['qr_url'],
-            'total': currentTotal,
-            'transaction_code': response['transaction_code'],
-          },
-        );
-      } else {
-        throw Exception('QR URL tidak ditemukan');
-      }
-    } catch (e) {
-      Get.snackbar('QRIS Error', e.toString());
-    } finally {
-      isLoading.value = false;
-    }
+
+  if (items.isEmpty) {
+    Get.snackbar('Info', 'Keranjang kosong');
+    return;
   }
+
+  try {
+
+    isLoading.value = true;
+
+    print('START QRIS');
+
+    final response = await _transactionProvider.initiateQris(
+      items: _buildItemsPayload(),
+    );
+    print(response);
+    print('QRIS RESPONSE = $response');
+
+    if (response['qr_url'] != null) {
+
+      final int currentTotal = total;
+
+      resetForNewTransaction();
+
+      Get.toNamed(
+        '/qrisDisplayPage',
+        arguments: {
+          'qr_url': response['qr_url'],
+          'total': currentTotal,
+          'transaction_code': response['transaction_code'],
+        },
+      );
+
+    } else {
+
+      print('QR URL NULL');
+
+      throw Exception('QR URL tidak ditemukan');
+    }
+
+  } catch (e) {
+
+    print('QRIS ERROR = $e');
+
+    Get.snackbar(
+      'QRIS Error',
+      e.toString(),
+    );
+
+  } finally {
+
+    isLoading.value = false;
+  }
+}
 }

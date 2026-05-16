@@ -11,12 +11,10 @@ import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
 
 class PosPage extends StatelessWidget {
   PosPage({super.key});
-
-  final PosController posController = Get.find<PosController>();
-  final CartController cartController = Get.find<CartController>();
-
   @override
   Widget build(BuildContext context) {
+    final PosController posController = Get.find<PosController>();
+    final CartController cartController = Get.find<CartController>();
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       body: SafeArea(

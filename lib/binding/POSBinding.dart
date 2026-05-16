@@ -3,6 +3,7 @@ import 'package:kawaiii_coffee/Controller/PaymentSuccess.dart';
 import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 import 'package:kawaiii_coffee/Controller/QrisController.dart';
+import 'package:kawaiii_coffee/Controller/receipt_controller.dart';
 
 
 class Posbinding extends Bindings {
@@ -12,5 +13,7 @@ class Posbinding extends Bindings {
     Get.lazyPut<PosController>(() => PosController(), fenix: true);
     Get.lazyPut<QrisController>(() => QrisController(), fenix: true);
     Get.lazyPut<PaymentSuccessController>(() => PaymentSuccessController(), fenix: true);
+    Get.lazyPut<ReceiptController>(() => ReceiptController(), fenix: true);
+    
   }
 }

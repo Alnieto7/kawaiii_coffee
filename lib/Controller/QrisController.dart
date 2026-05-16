@@ -69,7 +69,12 @@ class QrisController extends GetxController {
 
         if (status == 'paid') {
           _pollingTimer?.cancel();
-          Get.offNamed(AppRoutes.PaymentSuccess);
+          Get.offNamed(
+  '/paymentSuccess',
+  arguments: {
+    'transaction_id': body['data']['transaction_id'],
+  },
+);
         }
       }
     } catch (e) {
