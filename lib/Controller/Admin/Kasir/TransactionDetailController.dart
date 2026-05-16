@@ -64,9 +64,23 @@ class TransactionDetailController extends GetxController {
   // Mencari Detail Per Produk
   String getItemName(dynamic item) => item['product_name'] ?? item['product']?['name'] ?? 'Produk';
   int getItemQty(dynamic item) => item['quantity'] ?? item['qty'] ?? 1;
-  double getItemPrice(dynamic item) => _parseDouble(item['price']);
+  double getItemPrice(dynamic item) {
+    double price = _parseDouble(item['price'] ?? item['unit_price']);
+  
+    if (price == 0.0) {
+      double subtotal = _parseDouble(item['subtotal']);
+      int qty = getItemQty(item);
+      
+      if (qty > 0 && subtotal > 0) {
+        return subtotal / qty;
+      }
+    }
+    
+    return price;
+  }
   double getItemSubtotal(dynamic item) => _parseDouble(item['subtotal'] ?? (getItemPrice(item) * getItemQty(item)));
 
+  
   // --- API CALL ---
   void fetchDetail(int id) async {
     isLoading.value = true;
