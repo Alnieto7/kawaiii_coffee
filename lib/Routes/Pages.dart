@@ -4,6 +4,7 @@ import 'package:kawaiii_coffee/Page/Admin/BottomNavAdmin.dart';
 import 'package:kawaiii_coffee/Page/Admin/DashboardAdminPage.dart';
 import 'package:kawaiii_coffee/Page/Admin/HppMargin.dart';
 import 'package:kawaiii_coffee/Page/Admin/SettingsPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/AllStockPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/InputStockPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
@@ -14,6 +15,7 @@ import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/receiptPage.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
+import 'package:kawaiii_coffee/binding/AllStockBinding.dart';
 import 'package:kawaiii_coffee/binding/AnalisisBinding.dart';
 import 'package:kawaiii_coffee/binding/DashboardAdminBinding.dart';
 import 'package:kawaiii_coffee/binding/HPPMarginBinding.dart';
@@ -98,5 +100,10 @@ class AppPages {
         page: () => ReceiptPage(),
         binding: Posbinding()
       ),
+     GetPage(
+      name: AppRoutes.AllStock,
+      page: () => AllStockPage(),
+      binding: AllStockBinding()
+    ),
   ];
 }
