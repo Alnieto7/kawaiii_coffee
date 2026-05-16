@@ -9,7 +9,7 @@ class PosController extends GetxController {
   // atau put jika belum ada
   final CartController cart = Get.isRegistered<CartController>()
       ? Get.find<CartController>()
-      : Get.put(CartController());
+      : Get.find<CartController>();
 
   var isLoading = false.obs;
   var searchQuery = ''.obs;

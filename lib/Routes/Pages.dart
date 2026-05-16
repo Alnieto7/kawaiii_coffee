@@ -12,6 +12,7 @@ import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/PaymentSuccess.dart';
 import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/receiptPage.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/AllStockBinding.dart';
@@ -77,7 +78,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.cartMenu,
       page: () => CartSheetPage(),
-      binding: CartMenubinding(),
+      binding: Posbinding(),
     ),
     GetPage(
       name: AppRoutes.QrisDisplayPage,
@@ -94,6 +95,11 @@ class AppPages {
       page: () => InputStokPage(),
       binding: InputStokBinding()
     ),
+    GetPage(
+        name: AppRoutes.receipt,
+        page: () => ReceiptPage(),
+        binding: Posbinding()
+      ),
      GetPage(
       name: AppRoutes.AllStock,
       page: () => AllStockPage(),

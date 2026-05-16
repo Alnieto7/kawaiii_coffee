@@ -13,6 +13,8 @@ class AppRoutes {
   static const String QrisDisplayPage = '/qrisDisplayPage';
   static const String cartpage = '/cartpage';
   static const String PaymentSuccess = '/paymentSuccess';
+   static const String InputStock = '/InputStock';
+   static const String receipt = '/receipt';
   static const String InputStock = '/InputStock';
    static const String AllStock = '/AllStock';
 
