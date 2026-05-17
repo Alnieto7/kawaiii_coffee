@@ -32,7 +32,7 @@ class DashboardTransactionCard extends StatelessWidget {
               Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey)),
             ],
           ),
-          Text('Rp $price', style: const TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+          Text('Rp $price', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         ],
       ),
     );

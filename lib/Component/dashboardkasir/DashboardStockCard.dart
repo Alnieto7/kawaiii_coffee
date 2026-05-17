@@ -19,8 +19,7 @@ class DashboardStockCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -31,21 +30,18 @@ class DashboardStockCard extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: statusBgColor,
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: Text(
-                status,
-                style: TextStyle(fontSize: 10, color: statusTextColor, fontWeight: FontWeight.bold),
-              ),
+              child: Text(status, style: TextStyle(fontSize: 10, color: statusTextColor, fontWeight: FontWeight.bold)),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(name, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+          const SizedBox(height: 12),
+          Text(name, style: const TextStyle(color: Colors.grey, fontSize: 13)), // Warna abu-abu
           const SizedBox(height: 4),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(value, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)), // Hitam tebal
         ],
       ),
     );
