@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Component/dashboardkasir/actioncard.dart';
+import 'package:kawaiii_coffee/Component/dashboardkasir/FullWidthActionCard.dart';
 import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/ShiftInfoCard.dart';
+import 'package:kawaiii_coffee/Component/dashboardkasir/DashboardStockCard.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/TotalFloatCard.dart';
 
 class DashboardkasirPage extends StatelessWidget {
@@ -11,6 +12,7 @@ class DashboardkasirPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<DashboardKasirController>();
+    const Color brandOrange = Color(0xFFD97706); // ✅ Variabel oranye utama
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -26,15 +28,14 @@ class DashboardkasirPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Text('Dashboard Kasir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text('COFFEE STREET UMKM', style: TextStyle(color: Colors.orange, fontSize: 12)),
+                      Text('Dashboard Kasir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
+                      Text('COFFEE STREET UMKM', style: TextStyle(color: brandOrange, fontSize: 12)),
                     ],
                   ),
                   Row(
                     children: const [
-                      CircleAvatar(radius: 18, backgroundColor: Colors.orange, child: Icon(Icons.notifications, size: 18, color: Colors.white)),
+                      CircleAvatar(radius: 18, backgroundColor: brandOrange, child: Icon(Icons.notifications, size: 18, color: Colors.white)),
                       SizedBox(width: 8),
-                      CircleAvatar(radius: 18, backgroundColor: Colors.brown, child: Icon(Icons.person, size: 18, color: Colors.white)),
                     ],
                   )
                 ],
@@ -48,7 +49,7 @@ class DashboardkasirPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    // INFO CARD SHIFT (Menggunakan Reusable Component)
+                    // INFO CARD SHIFT
                     Obx(() => ShiftInfoCard(
                           statusColor: c.shiftStatusColor,
                           statusText: c.shiftStatusText,
@@ -58,63 +59,50 @@ class DashboardkasirPage extends StatelessWidget {
                     const SizedBox(height: 24), 
 
                     // STOCK HEADER
-                    const Text('Stok Tersedia', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const Text('Stok Tersedia', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)),
                     const SizedBox(height: 12),
 
                     // STOCK CARDS
-                    Obx(() => Row(
-                          children: c.stocks.map((e) {
-                            final status = e['status'] ?? '';
-                            final name = e['name'] ?? '';
-                            final value = e['value'] ?? '';
-
-                            return Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 8),
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                        decoration: BoxDecoration(
-                                          color: c.getStockBgColor(status),
-                                          borderRadius: BorderRadius.circular(6),
-                                        ),
-                                        child: Text(status, style: TextStyle(fontSize: 10, color: c.getStockTextColor(status))),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(name, style: const TextStyle(color: Colors.grey, fontSize: 12)),
-                                    const SizedBox(height: 4),
-                                    Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
+                    Obx(() {
+                      final items = c.stocks.toList();
+                      return Row(
+                        children: List.generate(items.length, (index) {
+                          final e = items[index];
+                          final status = e['status'] ?? '';
+                          return Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(right: index == items.length - 1 ? 0 : 12),
+                              child: DashboardStockCard(
+                                name: e['name'] ?? '',
+                                value: e['value'] ?? '',
+                                status: status,
+                                statusBgColor: c.getStockBgColor(status),
+                                statusTextColor: c.getStockTextColor(status),
                               ),
-                            );
-                          }).toList(),
-                        )),
+                            ),
+                          );
+                        }),
+                      );
+                    }),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
 
-                    // ACTION CARDS
+                    // ACTION CARDS 
                     Row(
                       children: [
-                        Expanded(child: GestureDetector(
-                          onTap: c.goToInputStok,
-                          child: const ActionCard(title: 'Input Stok Harian', icon: Icons.inventory),
-                        )),
-                        const SizedBox(width: 8),
-                        Expanded(child: GestureDetector(
-                          onTap: c.goToAllStock, 
-                          child: const ActionCard(title: 'Semua Stok', icon: Icons.kitchen),
-                        )),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: c.goToInputStok,
+                            child: const ActionMenuCard(title: 'Input Stok Harian', icon: Icons.inventory_2_outlined),
+                          )
+                        ),
+                        const SizedBox(width: 12), 
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: c.goToAllStock, 
+                            child: const ActionMenuCard(title: 'Semua Stok', icon: Icons.kitchen_outlined),
+                          )
+                        ),
                       ],
                     ),
 
@@ -124,7 +112,7 @@ class DashboardkasirPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        Text('Transaksi Terakhir', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        Text('Transaksi Terakhir', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)),
                         Text('Hari Ini', style: TextStyle(fontSize: 12, color: Colors.grey)),
                       ],
                     ),
@@ -140,10 +128,10 @@ class DashboardkasirPage extends StatelessWidget {
 
                             return Container(
                               margin: const EdgeInsets.only(bottom: 8),
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(16), 
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,12 +139,12 @@ class DashboardkasirPage extends StatelessWidget {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                                       const SizedBox(height: 2),
                                       Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey)),
                                     ],
                                   ),
-                                  Text('Rp $price', style: const TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+                                  Text('Rp $price', style: const TextStyle(color: brandOrange, fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             );
@@ -169,7 +157,7 @@ class DashboardkasirPage extends StatelessWidget {
               ),
             ),
 
-            // TOTAL FLOAT (Menggunakan Reusable Component)
+            // TOTAL FLOAT 
             Obx(() => TotalFloatCard(totalValue: c.totalHariIni.value)),
           ],
         ),

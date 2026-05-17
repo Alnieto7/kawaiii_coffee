@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+// Sesuaikan path import model dan provider kamu jika berbeda
 import 'package:kawaiii_coffee/Model/IngredientModel.dart';
 import 'package:kawaiii_coffee/Provider/IngredientsProvider.dart';
 import 'package:kawaiii_coffee/Provider/StockMovementProvider.dart';
@@ -8,26 +9,25 @@ import 'package:kawaiii_coffee/Provider/StockMovementProvider.dart';
 class InputStokController extends GetxController {
   // --- STATE VARIABEL ---
   var isLoading = false.obs;
-  var isSubmitting = false.obs;
+  var isSubmitting = false.obs; 
 
-  // Nama User Otomatis
   final box = GetStorage();
   var userName = ''.obs;
 
-var ingredients = <IngredientModel>[].obs;
-var movementTypes = [
-  {'label': 'Masuk (In)', 'value': 'IN'}, 
-  {'label': 'Keluar (Out)', 'value': 'OUT'},
-  {'label': 'Penyesuaian', 'value': 'ADJUSTMENT'}
-];
+  var ingredients = <IngredientModel>[].obs;
+  var movementTypes = [
+    {'label': 'Masuk (In)', 'value': 'IN'}, 
+    {'label': 'Keluar (Out)', 'value': 'OUT'},
+    {'label': 'Penyesuaian', 'value': 'ADJUSTMENT'}
+  ];
 
   var selectedIngredient = Rxn<IngredientModel>();
   var selectedType = Rxn<String>();
+  
   final qtyController = TextEditingController();
   final refController = TextEditingController();
   final notesController = TextEditingController();
 
-  // Provider
   final IngredientProvider _ingredientProvider = IngredientProvider();
   final StockMovementProvider _movementProvider = StockMovementProvider();
 
@@ -46,7 +46,7 @@ var movementTypes = [
     super.onClose();
   }
 
-  
+  // --- MENGAMBIL DATA BAHAN BAKU ---
   Future<void> fetchIngredients() async {
     isLoading.value = true;
     try {
@@ -59,9 +59,20 @@ var movementTypes = [
     }
   }
 
+  // --- FUNGSI MENGOSONGKAN FORM (INPUT ULANG) ---
+  void resetForm() {
+    selectedIngredient.value = null;
+    selectedType.value = null;
+    qtyController.clear();
+    refController.clear();
+    notesController.clear();
+  }
 
+  // --- MENGIRIM DATA STOK ---
   Future<void> submitData() async {
-    // 1. Validasi
+    if (isSubmitting.value) return; 
+
+    // 1. Validasi Inputan
     if (selectedIngredient.value == null) {
       Get.snackbar('Peringatan', 'Pilih Bahan Baku terlebih dahulu!');
       return;
@@ -75,8 +86,9 @@ var movementTypes = [
       return;
     }
 
-    // 2. Kirim Data
-    isSubmitting.value = true;
+    // 2. Kirim Data 
+    isSubmitting.value = true; 
+    
     try {
       bool success = await _movementProvider.createMovement(
         ingredientId: selectedIngredient.value!.id,
@@ -87,13 +99,47 @@ var movementTypes = [
       );
 
       if (success) {
-        Get.snackbar(
-          'Sukses', 
-          'Pergerakan stok berhasil dicatat!', 
-          backgroundColor: Colors.green, 
-          colorText: Colors.white
+        // 🔥 MUNCULKAN POP-UP BERHASIL DI SINI 🔥
+        Get.defaultDialog(
+          title: 'Input Berhasil',
+          titlePadding: const EdgeInsets.only(top: 24, bottom: 8),
+          titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+          middleText: 'Data stok telah berhasil disimpan ke sistem.',
+          barrierDismissible: false, // Tidak bisa ditutup dengan sembarang klik
+          radius: 16,
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Tombol Menginput Ulang
+                OutlinedButton(
+                  onPressed: () {
+                    Get.back(); // Tutup Pop-up
+                    resetForm(); // Kosongkan form
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFFD97706),
+                    side: const BorderSide(color: Color(0xFFD97706)),
+                  ),
+                  child: const Text('Input Stock Lagi'),
+                ),
+                
+                // Tombol Kembali
+                ElevatedButton(
+                  onPressed: () {
+                    Get.back(); // Tutup Pop-up
+                    Get.back(); // Kembali ke halaman sebelumnya (Dashboard)
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFD97706),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Kembali'),
+                ),
+              ],
+            )
+          ]
         );
-        Get.back(); 
       }
     } catch (e) {
       Get.snackbar(

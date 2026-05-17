@@ -17,7 +17,7 @@ class ShiftInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.orange, // Background tetap oranye
+        color: const Color(0xFFD97706), // ✅ Oranye baru
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -30,7 +30,6 @@ class ShiftInfoCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 👇 Warna teks diubah menjadi hitam
                   const Text('Status Shift', style: TextStyle(fontSize: 12, color: Colors.black87)),
                   Text(statusText, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                 ],
@@ -40,9 +39,8 @@ class ShiftInfoCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              // 👇 Warna teks diubah menjadi hitam
               const Text('Durasi Kerja', style: TextStyle(fontSize: 12, color: Colors.black87)),
-              Text(durationText, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+              Text(durationText, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
             ],
           )
         ],

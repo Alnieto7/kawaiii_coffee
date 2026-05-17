@@ -40,9 +40,15 @@ class DashboardKasirController extends GetxController {
   Color getStockBgColor(String status) => status == 'AMAN' ? Colors.green[100]! : Colors.red[100]!;
   Color getStockTextColor(String status) => status == 'AMAN' ? Colors.green : Colors.red;
 
-  // 3. Logika Navigasi Pindah Halaman (MENGGUNAKAN APP ROUTES)
-  void goToInputStok() => Get.toNamed(AppRoutes.InputStock); 
-  void goToAllStock() => Get.toNamed(AppRoutes.AllStock); // Pastikan AppRoutes.AllStock ada di file Routes.dart
+  void goToInputStok() async {
+    await Get.toNamed(AppRoutes.InputStock); 
+    fetchDashboardData(); // Tarik data ulang setelah halaman input ditutup
+  }
+
+  void goToAllStock() async {
+    await Get.toNamed(AppRoutes.AllStock); 
+    fetchDashboardData(); // Tarik data ulang setelah halaman list stok ditutup
+  }
 
   Future<void> fetchDashboardData() async {
     isLoading.value = true;
