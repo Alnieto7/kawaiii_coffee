@@ -10,9 +10,9 @@ import 'package:kawaiii_coffee/Routes/Routes.dart';
 
 class DashboardKasirController extends GetxController {
   // --- STATE VARIABEL ---
-  var isActive = true.obs;
-  var duration = '04:25:12'.obs;
   var totalHariIni = 'Rp 0'.obs; 
+  var totalTransaksi = '0 Struk'.obs; // Pengganti status shift
+  var itemTerjual = '0 Pcs'.obs;      // Pengganti durasi
   var isLoading = true.obs;
 
   var stocks = <Map<String, String>>[].obs;
@@ -32,41 +32,39 @@ class DashboardKasirController extends GetxController {
   // 🔥 LOGIKA UI 🔥
   // ==========================================
   
-  // 1. Logika Teks & Warna Status Shift
-  String get shiftStatusText => isActive.value ? 'AKTIF' : 'NONAKTIF';
-  Color get shiftStatusColor => isActive.value ? Colors.green : Colors.red;
-
-  // 2. Logika Warna Label Stok
   Color getStockBgColor(String status) => status == 'AMAN' ? Colors.green[100]! : Colors.red[100]!;
   Color getStockTextColor(String status) => status == 'AMAN' ? Colors.green : Colors.red;
 
+  // Navigasi dengan Auto-Refresh
   void goToInputStok() async {
     await Get.toNamed(AppRoutes.InputStock); 
-    fetchDashboardData(); // Tarik data ulang setelah halaman input ditutup
+    fetchDashboardData(); 
   }
 
   void goToAllStock() async {
     await Get.toNamed(AppRoutes.AllStock); 
-    fetchDashboardData(); // Tarik data ulang setelah halaman list stok ditutup
+    fetchDashboardData(); 
   }
 
   Future<void> fetchDashboardData() async {
     isLoading.value = true;
     try {
-      // 1. Tarik semua API secara paralel/bersamaan agar loading lebih cepat
       final List<TransactionModel> data = await _transactionProvider.getTransactions();
       final summaryData = await _summaryProvider.getSalesSummary('daily');
       final List<IngredientModel> ingredientData = await _ingredientProvider.getIngredients(); 
 
-      // 2. Olah Data Summary (Total Hari Ini)
+      // 1. Olah Data Summary (Total Rp, Total Trx, Total Item)
       int totalRevenue = summaryData['total_revenue'] ?? 0;
-      totalHariIni.value = NumberFormat.currency(
-        locale: 'id', 
-        symbol: 'Rp ', 
-        decimalDigits: 0
-      ).format(totalRevenue);
+      
+      // Mengambil data dari backend, jika backend belum sedia, kita hitung manual dari list data
+      int trxCount = summaryData['total_transactions'] ?? data.length; 
+      int itemsCount = summaryData['total_items'] ?? summaryData['total_items_sold'] ?? 0; 
 
-      // 3. Olah Data Transaksi (Ambil 3 Teratas)
+      totalHariIni.value = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0).format(totalRevenue);
+      totalTransaksi.value = '$trxCount Struk';
+      itemTerjual.value = '$itemsCount Pcs';
+
+      // 2. Olah Data Transaksi (Ambil 3 Teratas)
       var recentData = data.take(3).toList();
       transactions.value = recentData.map((trx) {
         return {
@@ -76,12 +74,10 @@ class DashboardKasirController extends GetxController {
         };
       }).toList();
 
-      // 4. Olah Data Stok Bahan Baku (Ambil 2 Teratas)
+      // 3. Olah Data Stok Bahan Baku (Ambil 2 Teratas)
       var topIngredients = ingredientData.take(2).toList();
       stocks.value = topIngredients.map((item) {
-        // Logika penentuan status AMAN / RENDAH menggunakan Model
         String status = item.stock > item.minStock ? 'AMAN' : 'RENDAH';
-
         return {
           'name': item.name,
           'value': '${item.stock} ${item.unit}', 
@@ -92,6 +88,8 @@ class DashboardKasirController extends GetxController {
     } catch (e) {
       print("Error fetching dashboard data: $e");
       totalHariIni.value = 'Rp 0';
+      totalTransaksi.value = '0 Struk';
+      itemTerjual.value = '0 Pcs';
     } finally {
       isLoading.value = false;
     }
