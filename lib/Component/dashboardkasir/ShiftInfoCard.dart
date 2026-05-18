@@ -3,8 +3,8 @@ import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class ShiftInfoCard extends StatelessWidget {
   final Color statusColor;
-  final String statusText;
-  final String durationText;
+  final String statusText;    
+  final String durationText;  // Akan menampung nama produk terlaris
 
   const ShiftInfoCard({
     super.key,

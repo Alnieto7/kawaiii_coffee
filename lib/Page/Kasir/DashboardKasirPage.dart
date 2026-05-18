@@ -4,7 +4,7 @@ import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/FullWidthActionCard.dart';
 import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/ShiftInfoCard.dart';
-import 'package:kawaiii_coffee/Component/dashboardkasir/DashboardStockCard.dart';
+import 'package:kawaiii_coffee/Component/dashboardkasir/DashboardStockCard.dart'; 
 import 'package:kawaiii_coffee/Component/dashboardkasir/TotalFloatCard.dart';
 
 class DashboardkasirPage extends StatelessWidget {
@@ -49,11 +49,12 @@ class DashboardkasirPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    // INFO CARD SHIFT
-                    Obx(() => ShiftInfoCard(
-                          statusColor: c.shiftStatusColor,
-                          statusText: c.shiftStatusText,
-                          durationText: c.duration.value,
+                    // INFO CARD PERFORM
+                    // 🔥 DI SINI KITA MENGIRIM VARIABEL PRODUK TERLARIS KE UI 🔥
+                    Obx(() => ShiftInfoCard (
+                          statusColor: Colors.green, 
+                          statusText: c.totalTransaksi.value, durationText: '', 
+                         
                         )),
 
                     const SizedBox(height: 24),
