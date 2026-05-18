@@ -16,5 +16,5 @@ class AppRoutes {
    static const String InputStock = '/InputStock';
    static const String receipt = '/receipt';
    static const String AllStock = '/AllStock';
-
+    static const String splash = '/splash';
 }

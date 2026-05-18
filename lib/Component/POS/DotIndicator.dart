@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class DotIndicator extends StatefulWidget {
   final int delay;
@@ -26,7 +27,6 @@ class _DotIndicatorState extends State<DotIndicator>
       end: 1.0,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
-    // Gunakan widget.delay di sini
     Future.delayed(Duration(milliseconds: widget.delay), () {
       if (mounted) _controller.repeat(reverse: true);
     });
@@ -38,8 +38,6 @@ class _DotIndicatorState extends State<DotIndicator>
     super.dispose();
   }
 
-  // HAPUS baris "int get delay..." yang error tadi
-
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
@@ -48,7 +46,7 @@ class _DotIndicatorState extends State<DotIndicator>
         width: 8,
         height: 8,
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppColors.textOnPrimary,
           shape: BoxShape.circle,
         ),
       ),

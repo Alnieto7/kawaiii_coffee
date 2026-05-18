@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class CustomPrimaryButton extends StatelessWidget {
   final String text;
@@ -20,26 +21,26 @@ class CustomPrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFD97217), // Warna orange khas tombol
-          disabledBackgroundColor: const Color(0xFFD97217).withOpacity(0.6),
+          backgroundColor: AppColors.primary,
+          disabledBackgroundColor: AppColors.primaryLight,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 0, // Dibuat 0 agar flat seperti desain
+          elevation: 0,
         ),
         child: isLoading
             ? const SizedBox(
                 height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: AppColors.textOnPrimary,
                   strokeWidth: 2.5,
                 ),
               )
             : Text(
                 text,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textOnPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

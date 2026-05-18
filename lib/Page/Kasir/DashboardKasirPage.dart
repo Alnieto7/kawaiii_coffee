@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/FullWidthActionCard.dart';
 import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/ShiftInfoCard.dart';
@@ -12,10 +13,9 @@ class DashboardkasirPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<DashboardKasirController>();
-    const Color brandOrange = Color(0xFFD97706); // ✅ Variabel oranye utama
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: AppColors.backgroundLight,
       body: SafeArea(
         child: Column(
           children: [
@@ -28,13 +28,13 @@ class DashboardkasirPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Text('Dashboard Kasir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
-                      Text('COFFEE STREET UMKM', style: TextStyle(color: brandOrange, fontSize: 12)),
+                      Text('Dashboard Kasir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                      Text('COFFEE STREET UMKM', style: TextStyle(color: AppColors.primary, fontSize: 12)),
                     ],
                   ),
                   Row(
                     children: const [
-                      CircleAvatar(radius: 18, backgroundColor: brandOrange, child: Icon(Icons.notifications, size: 18, color: Colors.white)),
+                      CircleAvatar(radius: 18, backgroundColor: AppColors.primary, child: Icon(Icons.notifications, size: 18, color: AppColors.textOnPrimary)),
                       SizedBox(width: 8),
                     ],
                   )
@@ -56,10 +56,10 @@ class DashboardkasirPage extends StatelessWidget {
                           durationText: c.duration.value,
                         )),
 
-                    const SizedBox(height: 24), 
+                    const SizedBox(height: 24),
 
                     // STOCK HEADER
-                    const Text('Stok Tersedia', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)),
+                    const Text('Stok Tersedia', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary)),
                     const SizedBox(height: 12),
 
                     // STOCK CARDS
@@ -87,21 +87,21 @@ class DashboardkasirPage extends StatelessWidget {
 
                     const SizedBox(height: 12),
 
-                    // ACTION CARDS 
+                    // ACTION CARDS
                     Row(
                       children: [
                         Expanded(
                           child: GestureDetector(
                             onTap: c.goToInputStok,
                             child: const ActionMenuCard(title: 'Input Stok Harian', icon: Icons.inventory_2_outlined),
-                          )
+                          ),
                         ),
-                        const SizedBox(width: 12), 
+                        const SizedBox(width: 12),
                         Expanded(
                           child: GestureDetector(
-                            onTap: c.goToAllStock, 
+                            onTap: c.goToAllStock,
                             child: const ActionMenuCard(title: 'Semua Stok', icon: Icons.kitchen_outlined),
-                          )
+                          ),
                         ),
                       ],
                     ),
@@ -112,8 +112,8 @@ class DashboardkasirPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        Text('Transaksi Terakhir', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)),
-                        Text('Hari Ini', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                        Text('Transaksi Terakhir', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary)),
+                        Text('Hari Ini', style: TextStyle(fontSize: 12, color: AppColors.textHint)),
                       ],
                     ),
 
@@ -130,8 +130,8 @@ class DashboardkasirPage extends StatelessWidget {
                               margin: const EdgeInsets.only(bottom: 8),
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16), 
+                                color: AppColors.backgroundCard,
+                                borderRadius: BorderRadius.circular(16),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,12 +139,12 @@ class DashboardkasirPage extends StatelessWidget {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                                      Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                                       const SizedBox(height: 2),
-                                      Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                      Text(time, style: const TextStyle(fontSize: 12, color: AppColors.textHint)),
                                     ],
                                   ),
-                                  Text('Rp $price', style: const TextStyle(color: brandOrange, fontWeight: FontWeight.bold)),
+                                  Text('Rp $price', style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             );
@@ -157,7 +157,7 @@ class DashboardkasirPage extends StatelessWidget {
               ),
             ),
 
-            // TOTAL FLOAT 
+            // TOTAL FLOAT
             Obx(() => TotalFloatCard(totalValue: c.totalHariIni.value)),
           ],
         ),

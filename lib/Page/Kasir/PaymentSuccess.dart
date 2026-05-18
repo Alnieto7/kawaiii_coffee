@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/POS/DotIndicator.dart';
 import 'package:kawaiii_coffee/Controller/PaymentSuccess.dart';
 
@@ -11,12 +12,11 @@ class PaymentSuccessPage extends StatelessWidget {
     Get.find<PaymentSuccessController>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1a6b45),
+      backgroundColor: AppColors.primaryDark,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Icon centang
             TweenAnimationBuilder<double>(
               tween: Tween(begin: 0.0, end: 1.0),
               duration: const Duration(milliseconds: 600),
@@ -29,11 +29,11 @@ class PaymentSuccessPage extends StatelessWidget {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.backgroundWhite,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
+                      color: AppColors.shadowDark,
                       blurRadius: 20,
                       spreadRadius: 4,
                     ),
@@ -41,7 +41,7 @@ class PaymentSuccessPage extends StatelessWidget {
                 ),
                 child: const Icon(
                   Icons.check_rounded,
-                  color: Color(0xFF1a6b45),
+                  color: AppColors.primaryDark,
                   size: 70,
                 ),
               ),
@@ -52,7 +52,7 @@ class PaymentSuccessPage extends StatelessWidget {
             const Text(
               'Pembayaran Berhasil!',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textOnPrimary,
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
@@ -65,7 +65,7 @@ class PaymentSuccessPage extends StatelessWidget {
               'Terima kasih telah berbelanja\ndi Kawaiii Coffee',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white70,
+                color: AppColors.secondaryLight,
                 fontSize: 15,
                 height: 1.5,
               ),
@@ -88,7 +88,7 @@ class PaymentSuccessPage extends StatelessWidget {
 
             const Text(
               'Menyiapkan struk...',
-              style: TextStyle(color: Colors.white60, fontSize: 13),
+              style: TextStyle(color: AppColors.secondaryLight, fontSize: 13),
             ),
           ],
         ),

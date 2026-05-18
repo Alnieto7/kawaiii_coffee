@@ -1,6 +1,6 @@
-// lib/Component/Cart/cart_item_list.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartFormatHelper.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
@@ -10,7 +10,6 @@ class CartItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ConstrainedBox dihapus, biarkan Flexible di CartSheetPage yang atur ukurannya
     return Obx(() => cart.items.isEmpty ? _buildEmpty() : _buildList());
   }
 
@@ -18,14 +17,13 @@ class CartItemList extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 40),
       child: Column(
-        mainAxisSize:
-            MainAxisSize.min, // Agar tidak makan ruang berlebih saat kosong
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.coffee_outlined, size: 48, color: Color(0xFFD4C4A8)),
+          Icon(Icons.coffee_outlined, size: 48, color: AppColors.textDisabled),
           SizedBox(height: 8),
           Text(
             "Keranjang masih kosong",
-            style: TextStyle(color: Color(0xFFB0A090), fontSize: 14),
+            style: TextStyle(color: AppColors.textHint, fontSize: 14),
           ),
         ],
       ),
@@ -37,7 +35,7 @@ class CartItemList extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       shrinkWrap: true,
       itemCount: cart.items.length,
-      separatorBuilder: (_, __) => const Divider(color: Color(0xFFEDE8DF)),
+      separatorBuilder: (_, __) => const Divider(color: AppColors.divider),
       itemBuilder: (context, i) {
         final item = cart.items[i];
         return Padding(
@@ -49,12 +47,12 @@ class CartItemList extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFEF3E2),
+                  color: AppColors.primarySurface,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.coffee_rounded,
-                  color: Color(0xFFD97706),
+                  color: AppColors.primary,
                   size: 22,
                 ),
               ),
@@ -70,14 +68,14 @@ class CartItemList extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
-                        color: Color(0xFF1A1008),
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       "Rp ${formatRupiah(item.price)}",
                       style: const TextStyle(
-                        color: Color(0xFFB08040),
+                        color: AppColors.secondary,
                         fontSize: 13,
                       ),
                     ),
@@ -88,16 +86,13 @@ class CartItemList extends StatelessWidget {
               // Kontrol qty
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5EFE6),
+                  color: AppColors.inputFill,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _QtyButton(
-                      icon: Icons.remove_rounded,
-                      onTap: () => cart.decrease(i),
-                    ),
+                    _QtyButton(icon: Icons.remove_rounded, onTap: () => cart.decrease(i)),
                     SizedBox(
                       width: 28,
                       child: Text(
@@ -106,15 +101,11 @@ class CartItemList extends StatelessWidget {
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
-                          color: Color(0xFF1A1008),
+                          color: AppColors.textPrimary,
                         ),
                       ),
                     ),
-                    _QtyButton(
-                      icon: Icons.add_rounded,
-                      onTap: () => cart.increase(i),
-                      isAdd: true,
-                    ),
+                    _QtyButton(icon: Icons.add_rounded, onTap: () => cart.increase(i), isAdd: true),
                   ],
                 ),
               ),
@@ -126,7 +117,6 @@ class CartItemList extends StatelessWidget {
   }
 }
 
-// ── Private: tombol +/- qty ────────────────────────────────────────────────
 class _QtyButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
@@ -149,7 +139,7 @@ class _QtyButton extends StatelessWidget {
         child: Icon(
           icon,
           size: 18,
-          color: isAdd ? const Color(0xFFD97706) : const Color(0xFF8C7560),
+          color: isAdd ? AppColors.primary : AppColors.textSecondary,
         ),
       ),
     );

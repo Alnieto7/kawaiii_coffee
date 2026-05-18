@@ -49,11 +49,6 @@ class QrisController extends GetxController {
     try {
       final token = _box.read('auth_token') ?? '';
 
-      print('=== POLLING ===');
-      print('Token: $token');
-      print('Code: ${transactionCode.value}');
-      print('URL: ${ApiConfig.transactions}/${transactionCode.value}/status');
-
       final response = await http.get(
         Uri.parse('${ApiConfig.transactions}/${transactionCode.value}/status'),
         headers: {

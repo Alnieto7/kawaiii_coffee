@@ -1,6 +1,6 @@
-// lib/Page/Kasir/CartSheetPage.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartItemList.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartPaymentSelector.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartSheetHandle.dart';
@@ -20,27 +20,26 @@ class CartSheetPage extends StatelessWidget {
 
       return Stack(
         children: [
-          // ── Backdrop: tap luar = tutup sheet ──────────────────────────
+          // Backdrop
           GestureDetector(
             onTap: () => cart.isOpen.value = false,
             child: Container(
-              color: Colors.black.withOpacity(0.4),
+              color: AppColors.backgroundOverlay,
               width: double.infinity,
               height: double.infinity,
             ),
           ),
 
-          // ── Sheet ──────────────────────────────────────────────────────
+          // Sheet
           Align(
             alignment: Alignment.bottomCenter,
-            // 1. TAMBAHAN: Batasi maksimal tinggi sheet agar tidak bablas ke bawah layar
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height * 0.85,
               ),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Color(0xFFFFFBF5),
+                  color: AppColors.backgroundWhite,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
                 ),
                 child: Column(
@@ -48,11 +47,8 @@ class CartSheetPage extends StatelessWidget {
                   children: [
                     const CartSheetHandle(),
                     CartSheetHeader(cart: cart),
-                    const Divider(height: 1, color: Color(0xFFEDE8DF)),
-
-                    // 2. TAMBAHAN: Bungkus dengan Flexible agar list menyesuaikan sisa ruang
+                    const Divider(height: 1, color: AppColors.divider),
                     Flexible(child: CartItemList(cart: cart)),
-
                     CartPaymentSelector(cart: cart),
                     CartTotalBar(cart: cart),
                     const SizedBox(height: 100),

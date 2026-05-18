@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/reusable_form_components.dart';
 import 'package:kawaiii_coffee/Controller/Admin/Kasir/InputStockController.dart';
 import 'package:kawaiii_coffee/Model/IngredientModel.dart';
-
 
 class InputStokPage extends StatelessWidget {
   const InputStokPage({super.key});
@@ -13,22 +13,22 @@ class InputStokPage extends StatelessWidget {
     final c = Get.find<InputStokController>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
+      backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.backgroundWhite,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-         onPressed: () => Get.back(),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.textPrimary),
+          onPressed: () => Get.back(),
         ),
         title: const Text(
           'Create Pergerakan Stok',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
         ),
       ),
       body: Obx(() {
         if (c.isLoading.value) {
-          return const Center(child: CircularProgressIndicator(color: Colors.orange));
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
         }
 
         return SingleChildScrollView(
@@ -36,7 +36,7 @@ class InputStokPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-    
+
               FormSectionCard(
                 title: 'Detail Pergerakan Stok',
                 subtitle: 'Catat bahan baku yang masuk atau keluar.',
@@ -110,6 +110,7 @@ class InputStokPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
+
               FormSectionCard(
                 title: 'Dicatat Oleh',
                 subtitle: 'Pengguna yang melakukan pencatatan stok.',
@@ -123,19 +124,20 @@ class InputStokPage extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200], 
+                        color: AppColors.inputFill,
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.grey[300]!),
+                        border: Border.all(color: AppColors.inputBorder),
                       ),
                       child: Text(
                         c.userName.value,
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
+
               FormSectionCard(
                 title: 'Keterangan',
                 subtitle: 'Tambahkan catatan tambahan jika diperlukan.',
@@ -154,19 +156,20 @@ class InputStokPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
+
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: c.isSubmitting.value ? null : c.submitData,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: AppColors.primary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                       child: c.isSubmitting.value
-                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                          : const Text('Create', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: AppColors.textOnPrimary, strokeWidth: 2))
+                          : const Text('Create', style: TextStyle(color: AppColors.textOnPrimary, fontWeight: FontWeight.bold, fontSize: 16)),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -175,10 +178,10 @@ class InputStokPage extends StatelessWidget {
                       onPressed: () => Get.back(),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        side: const BorderSide(color: Colors.grey),
+                        side: const BorderSide(color: AppColors.border),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
-                      child: const Text('Cancel', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
+                      child: const Text('Cancel', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16)),
                     ),
                   ),
                 ],
