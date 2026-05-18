@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class ReceiptItemTile extends StatelessWidget {
   final String title;
@@ -28,13 +29,14 @@ class ReceiptItemTile extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
+                    color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   qtyPrice,
-                  style: TextStyle(
-                    color: Colors.grey[600],
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
                     fontSize: 12,
                   ),
                 ),
@@ -46,6 +48,7 @@ class ReceiptItemTile extends StatelessWidget {
             subtotal,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
+              color: AppColors.primary,
             ),
           ),
         ],

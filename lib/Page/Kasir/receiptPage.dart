@@ -168,21 +168,47 @@ class ReceiptPage extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              if (Get.isRegistered<CartController>()) {
-                                Get.find<CartController>().resetForNewTransaction();
-                              }
-                              Get.offAllNamed('/main');
-                            },
-                            icon: const Icon(Icons.home_outlined),
-                            label: const Text('Home'),
-                            style: OutlinedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 52),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            if (Get.isRegistered<CartController>()) {
+                              Get.find<CartController>().resetForNewTransaction();
+                            }
+
+                            Get.offAllNamed('/main');
+                          },
+
+                          icon: const Icon(
+                            Icons.home_outlined,
+                            color: AppColors.primary,
+                          ),
+
+                          label: const Text(
+                            'Home',
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: AppColors.primarySurface,
+
+                            side: const BorderSide(
+                              color: AppColors.primary,
+                              width: 1.2,
+                            ),
+
+                            minimumSize: const Size(
+                              double.infinity,
+                              52,
+                            ),
+
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
                             ),
                           ),
                         ),
+                      ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: ElevatedButton.icon(
