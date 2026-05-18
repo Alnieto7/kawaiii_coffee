@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ShiftInfoCard extends StatelessWidget {
   final Color statusColor;
-  final String statusText;
-  final String durationText;
+  final String statusText;    
+  final String durationText;  // Akan menampung nama produk terlaris
 
   const ShiftInfoCard({
     super.key,
@@ -17,7 +17,7 @@ class ShiftInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFD97706), // ✅ Oranye baru
+        color: const Color(0xFFD97706), // Tetap warna oranye yang kamu minta
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -30,7 +30,7 @@ class ShiftInfoCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Status Shift', style: TextStyle(fontSize: 12, color: Colors.black87)),
+                  const Text('Total Transaksi', style: TextStyle(fontSize: 12, color: Colors.black87)),
                   Text(statusText, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                 ],
               )
@@ -39,8 +39,14 @@ class ShiftInfoCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text('Durasi Kerja', style: TextStyle(fontSize: 12, color: Colors.black87)),
-              Text(durationText, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
+              // 👇 UBAH LABEL TEKS DI SINI 👇
+              const Text('Produk Terlaris', style: TextStyle(fontSize: 12, color: Colors.black87)),
+              const SizedBox(height: 2),
+              Text(
+                durationText, 
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
+                overflow: TextOverflow.ellipsis, // Mencegah teks kepanjangan jika nama produk panjang
+              ),
             ],
           )
         ],

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/FullWidthActionCard.dart';
 import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/ShiftInfoCard.dart';
-import 'package:kawaiii_coffee/Component/dashboardkasir/DashboardStockCard.dart';
+import 'package:kawaiii_coffee/Component/dashboardkasir/DashboardStockCard.dart'; 
 import 'package:kawaiii_coffee/Component/dashboardkasir/TotalFloatCard.dart';
 
 class DashboardkasirPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class DashboardkasirPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<DashboardKasirController>();
-    const Color brandOrange = Color(0xFFD97706); // ✅ Variabel oranye utama
+    const Color brandOrange = Color(0xFFD97706); 
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -49,11 +49,12 @@ class DashboardkasirPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    // INFO CARD SHIFT
-                    Obx(() => ShiftInfoCard(
-                          statusColor: c.shiftStatusColor,
-                          statusText: c.shiftStatusText,
-                          durationText: c.duration.value,
+                    // INFO CARD PERFORM
+                    // 🔥 DI SINI KITA MENGIRIM VARIABEL PRODUK TERLARIS KE UI 🔥
+                    Obx(() => ShiftInfoCard (
+                          statusColor: Colors.green, 
+                          statusText: c.totalTransaksi.value, durationText: '', 
+                         
                         )),
 
                     const SizedBox(height: 24), 

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kawaiii_coffee/Component/CartSheet/CardDialogs.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartFormatHelper.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
@@ -56,9 +55,21 @@ class CartTotalBar extends StatelessWidget {
 
             // ── Tombol bayar ─────────────────────────────────────────────
             ElevatedButton(
+              // 🔥 LOGIKA PEMBAYARAN BARU DI SINI 🔥
               onPressed: isLoading || isEmpty
                   ? null
-                  : () => CartDialogs.showPayConfirm(cart),
+                  : () {
+                      if (cart.paymentMethod.value == 'cash') {
+                        // 1. Munculkan pop-up input uang cash
+                        cart.tampilkanInputCash();
+                      } else if (cart.paymentMethod.value == 'qris') {
+                        // 2. Langsung proses QRIS
+                        cart.startQrisPayment();
+                      } else {
+                        // 3. Langsung proses E-Wallet / Midtrans
+                        cart.startMidtransPayment();
+                      }
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFD97706),
                 disabledBackgroundColor: const Color(0xFFE5CFA0),
