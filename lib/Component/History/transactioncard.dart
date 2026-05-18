@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class TransactionCard extends StatelessWidget {
   final String code;
@@ -26,7 +27,7 @@ class TransactionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.backgroundCard,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -36,10 +37,13 @@ class TransactionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFFFCECDD),
+              color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.coffee, color: Color(0xFFD97706)),
+            child: const Icon(
+              Icons.coffee,
+              color: AppColors.primary,
+            ),
           ),
 
           const SizedBox(width: 12),
@@ -51,37 +55,61 @@ class TransactionCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(code,
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      code,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
-                        color: isDone ? Colors.green[100] : Colors.red[100],
+                        color: isDone
+                            ? AppColors.successSurface
+                            : AppColors.errorSurface,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         status.toUpperCase(),
                         style: TextStyle(
                           fontSize: 10,
-                          color: isDone ? Colors.green : Colors.red,
+                          color: isDone
+                              ? AppColors.success
+                              : AppColors.error,
                         ),
                       ),
                     )
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(price,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14)),
-                Text("$time • $items • Cashier: $cashier",
-                    style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text(
+                  price,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                Text(
+                  "$time • $items • Cashier: $cashier",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ],
             ),
           ),
 
-          const Icon(Icons.chevron_right)
+          const Icon(
+            Icons.chevron_right,
+            color: AppColors.textSecondary,
+          )
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class FilterChipItem extends StatelessWidget {
   final String label;
@@ -16,14 +17,18 @@ class FilterChipItem extends StatelessWidget {
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: selected ? const Color(0xFFD97706) : const Color(0xFFF3F4F6),
+        color: selected
+            ? AppColors.primary
+            : AppColors.inputFill,
         borderRadius: BorderRadius.circular(20),
       ),
       alignment: Alignment.center,
       child: Text(
         label,
         style: TextStyle(
-          color: selected ? Colors.white : Colors.black,
+          color: selected
+              ? AppColors.textOnPrimary
+              : AppColors.textPrimary,
         ),
       ),
     );

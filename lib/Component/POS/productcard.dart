@@ -46,6 +46,7 @@ class ProductCard extends StatelessWidget {
                           child: const Icon(
                             Icons.image_not_supported,
                             size: 50,
+                            color: AppColors.textSecondary,
                           ),
                         );
                       },
@@ -55,7 +56,9 @@ class ProductCard extends StatelessWidget {
                         return Container(
                           color: AppColors.inputFill,
                           child: const Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: AppColors.primary,
+                            ),
                           ),
                         );
                       },
@@ -73,6 +76,7 @@ class ProductCard extends StatelessWidget {
                       child: const Icon(
                         Icons.add_shopping_cart,
                         size: 16,
+                        color: AppColors.primary,
                       ),
                     ),
                   )
@@ -90,13 +94,14 @@ class ProductCard extends StatelessWidget {
                     title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     price,
                     style: const TextStyle(
-                      color: AppColors.warning,
+                      color: AppColors.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

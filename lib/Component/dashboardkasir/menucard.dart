@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class MenuCard extends StatelessWidget {
   const MenuCard({super.key});
@@ -8,14 +9,20 @@ class MenuCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.orange,
+        color: AppColors.primary,
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Transaksi Penjualan', style: TextStyle(color: Colors.white)),
-          Icon(Icons.arrow_forward_ios, color: Colors.white),
+          Text(
+            'Transaksi Penjualan',
+            style: TextStyle(color: AppColors.textOnPrimary),
+          ),
+          Icon(
+            Icons.arrow_forward_ios,
+            color: AppColors.textOnPrimary,
+          ),
         ],
       ),
     );

@@ -21,10 +21,13 @@ class CategoryChip extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(right: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 8,
+        ),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.warning
+              ? AppColors.primary
               : AppColors.inputFill,
           borderRadius: BorderRadius.circular(20),
         ),

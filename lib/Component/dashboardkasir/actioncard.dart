@@ -22,17 +22,20 @@ class ActionCard extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-            backgroundColor: AppColors.warning.withOpacity(0.2),
+            backgroundColor: AppColors.primary.withOpacity(0.2),
             child: Icon(
               icon,
-              color: AppColors.warning,
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.textPrimary,
+            ),
           ),
         ],
       ),

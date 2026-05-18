@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 class DashboardTransactionCard extends StatelessWidget {
   final String title;
   final String time;
@@ -18,7 +18,7 @@ class DashboardTransactionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.backgroundCard,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -27,12 +27,30 @@ class DashboardTransactionCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
               const SizedBox(height: 2),
-              Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                time,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textSecondary,
+                ),
+              ),
             ],
           ),
-          Text('Rp $price', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          Text(
+            'Rp $price',
+            style: const TextStyle(
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );

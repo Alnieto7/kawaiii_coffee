@@ -8,8 +8,9 @@ class BottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: 0,
-      selectedItemColor: AppColors.warning,
+      selectedItemColor: AppColors.primary,
       unselectedItemColor: AppColors.textSecondary,
+      backgroundColor: AppColors.backgroundWhite,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.grid_view),
