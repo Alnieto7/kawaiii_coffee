@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class TransactionItem extends StatelessWidget {
   final Map data;
 
-  const TransactionItem({super.key, required this.data});
+  const TransactionItem({
+    super.key,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +15,7 @@ class TransactionItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.backgroundCard,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -20,11 +24,27 @@ class TransactionItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(data['title']),
-              Text(data['time'], style: const TextStyle(fontSize: 12)),
+              Text(
+                data['title'],
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              Text(
+                data['time'],
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textSecondary,
+                ),
+              ),
             ],
           ),
-          Text('Rp ${data['price']}', style: const TextStyle(color: Colors.orange)),
+          Text(
+            'Rp ${data['price']}',
+            style: const TextStyle(
+              color: AppColors.primary,
+            ),
+          ),
         ],
       ),
     );

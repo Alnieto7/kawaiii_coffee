@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class ShiftInfoCard extends StatelessWidget {
   final Color statusColor;
@@ -17,7 +18,7 @@ class ShiftInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFD97706), // Tetap warna oranye yang kamu minta
+        color: AppColors.primary,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -25,13 +26,28 @@ class ShiftInfoCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(radius: 5, backgroundColor: statusColor),
+              CircleAvatar(
+                radius: 5,
+                backgroundColor: statusColor,
+              ),
               const SizedBox(width: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Total Transaksi', style: TextStyle(fontSize: 12, color: Colors.black87)),
-                  Text(statusText, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                  const Text(
+                    'Status Shift',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textOnPrimary,
+                    ),
+                  ),
+                  Text(
+                    statusText,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textOnPrimary,
+                    ),
+                  ),
                 ],
               )
             ],
@@ -39,13 +55,20 @@ class ShiftInfoCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              // 👇 UBAH LABEL TEKS DI SINI 👇
-              const Text('Produk Terlaris', style: TextStyle(fontSize: 12, color: Colors.black87)),
-              const SizedBox(height: 2),
+              const Text(
+                'Durasi Kerja',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textOnPrimary,
+                ),
+              ),
               Text(
-                durationText, 
-                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
-                overflow: TextOverflow.ellipsis, // Mencegah teks kepanjangan jika nama produk panjang
+                durationText,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textOnPrimary,
+                  fontSize: 16,
+                ),
               ),
             ],
           )

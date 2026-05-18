@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 // 1. KOMPONEN CARD SHADOW
 class FormSectionCard extends StatelessWidget {
@@ -21,10 +22,14 @@ class FormSectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.backgroundCard,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
       child: Column(
@@ -32,14 +37,35 @@ class FormSectionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.grey[600], size: 20),
+              Icon(
+                icon,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
               const SizedBox(width: 8),
-              Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 4),
-          Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-          const Divider(height: 32, thickness: 1),
+          Text(
+            subtitle,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const Divider(
+            height: 32,
+            thickness: 1,
+            color: AppColors.divider,
+          ),
           child,
         ],
       ),
@@ -52,30 +78,42 @@ class FormLabel extends StatelessWidget {
   final String text;
   final bool isRequired;
 
-  const FormLabel(this.text, {super.key, this.isRequired = false});
+  const FormLabel(
+    this.text, {
+    super.key,
+    this.isRequired = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
         text: text,
-        style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 14),
+        style: const TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
         children: [
-          if (isRequired) const TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+          if (isRequired)
+            const TextSpan(
+              text: ' *',
+              style: TextStyle(color: AppColors.error),
+            ),
         ],
       ),
     );
   }
 }
 
-// 3. KOMPONEN TEXTFIELD (✅ UPDATE: Tambah onTap dan readOnly)
+// 3. KOMPONEN TEXTFIELD
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final TextInputType keyboardType;
   final int maxLines;
-  final VoidCallback? onTap; // ✅ Ditambahkan
-  final bool readOnly;       // ✅ Ditambahkan
+  final VoidCallback? onTap;
+  final bool readOnly;
 
   const CustomTextField({
     super.key,
@@ -83,8 +121,8 @@ class CustomTextField extends StatelessWidget {
     required this.hint,
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
-    this.onTap,              // ✅ Ditambahkan
-    this.readOnly = false,   // ✅ Ditambahkan
+    this.onTap,
+    this.readOnly = false,
   });
 
   @override
@@ -93,21 +131,44 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       maxLines: maxLines,
-      onTap: onTap,          // ✅ Pasang di sini
-      readOnly: readOnly,    // ✅ Pasang di sini
+      onTap: onTap,
+      readOnly: readOnly,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.grey[300]!)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.grey[300]!)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Colors.orange)),
+        hintStyle: const TextStyle(
+          color: AppColors.textHint,
+          fontSize: 14,
+        ),
+        filled: true,
+        fillColor: AppColors.inputFill,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: AppColors.inputBorder,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: AppColors.inputBorder,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: AppColors.borderFocus,
+          ),
+        ),
       ),
     );
   }
 }
 
-// 4. KOMPONEN DROPDOWN (Generic Type <T> agar bisa dipakai untuk Model maupun String)
+// 4. KOMPONEN DROPDOWN
 class CustomDropdown<T> extends StatelessWidget {
   final T? value;
   final String hint;
@@ -127,14 +188,19 @@ class CustomDropdown<T> extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.backgroundCard,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
+        border: Border.all(color: AppColors.border),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<T>(
           isExpanded: true,
-          hint: Text(hint),
+          hint: Text(
+            hint,
+            style: const TextStyle(
+              color: AppColors.textHint,
+            ),
+          ),
           value: value,
           items: items,
           onChanged: onChanged,

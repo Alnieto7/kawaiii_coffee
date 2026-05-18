@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class DashboardStockCard extends StatelessWidget {
   final String name;
@@ -21,7 +22,7 @@ class DashboardStockCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.backgroundCard,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -30,18 +31,41 @@ class DashboardStockCard extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
               decoration: BoxDecoration(
                 color: statusBgColor,
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: Text(status, style: TextStyle(fontSize: 10, color: statusTextColor, fontWeight: FontWeight.bold)),
+              child: Text(
+                status,
+                style: TextStyle(
+                  fontSize: 10,
+                  color: statusTextColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 12),
-          Text(name, style: const TextStyle(color: Colors.grey, fontSize: 13)), // Warna abu-abu
+          Text(
+            name,
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 13,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(value, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)), // Hitam tebal
+          Text(
+            value,
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
         ],
       ),
     );

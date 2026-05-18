@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -30,7 +31,7 @@ class CustomTextField extends StatelessWidget {
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF6B7280), // Warna abu-abu teks label
+            color: AppColors.textSecondary,
             letterSpacing: 0.5,
           ),
         ),
@@ -40,26 +41,43 @@ class CustomTextField extends StatelessWidget {
           obscureText: obscureText,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
-            prefixIcon: Icon(prefixIcon, color: const Color(0xFF9CA3AF), size: 20),
+            hintStyle: const TextStyle(
+              color: AppColors.textHint,
+              fontSize: 14,
+            ),
+            prefixIcon: Icon(
+              prefixIcon,
+              color: AppColors.textHint,
+              size: 20,
+            ),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: Icon(
-                      obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                      color: const Color(0xFF9CA3AF),
+                      obscureText
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      color: AppColors.textHint,
                       size: 20,
                     ),
                     onPressed: onSuffixTap,
                   )
                 : null,
+            filled: true,
+            fillColor: AppColors.inputFill,
             contentPadding: const EdgeInsets.symmetric(vertical: 16),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+              borderSide: const BorderSide(
+                color: AppColors.inputBorder,
+                width: 1.5,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFFD97217), width: 1.5), // Warna orange saat aktif
+              borderSide: const BorderSide(
+                color: AppColors.borderFocus,
+                width: 1.5,
+              ),
             ),
           ),
         ),

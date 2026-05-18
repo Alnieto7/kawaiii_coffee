@@ -41,12 +41,12 @@ class AllStockCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withOpacity(0.1),
+                  color: AppColors.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.inventory_2_outlined,
-                  color: AppColors.warning,
+                  color: AppColors.primary,
                 ),
               ),
               const SizedBox(width: 16),
@@ -58,6 +58,7 @@ class AllStockCard extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
