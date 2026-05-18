@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/app_colors.dart';
-import 'package:kawaiii_coffee/Component/CartSheet/CardDialogs.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartFormatHelper.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
 class CartTotalBar extends StatelessWidget {
   final CartController cart;
-  const CartTotalBar({super.key, required this.cart});
+
+  const CartTotalBar({
+    super.key,
+    required this.cart,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +32,17 @@ class CartTotalBar extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Total tagihan
+            // Total Tagihan
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "Total Tagihan",
-                    style: TextStyle(fontSize: 12, color: AppColors.secondary),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.secondary,
+                    ),
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -51,23 +57,26 @@ class CartTotalBar extends StatelessWidget {
                 ],
               ),
             ),
+
             const SizedBox(width: 12),
 
-            // Tombol bayar
+            // Tombol Bayar
             ElevatedButton(
-              onPressed: isLoading || isEmpty ? null : () => CartDialogs.showPayConfirm(cart),
-              // 🔥 LOGIKA PEMBAYARAN BARU DI SINI 🔥
               onPressed: isLoading || isEmpty
                   ? null
                   : () {
+                      // CASH
                       if (cart.paymentMethod.value == 'cash') {
-                        // 1. Munculkan pop-up input uang cash
                         cart.tampilkanInputCash();
-                      } else if (cart.paymentMethod.value == 'qris') {
-                        // 2. Langsung proses QRIS
+                      }
+
+                      // QRIS
+                      else if (cart.paymentMethod.value == 'qris') {
                         cart.startQrisPayment();
-                      } else {
-                        // 3. Langsung proses E-Wallet / Midtrans
+                      }
+
+                      // E-Wallet / Midtrans
+                      else {
                         cart.startMidtransPayment();
                       }
                     },
@@ -75,9 +84,14 @@ class CartTotalBar extends StatelessWidget {
                 backgroundColor: AppColors.primary,
                 disabledBackgroundColor: AppColors.primaryLight,
                 foregroundColor: AppColors.textOnPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
               ),
               child: isLoading
                   ? const SizedBox(
@@ -91,9 +105,18 @@ class CartTotalBar extends StatelessWidget {
                   : const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.bolt_rounded, size: 16),
+                        Icon(
+                          Icons.bolt_rounded,
+                          size: 16,
+                        ),
                         SizedBox(width: 4),
-                        Text("Bayar", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
+                        Text(
+                          "Bayar",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
                       ],
                     ),
             ),

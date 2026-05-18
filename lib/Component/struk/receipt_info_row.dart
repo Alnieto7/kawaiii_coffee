@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class ReceiptInfoRow extends StatelessWidget {
   final String title;
@@ -18,8 +19,8 @@ class ReceiptInfoRow extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
-              color: Colors.grey[600],
+            style: const TextStyle(
+              color: AppColors.textSecondary,
               fontSize: 13,
             ),
           ),
@@ -31,6 +32,7 @@ class ReceiptInfoRow extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
+                color: AppColors.textPrimary,
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class ReceiptTotalRow extends StatelessWidget {
   final String title;
@@ -9,7 +10,7 @@ class ReceiptTotalRow extends StatelessWidget {
     super.key,
     required this.title,
     required this.value,
-    this.valueColor = Colors.black,
+    this.valueColor = AppColors.textPrimary,
   });
 
   @override
@@ -21,6 +22,7 @@ class ReceiptTotalRow extends StatelessWidget {
           style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15,
+            color: AppColors.textPrimary,
           ),
         ),
         const Spacer(),
