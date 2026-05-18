@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/AllStockCard.dart';
-import 'package:kawaiii_coffee/Controller/Admin/Kasir/AllStockController.dart'; 
+import 'package:kawaiii_coffee/Controller/Admin/Kasir/AllStockController.dart';
 
 class AllStockPage extends StatelessWidget {
   const AllStockPage({super.key});
@@ -11,28 +12,37 @@ class AllStockPage extends StatelessWidget {
     final c = Get.find<AllStockController>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
+      backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.backgroundWhite,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.textPrimary),
           onPressed: () => Get.back(),
         ),
         title: const Text(
           'Semua Stok Bahan',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
         centerTitle: true,
       ),
       body: Obx(() {
         if (c.isLoading.value) {
-          return const Center(child: CircularProgressIndicator(color: Colors.orange));
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
         }
 
         if (c.stocks.isEmpty) {
           return const Center(
-            child: Text("Data stok tidak ditemukan", style: TextStyle(color: Colors.grey)),
+            child: Text(
+              "Data stok tidak ditemukan",
+              style: TextStyle(color: AppColors.textHint),
+            ),
           );
         }
 
@@ -41,8 +51,7 @@ class AllStockPage extends StatelessWidget {
           itemCount: c.stocks.length,
           itemBuilder: (context, index) {
             final item = c.stocks[index];
-            
-            // 👇 Menggunakan Reusable Component 👇
+
             return AllStockCard(
               name: item.name,
               qty: '${item.stock} ${item.unit}',
@@ -50,7 +59,6 @@ class AllStockPage extends StatelessWidget {
               statusBgColor: c.getStockBgColor(item),
               statusTextColor: c.getStockTextColor(item),
             );
-            
           },
         );
       }),

@@ -13,6 +13,7 @@ import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/PaymentSuccess.dart';
 import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/receiptPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/splashscreenPage.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/AllStockBinding.dart';
@@ -105,5 +106,9 @@ class AppPages {
       page: () => AllStockPage(),
       binding: AllStockBinding()
     ),
+      GetPage(
+        name: AppRoutes.splash,
+        page: () => SplashScreen(),
+      ),
   ];
 }

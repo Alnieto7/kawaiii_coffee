@@ -1,6 +1,5 @@
-// lib/Component/Cart/cart_sheet_handle.dart
-
 import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class CartSheetHandle extends StatelessWidget {
   const CartSheetHandle({super.key});
@@ -13,7 +12,7 @@ class CartSheetHandle extends StatelessWidget {
         width: 36,
         height: 4,
         decoration: BoxDecoration(
-          color: const Color(0xFFE0D5C5),
+          color: AppColors.border,
           borderRadius: BorderRadius.circular(99),
         ),
       ),

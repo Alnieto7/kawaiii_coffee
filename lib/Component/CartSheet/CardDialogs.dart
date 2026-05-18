@@ -1,12 +1,11 @@
-// lib/Component/Cart/cart_dialogs.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartFormatHelper.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
 class CartDialogs {
-  // ── Dialog konfirmasi bayar ──────────────────────────────────────────────
+  // Dialog konfirmasi bayar
   static void showPayConfirm(CartController cart) {
     final method = cart.paymentMethod.value;
     final methodLabel = method == 'qris' ? 'QRIS' : 'Cash';
@@ -20,9 +19,9 @@ class CartDialogs {
             mainAxisSize: MainAxisSize.min,
             children: [
               _DialogIcon(
-                bgColor: const Color(0xFFFEF3E2),
+                bgColor: AppColors.warningSurface,
                 icon: Icons.receipt_long_rounded,
-                iconColor: const Color(0xFFD97706),
+                iconColor: AppColors.warning,
               ),
               const SizedBox(height: 16),
               const Text(
@@ -30,14 +29,14 @@ class CartDialogs {
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A1008),
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 "Proses pembayaran via $methodLabel\nsebesar",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 13, color: Color(0xFF9C8A70)),
+                style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 4),
               Text(
@@ -45,7 +44,7 @@ class CartDialogs {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFFD97706),
+                  color: AppColors.primary,
                 ),
               ),
               const SizedBox(height: 20),
@@ -57,7 +56,7 @@ class CartDialogs {
                     flex: 2,
                     child: _ConfirmButton(
                       label: "Ya, Bayar",
-                      color: const Color(0xFFD97706),
+                      color: AppColors.primary,
                       onPressed: () {
                         Get.back();
                         if (method == 'qris') {
@@ -74,11 +73,11 @@ class CartDialogs {
           ),
         ),
       ),
-      barrierColor: Colors.black54,
+      barrierColor: AppColors.backgroundOverlay,
     );
   }
 
-  // ── Dialog konfirmasi hapus semua ────────────────────────────────────────
+  // Dialog konfirmasi hapus semua
   static void showClearConfirm(CartController cart) {
     Get.dialog(
       Dialog(
@@ -89,9 +88,9 @@ class CartDialogs {
             mainAxisSize: MainAxisSize.min,
             children: [
               _DialogIcon(
-                bgColor: const Color(0xFFFEE2E2),
+                bgColor: AppColors.errorSurface,
                 icon: Icons.delete_forever_rounded,
-                iconColor: const Color(0xFFDC2626),
+                iconColor: AppColors.error,
               ),
               const SizedBox(height: 16),
               const Text(
@@ -99,14 +98,14 @@ class CartDialogs {
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A1008),
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
               const Text(
                 "Semua item di keranjang\nakan dihapus.",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: Color(0xFF9C8A70)),
+                style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 20),
               Row(
@@ -116,7 +115,7 @@ class CartDialogs {
                   Expanded(
                     child: _ConfirmButton(
                       label: "Hapus",
-                      color: const Color(0xFFDC2626),
+                      color: AppColors.error,
                       onPressed: () {
                         Get.back();
                         cart.clearCart();
@@ -129,12 +128,12 @@ class CartDialogs {
           ),
         ),
       ),
-      barrierColor: Colors.black54,
+      barrierColor: AppColors.backgroundOverlay,
     );
   }
 }
 
-// ── Shared private widgets ────────────────────────────────────────────────
+// Shared private widgets
 
 class _DialogContainer extends StatelessWidget {
   final Widget child;
@@ -145,11 +144,11 @@ class _DialogContainer extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFBF5),
+        color: AppColors.backgroundWhite,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: AppColors.shadowDark,
             blurRadius: 40,
             offset: const Offset(0, 16),
           ),
@@ -194,8 +193,8 @@ class _CancelButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Color(0xFFE0D5C5)),
-        foregroundColor: const Color(0xFF8C7560),
+        side: const BorderSide(color: AppColors.border),
+        foregroundColor: AppColors.textSecondary,
         padding: const EdgeInsets.symmetric(vertical: 13),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -221,7 +220,7 @@ class _ConfirmButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.textOnPrimary,
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 13),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

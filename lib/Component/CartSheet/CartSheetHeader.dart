@@ -1,7 +1,6 @@
-// lib/Component/Cart/cart_sheet_header.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CardDialogs.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
@@ -19,12 +18,12 @@ class CartSheetHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFFFEF3E2),
+              color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.shopping_basket_rounded,
-              color: Color(0xFFD97706),
+              color: AppColors.primary,
               size: 20,
             ),
           ),
@@ -37,7 +36,7 @@ class CartSheetHeader extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 17,
-                color: Color(0xFF1A1008),
+                color: AppColors.textPrimary,
               ),
             ),
           ),
@@ -46,13 +45,11 @@ class CartSheetHeader extends StatelessWidget {
           // Tombol hapus semua
           Obx(
             () => TextButton.icon(
-              onPressed: cart.items.isEmpty
-                  ? null
-                  : () => CartDialogs.showClearConfirm(cart),
+              onPressed: cart.items.isEmpty ? null : () => CartDialogs.showClearConfirm(cart),
               icon: const Icon(Icons.delete_sweep_rounded, size: 16),
               label: const Text("Hapus Semua"),
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFFDC2626),
+                foregroundColor: AppColors.error,
                 textStyle: const TextStyle(fontSize: 13),
               ),
             ),

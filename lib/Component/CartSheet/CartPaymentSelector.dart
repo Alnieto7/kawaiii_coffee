@@ -1,7 +1,6 @@
-// lib/Component/Cart/cart_payment_selector.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
 class CartPaymentSelector extends StatelessWidget {
@@ -20,26 +19,16 @@ class CartPaymentSelector extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF9C8A70),
+              color: AppColors.textSecondary,
               letterSpacing: 0.3,
             ),
           ),
           const SizedBox(height: 10),
           Row(
             children: [
-              _PayChip(
-                cart: cart,
-                label: "Cash",
-                value: "cash",
-                icon: Icons.payments_rounded,
-              ),
+              _PayChip(cart: cart, label: "Cash", value: "cash", icon: Icons.payments_rounded),
               const SizedBox(width: 8),
-              _PayChip(
-                cart: cart,
-                label: "QRIS",
-                value: "qris",
-                icon: Icons.qr_code_rounded,
-              ),
+              _PayChip(cart: cart, label: "QRIS", value: "qris", icon: Icons.qr_code_rounded),
             ],
           ),
         ],
@@ -48,7 +37,6 @@ class CartPaymentSelector extends StatelessWidget {
   }
 }
 
-// ── Private: satu chip metode bayar ───────────────────────────────────────
 class _PayChip extends StatelessWidget {
   final CartController cart;
   final String label;
@@ -73,9 +61,7 @@ class _PayChip extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-              color: selected
-                  ? const Color(0xFFD97706)
-                  : const Color(0xFFF5EFE6),
+              color: selected ? AppColors.primary : AppColors.inputFill,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -83,7 +69,7 @@ class _PayChip extends StatelessWidget {
                 Icon(
                   icon,
                   size: 20,
-                  color: selected ? Colors.white : const Color(0xFFB08040),
+                  color: selected ? AppColors.textOnPrimary : AppColors.secondary,
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -91,7 +77,7 @@ class _PayChip extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: selected ? Colors.white : const Color(0xFF8C7560),
+                    color: selected ? AppColors.textOnPrimary : AppColors.textSecondary,
                   ),
                 ),
               ],

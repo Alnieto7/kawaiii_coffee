@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 
 class ActivityTile extends StatelessWidget {
   final String title;
@@ -21,9 +22,9 @@ class ActivityTile extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         // Jika warning background-nya sedikit merah muda, jika tidak putih
-        color: isWarning ? const Color(0xFFFFF5F5) : Colors.white,
+        color: isWarning ? const Color(0xFFFFF5F5) : AppColors.backgroundWhite,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: isWarning ? Colors.red.shade100 : Colors.grey.shade100),
+        border: Border.all(color: isWarning ? AppColors.warning : AppColors.border),
       ),
       child: Row(
         children: [
@@ -31,12 +32,12 @@ class ActivityTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: isWarning ? Colors.red.withOpacity(0.1) : Colors.grey.shade100,
+              color: isWarning ? AppColors.warning.withOpacity(0.1) : AppColors.border  ,
               shape: BoxShape.circle,
             ),
             child: Icon(
               isWarning ? Icons.priority_high_rounded : Icons.shopping_cart_outlined,
-              color: isWarning ? Colors.red : Colors.grey.shade600,
+              color: isWarning ? AppColors.warning : AppColors.textSecondary,
               size: 20,
             ),
           ),
@@ -52,13 +53,13 @@ class ActivityTile extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold, 
                     fontSize: 14,
-                    color: isWarning ? Colors.red.shade700 : const Color(0xFF1F2937)
+                    color: isWarning ? AppColors.error : const Color(0xFF1F2937)
                   )
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle, 
-                  style: const TextStyle(fontSize: 12, color: Colors.grey)
+                  style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)
                 ),
               ],
             ),
@@ -70,16 +71,17 @@ class ActivityTile extends StatelessWidget {
               value, 
               style: const TextStyle(
                 fontWeight: FontWeight.bold, 
-                color: Color(0xFFD97217), // Warna oranye Coffee Street
+                color: AppColors.primary, // Warna oranye Coffee Street
                 fontSize: 14
               )
             ),
             
           // Tampilkan panah (chevron) jika ini adalah warning/stok menipis
           if (isWarning)
-            Icon(Icons.chevron_right, color: Colors.grey.shade400),
+            Icon(Icons.chevron_right, color: AppColors.textSecondary),
         ],
       ),
     );
   }
 }
+

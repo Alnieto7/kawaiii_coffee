@@ -111,32 +111,40 @@ Future<Map<String, dynamic>> checkout({
   // =========================
   // POST — Initiate QRIS Dynamic
   // =========================
-  Future<Map<String, dynamic>> initiateQris({
-  required List items,
-}) async {
+  Future<Map<String, dynamic>> initiateQris({required List items}) async {
   try {
     final response = await http.post(
       Uri.parse(ApiConfig.initiateQris),
       headers: _headers,
-      body: jsonEncode({
-        'items': items,
-      }),
+      body: jsonEncode({'items': items}),
     );
 
-    final Map<String, dynamic> jsonBody =
-        jsonDecode(response.body);
-
+    final Map<String, dynamic> jsonBody = jsonDecode(response.body);
     print("Respons Backend: $jsonBody");
+    print("Status Code: ${response.statusCode}"); // ✅ tambah ini
+
+    // ✅ Cek status code dulu
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception(
+        jsonBody['message'] ?? 'Server error (${response.statusCode})',
+      );
+    }
+
+    // ✅ Cek qr_url ada atau tidak sebelum return
+    if (jsonBody['qr_url'] == null) {
+      throw Exception(
+        jsonBody['message'] ?? 'QR URL tidak ditemukan dari server',
+      );
+    }
 
     return {
-  'transaction_id': jsonBody['transaction_id'],
-  'qr_url': jsonBody['qr_url'],
-  'total': jsonBody['total'],
-  'transaction_code': jsonBody['transaction_code'],
-};
+      'qr_url': jsonBody['qr_url'],
+      'total': jsonBody['total'],
+      'transaction_code': jsonBody['transaction_code'],
+    };
   } catch (e) {
     print("Provider Error: $e");
-    throw Exception('Gagal inisialisasi QRIS: $e');
+    rethrow; // ✅ rethrow agar CartController bisa catch dan tampilkan snackbar
   }
 }
 }

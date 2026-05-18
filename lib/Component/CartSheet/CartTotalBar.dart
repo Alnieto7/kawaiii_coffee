@@ -1,7 +1,7 @@
-// lib/Component/Cart/cart_total_bar.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
+import 'package:kawaiii_coffee/Component/CartSheet/CardDialogs.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartFormatHelper.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 
@@ -24,19 +24,19 @@ class CartTotalBar extends StatelessWidget {
           MediaQuery.of(context).padding.bottom + 16,
         ),
         decoration: BoxDecoration(
-          color: const Color(0xFFFEF3E2),
+          color: AppColors.primarySurface,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           children: [
-            // ── Total tagihan — Expanded biar tidak overflow ──────────────
+            // Total tagihan
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "Total Tagihan",
-                    style: TextStyle(fontSize: 12, color: Color(0xFFB08040)),
+                    style: TextStyle(fontSize: 12, color: AppColors.secondary),
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -44,7 +44,7 @@ class CartTotalBar extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
-                      color: Color(0xFFD97706),
+                      color: AppColors.primary,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -53,8 +53,9 @@ class CartTotalBar extends StatelessWidget {
             ),
             const SizedBox(width: 12),
 
-            // ── Tombol bayar ─────────────────────────────────────────────
+            // Tombol bayar
             ElevatedButton(
+              onPressed: isLoading || isEmpty ? null : () => CartDialogs.showPayConfirm(cart),
               // 🔥 LOGIKA PEMBAYARAN BARU DI SINI 🔥
               onPressed: isLoading || isEmpty
                   ? null
@@ -71,24 +72,19 @@ class CartTotalBar extends StatelessWidget {
                       }
                     },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFD97706),
-                disabledBackgroundColor: const Color(0xFFE5CFA0),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 14,
-                ),
+                backgroundColor: AppColors.primary,
+                disabledBackgroundColor: AppColors.primaryLight,
+                foregroundColor: AppColors.textOnPrimary,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                 elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
               child: isLoading
                   ? const SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                        color: Colors.white,
+                        color: AppColors.textOnPrimary,
                         strokeWidth: 2.5,
                       ),
                     )
@@ -97,13 +93,7 @@ class CartTotalBar extends StatelessWidget {
                       children: [
                         Icon(Icons.bolt_rounded, size: 16),
                         SizedBox(width: 4),
-                        Text(
-                          "Bayar",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                          ),
-                        ),
+                        Text("Bayar", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
                       ],
                     ),
             ),

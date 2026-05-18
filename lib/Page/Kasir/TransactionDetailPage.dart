@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/reusable_form_components.dart';
 import 'package:kawaiii_coffee/Controller/Admin/Kasir/TransactionDetailController.dart';
 
@@ -13,24 +14,23 @@ class TransactionDetailPage extends StatelessWidget {
     final currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
+      backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.backgroundWhite,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.textPrimary),
           onPressed: () => Get.back(),
         ),
-        // 👇 JUDUL SUDAH DIGANTI MENJADI DETAIL TRANSAKSI
         title: const Text(
           'Detail Transaksi',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         centerTitle: true,
       ),
       body: Obx(() {
         if (c.isLoading.value) {
-          return const Center(child: CircularProgressIndicator(color: Colors.orange));
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
         }
 
         if (c.detailData.isEmpty) return const Center(child: Text("Data tidak ditemukan"));
@@ -39,7 +39,7 @@ class TransactionDetailPage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              
+
               // CARD 1: INFORMASI TRANSAKSI
               FormSectionCard(
                 title: 'Informasi Transaksi',
@@ -64,13 +64,9 @@ class TransactionDetailPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Metode Pembayaran', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                              const Text('Metode Pembayaran', style: TextStyle(fontSize: 12, color: AppColors.textHint)),
                               const SizedBox(height: 4),
-                              _buildBadge(
-                                c.paymentMethod, 
-                                Icons.payments, 
-                                Colors.green
-                              ),
+                              _buildBadge(c.paymentMethod, Icons.payments, AppColors.success),
                             ],
                           ),
                         ),
@@ -80,9 +76,9 @@ class TransactionDetailPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Status', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                        const Text('Status', style: TextStyle(fontSize: 12, color: AppColors.textHint)),
                         const SizedBox(height: 4),
-                        _buildBadge('Lunas', Icons.check_circle, Colors.green),
+                        _buildBadge('Lunas', Icons.check_circle, AppColors.success),
                       ],
                     ),
                   ],
@@ -98,9 +94,9 @@ class TransactionDetailPage extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: _buildDataColumn('Total Belanja', currencyFormatter.format(c.total), valueColor: Colors.green)),
+                    Expanded(child: _buildDataColumn('Total Belanja', currencyFormatter.format(c.total), valueColor: AppColors.success)),
                     Expanded(child: _buildDataColumn('Jumlah Dibayar', currencyFormatter.format(c.paidAmount))),
-                    Expanded(child: _buildDataColumn('Kembalian', currencyFormatter.format(c.changeAmount), valueColor: Colors.orange)),
+                    Expanded(child: _buildDataColumn('Kembalian', currencyFormatter.format(c.changeAmount), valueColor: AppColors.primary)),
                   ],
                 ),
               ),
@@ -111,62 +107,61 @@ class TransactionDetailPage extends StatelessWidget {
                 title: 'Detail Produk',
                 subtitle: 'Daftar item yang dibeli',
                 icon: Icons.shopping_bag_outlined,
-                // 👇 Cek apakah item kosong, jika iya beri tampilan khusus agar tidak terpotong 👇
-                child: c.items.isEmpty 
-                  ? const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
-                      child: Center(child: Text("Data produk tidak tersedia", style: TextStyle(color: Colors.grey))),
-                    )
-                  : Column(
-                      children: c.items.map((item) {
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[50],
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.grey[200]!),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
+                child: c.items.isEmpty
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: Center(child: Text("Data produk tidak tersedia", style: TextStyle(color: AppColors.textHint))),
+                      )
+                    : Column(
+                        children: c.items.map((item) {
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppColors.backgroundLight,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primarySurface,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    '${c.getItemQty(item)}x',
+                                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary, fontSize: 16),
+                                  ),
                                 ),
-                                child: Text(
-                                  '${c.getItemQty(item)}x',
-                                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange, fontSize: 16),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(c.getItemName(item), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                                      const SizedBox(height: 4),
+                                      Text('@ ${currencyFormatter.format(c.getItemPrice(item))}', style: const TextStyle(color: AppColors.textHint, fontSize: 12)),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(c.getItemName(item), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                                    const SizedBox(height: 4),
-                                    Text('@ ${currencyFormatter.format(c.getItemPrice(item))}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                                    const Text('Subtotal', style: TextStyle(color: AppColors.textHint, fontSize: 10)),
+                                    Text(
+                                      currencyFormatter.format(c.getItemSubtotal(item)),
+                                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.success),
+                                    ),
                                   ],
                                 ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  const Text('Subtotal', style: TextStyle(color: Colors.grey, fontSize: 10)),
-                                  Text(
-                                    currencyFormatter.format(c.getItemSubtotal(item)), 
-                                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                  ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
               ),
               const SizedBox(height: 32),
             ],
@@ -176,13 +171,11 @@ class TransactionDetailPage extends StatelessWidget {
     );
   }
 
-  // --- UI HELPERS ---
-
-  Widget _buildDataColumn(String label, String value, {Color valueColor = Colors.black}) {
+  Widget _buildDataColumn(String label, String value, {Color valueColor = AppColors.textPrimary}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textHint)),
         const SizedBox(height: 4),
         Text(value, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: valueColor)),
       ],

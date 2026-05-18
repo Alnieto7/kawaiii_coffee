@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Controller/QrisController.dart';
 
 class QrisDisplayPage extends StatelessWidget {
@@ -11,12 +12,12 @@ class QrisDisplayPage extends StatelessWidget {
     final controller = Get.find<QrisController>();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.backgroundWhite,
       appBar: AppBar(
-        title: const Text('Scan QRIS', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        title: const Text('Scan QRIS', style: TextStyle(color: AppColors.textPrimary)),
+        backgroundColor: AppColors.backgroundWhite,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: AppColors.textPrimary),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -35,7 +36,7 @@ class QrisDisplayPage extends StatelessWidget {
                     'Total Bayar: Rp ${controller.formattedTotal}',
                     style: const TextStyle(
                       fontSize: 22,
-                      color: Color(0xFF1a6b45),
+                      color: AppColors.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -44,11 +45,11 @@ class QrisDisplayPage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.backgroundWhite,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: AppColors.shadow,
                         blurRadius: 20,
                         spreadRadius: 2,
                       ),
@@ -67,18 +68,11 @@ class QrisDisplayPage extends StatelessWidget {
                         () => controller.qrUrl.value.isEmpty
                             ? const Column(
                                 children: [
-                                  Icon(
-                                    Icons.error,
-                                    color: Colors.red,
-                                    size: 80,
-                                  ),
+                                  Icon(Icons.error, color: AppColors.error, size: 80),
                                   SizedBox(height: 10),
                                   Text(
                                     'QR URL tidak ditemukan',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: TextStyle(color: AppColors.error, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               )
@@ -87,27 +81,19 @@ class QrisDisplayPage extends StatelessWidget {
                                 width: 250,
                                 height: 250,
                                 headers: {
-                                  'Authorization':
-                                      'Basic ${base64Encode(utf8.encode('Mid-client-bzKn4crc5olHa9oR:'))}',
+                                  'Authorization': 'Basic ${base64Encode(utf8.encode('Mid-client-bzKn4crc5olHa9oR:'))}',
                                 },
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return const SizedBox(
-                                        width: 250,
-                                        height: 250,
-                                        child: Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      );
-                                    },
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const SizedBox(
+                                    width: 250,
+                                    height: 250,
+                                    child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+                                  );
+                                },
                                 errorBuilder: (_, __, ___) => const Column(
                                   children: [
-                                    Icon(
-                                      Icons.error,
-                                      color: Colors.red,
-                                      size: 60,
-                                    ),
+                                    Icon(Icons.error, color: AppColors.error, size: 60),
                                     SizedBox(height: 8),
                                     Text('Gagal memuat QR Code'),
                                   ],
@@ -118,12 +104,9 @@ class QrisDisplayPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Menunggu pembayaran...',
-                  style: TextStyle(color: Colors.grey),
-                ),
+                const Text('Menunggu pembayaran...', style: TextStyle(color: AppColors.textHint)),
                 const SizedBox(height: 8),
-                const CircularProgressIndicator(color: Color(0xFF1a6b45)),
+                const CircularProgressIndicator(color: AppColors.primary),
                 const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,
@@ -138,18 +121,13 @@ class QrisDisplayPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1a6b45),
+                      backgroundColor: AppColors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: const Text(
                       'Selesai & Tutup',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: AppColors.textOnPrimary, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
