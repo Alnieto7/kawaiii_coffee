@@ -35,7 +35,7 @@ class ShiftInfoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Status Shift',
+                    'Total Struk Hari Ini',
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.textOnPrimary,
@@ -52,26 +52,6 @@ class ShiftInfoCard extends StatelessWidget {
               )
             ],
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Text(
-                'Durasi Kerja',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textOnPrimary,
-                ),
-              ),
-              Text(
-                durationText,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textOnPrimary,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          )
         ],
       ),
     );
