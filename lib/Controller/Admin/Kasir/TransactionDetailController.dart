@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kawaiii_coffee/Provider/TransactionProvider.dart'; // Tambahkan ini untuk format tanggal
-
+import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
 
 class TransactionDetailController extends GetxController {
   final TransactionProvider _provider = TransactionProvider();
   
   var isLoading = true.obs;
   var detailData = {}.obs;
+
+  final _currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
 
   @override
   void onInit() {
@@ -18,7 +19,6 @@ class TransactionDetailController extends GetxController {
     }
   }
 
-  // --- LOGIKA PARSING ANGKA ---
   double _parseDouble(dynamic value) {
     if (value == null) return 0.0;
     if (value is num) return value.toDouble();
@@ -26,20 +26,18 @@ class TransactionDetailController extends GetxController {
     return 0.0;
   }
 
-  // ==========================================
-  // 🔥 SMART GETTERS (Mengantisipasi Backend) 🔥
-  // ==========================================
-  
-  // Mencari kode transaksi (Bisa invoice_number atau transaction_code)
+  String formatRupiah(dynamic amount) {
+    if (amount == null) return 'Rp 0';
+    return _currencyFormatter.format(amount);
+  }
+
   String get invoiceNumber => detailData['invoice_number'] ?? detailData['transaction_code'] ?? '-';
   
-  // Merapikan format tanggal
   String get transactionDate {
     final rawDate = detailData['created_at'];
     if (rawDate == null) return '-';
     try {
       final parsed = DateTime.parse(rawDate).toLocal();
-      // Hasil: 15 May 2026, 10:47
       return DateFormat('dd MMM yyyy, HH:mm').format(parsed);
     } catch (e) {
       return rawDate; 
@@ -47,13 +45,19 @@ class TransactionDetailController extends GetxController {
   }
 
   String get cashierName => detailData['cashier_name'] ?? detailData['user']?['name'] ?? 'Kasir';
+  
   String get paymentMethod => (detailData['payment_method'] ?? 'CASH').toString().toUpperCase();
 
   double get total => _parseDouble(detailData['total']);
+  
   double get paidAmount => _parseDouble(detailData['paid_amount'] ?? detailData['total']);
+  
   double get changeAmount => _parseDouble(detailData['change_amount'] ?? (paidAmount - total));
 
-  // Mencari List Produk (Backend bisa pakai nama key yang berbeda-beda)
+  String get formattedTotal => formatRupiah(total);
+  String get formattedPaidAmount => formatRupiah(paidAmount);
+  String get formattedChangeAmount => formatRupiah(changeAmount);
+
   List<dynamic> get items {
     if (detailData['items'] != null) return detailData['items'];
     if (detailData['transaction_details'] != null) return detailData['transaction_details'];
@@ -61,9 +65,10 @@ class TransactionDetailController extends GetxController {
     return [];
   }
 
-  // Mencari Detail Per Produk
   String getItemName(dynamic item) => item['product_name'] ?? item['product']?['name'] ?? 'Produk';
+  
   int getItemQty(dynamic item) => item['quantity'] ?? item['qty'] ?? 1;
+  
   double getItemPrice(dynamic item) {
     double price = _parseDouble(item['price'] ?? item['unit_price']);
   
@@ -78,10 +83,12 @@ class TransactionDetailController extends GetxController {
     
     return price;
   }
+  
   double getItemSubtotal(dynamic item) => _parseDouble(item['subtotal'] ?? (getItemPrice(item) * getItemQty(item)));
 
-  
-  // --- API CALL ---
+  String formattedItemPrice(dynamic item) => formatRupiah(getItemPrice(item));
+  String formattedItemSubtotal(dynamic item) => formatRupiah(getItemSubtotal(item));
+
   void fetchDetail(int id) async {
     isLoading.value = true;
     try {
