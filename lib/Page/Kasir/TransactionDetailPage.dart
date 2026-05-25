@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Component/app_colors.dart';
+import 'package:kawaiii_coffee/Component/dashboardkasir/TransactionReusableComponents.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/reusable_form_components.dart';
 import 'package:kawaiii_coffee/Controller/Admin/Kasir/TransactionDetailController.dart';
 
@@ -11,7 +11,6 @@ class TransactionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<TransactionDetailController>();
-    final currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
@@ -19,28 +18,37 @@ class TransactionDetailPage extends StatelessWidget {
         backgroundColor: AppColors.backgroundWhite,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.textPrimary),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: AppColors.textPrimary,
+          ),
           onPressed: () => Get.back(),
         ),
         title: const Text(
           'Detail Transaksi',
-          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
         centerTitle: true,
       ),
       body: Obx(() {
         if (c.isLoading.value) {
-          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
         }
 
-        if (c.detailData.isEmpty) return const Center(child: Text("Data tidak ditemukan"));
+        if (c.detailData.isEmpty)
+          return const Center(child: Text("Data tidak ditemukan"));
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-
-              // CARD 1: INFORMASI TRANSAKSI
+              // ── CARD 1: INFORMASI TRANSAKSI ──
               FormSectionCard(
                 title: 'Informasi Transaksi',
                 subtitle: 'Data umum terkait transaksi ini',
@@ -51,34 +59,69 @@ class TransactionDetailPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: _buildDataColumn('Kode Transaksi', c.invoiceNumber)),
-                        Expanded(child: _buildDataColumn('Tanggal Transaksi', c.transactionDate)),
+                        Expanded(
+                          child: DataColumnWidget(
+                            label: 'Kode Transaksi',
+                            value: c.invoiceNumber,
+                          ),
+                        ),
+                        Expanded(
+                          child: DataColumnWidget(
+                            label: 'Tanggal Transaksi',
+                            value: c.transactionDate,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: _buildDataColumn('Kasir', c.cashierName)),
+                        Expanded(
+                          child: DataColumnWidget(
+                            label: 'Kasir',
+                            value: c.cashierName,
+                          ),
+                        ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Metode Pembayaran', style: TextStyle(fontSize: 12, color: AppColors.textHint)),
+                              const Text(
+                                'Metode Pembayaran',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textHint,
+                                ),
+                              ),
                               const SizedBox(height: 4),
-                              _buildBadge(c.paymentMethod, Icons.payments, AppColors.success),
+                              StatusBadgeWidget(
+                                text: c.paymentMethod,
+                                icon: Icons.payments,
+                                color: AppColors.success,
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Status', style: TextStyle(fontSize: 12, color: AppColors.textHint)),
-                        const SizedBox(height: 4),
-                        _buildBadge('Lunas', Icons.check_circle, AppColors.success),
+                        Text(
+                          'Status',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textHint,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        StatusBadgeWidget(
+                          text: 'Lunas',
+                          icon: Icons.check_circle,
+                          color: AppColors.success,
+                        ),
                       ],
                     ),
                   ],
@@ -86,7 +129,7 @@ class TransactionDetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // CARD 2: RINGKASAN PEMBAYARAN
+              // ── CARD 2: RINGKASAN PEMBAYARAN ──
               FormSectionCard(
                 title: 'Ringkasan Pembayaran',
                 subtitle: 'Detail nominal pembayaran',
@@ -94,15 +137,32 @@ class TransactionDetailPage extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: _buildDataColumn('Total Belanja', currencyFormatter.format(c.total), valueColor: AppColors.success)),
-                    Expanded(child: _buildDataColumn('Jumlah Dibayar', currencyFormatter.format(c.paidAmount))),
-                    Expanded(child: _buildDataColumn('Kembalian', currencyFormatter.format(c.changeAmount), valueColor: AppColors.primary)),
+                    Expanded(
+                      child: DataColumnWidget(
+                        label: 'Total Belanja',
+                        value: c.formattedTotal,
+                        valueColor: AppColors.success,
+                      ),
+                    ),
+                    Expanded(
+                      child: DataColumnWidget(
+                        label: 'Jumlah Dibayar',
+                        value: c.formattedPaidAmount,
+                      ),
+                    ),
+                    Expanded(
+                      child: DataColumnWidget(
+                        label: 'Kembalian',
+                        value: c.formattedChangeAmount,
+                        valueColor: AppColors.primary,
+                      ),
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
 
-              // CARD 3: DETAIL PRODUK
+              // ── CARD 3: DETAIL PRODUK ──
               FormSectionCard(
                 title: 'Detail Produk',
                 subtitle: 'Daftar item yang dibeli',
@@ -110,94 +170,56 @@ class TransactionDetailPage extends StatelessWidget {
                 child: c.items.isEmpty
                     ? const Padding(
                         padding: EdgeInsets.symmetric(vertical: 24),
-                        child: Center(child: Text("Data produk tidak tersedia", style: TextStyle(color: AppColors.textHint))),
+                        child: Center(
+                          child: Text(
+                            "Data produk tidak tersedia",
+                            style: TextStyle(color: AppColors.textHint),
+                          ),
+                        ),
                       )
                     : Column(
                         children: c.items.map((item) {
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppColors.backgroundLight,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.border),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primarySurface,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    '${c.getItemQty(item)}x',
-                                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary, fontSize: 16),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(c.getItemName(item), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                                      const SizedBox(height: 4),
-                                      Text('@ ${currencyFormatter.format(c.getItemPrice(item))}', style: const TextStyle(color: AppColors.textHint, fontSize: 12)),
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    const Text('Subtotal', style: TextStyle(color: AppColors.textHint, fontSize: 10)),
-                                    Text(
-                                      currencyFormatter.format(c.getItemSubtotal(item)),
-                                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.success),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                          return ProductDetailItemWidget(
+                            qty: c.getItemQty(item),
+                            name: c.getItemName(item),
+                            price: c.formattedItemPrice(item),
+                            subtotal: c.formattedItemSubtotal(item),
                           );
                         }).toList(),
                       ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
+
+              // ── DROPDOWN LIHAT NOTA ──
+              ReceiptDropdownWidget(c: c),
+              const SizedBox(height: 16),
+
+              // ── BUTTON PRINT ──
+              ElevatedButton.icon(
+                onPressed: () {
+                  Get.snackbar(
+                    'Info',
+                    'Fitur print nota segera ditambahkan',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                },
+                icon: const Icon(Icons.print),
+                label: const Text('Print Nota'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.textOnPrimary,
+                  elevation: 0,
+                  minimumSize: const Size(double.infinity, 52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
             ],
           ),
         );
       }),
-    );
-  }
-
-  Widget _buildDataColumn(String label, String value, {Color valueColor = AppColors.textPrimary}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textHint)),
-        const SizedBox(height: 4),
-        Text(value, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: valueColor)),
-      ],
-    );
-  }
-
-  Widget _buildBadge(String text, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.5)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
-          Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color)),
-        ],
-      ),
     );
   }
 }
