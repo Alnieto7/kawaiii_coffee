@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "470817609350",
+    "project_id": "kawaiii-coffee",
+    "storage_bucket": "kawaiii-coffee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470817609350:android:d732c66f6decb2103aa307",
+        "android_client_info": {
+          "package_name": "com.example.kawaiii_coffee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4piiFcsxTyKX9S0MLzhxxCKPvYHZMpEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

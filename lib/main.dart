@@ -1,11 +1,12 @@
-import 'dart:io'; // Penting: Untuk HttpOverrides
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Routes/Pages.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 
-// Class untuk mengizinkan sertifikat SSL (Bypass SSL)
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -15,14 +16,55 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Aktifkan SSL Bypass agar gambar dari server sandbox bisa dimuat
   HttpOverrides.global = MyHttpOverrides();
 
+  await Firebase.initializeApp();
   await GetStorage.init();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await _setupFCM();
+
   runApp(const MainApp());
+}
+
+Future<void> _setupFCM() async {
+  final messaging = FirebaseMessaging.instance;
+
+  await messaging.requestPermission(alert: true, badge: true, sound: true);
+
+  final token = await messaging.getToken();
+  if (token != null) {
+    print('FCM Token: $token');
+    GetStorage().write('fcm_token', token);
+  }
+
+  messaging.onTokenRefresh.listen((newToken) {
+    GetStorage().write('fcm_token', newToken);
+  });
+
+  // Notifikasi saat app terbuka (foreground)
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      Get.snackbar(
+        message.notification!.title ?? 'Notifikasi',
+        message.notification!.body ?? '',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: const Color(0xFF1a6b45),
+        colorText: Colors.white,
+        duration: const Duration(seconds: 4),
+        icon: const Icon(Icons.notifications, color: Colors.white),
+      );
+    }
+  });
 }
 
 class MainApp extends StatelessWidget {
