@@ -91,17 +91,7 @@ class LoginPage extends GetView<LoginController> {
                   )),
               const SizedBox(height: 24),
 
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Lupa Kata Sandi?',
-                  style: TextStyle(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+              
               const SizedBox(height: 40),
 
               // --- FOOTER AREA ---

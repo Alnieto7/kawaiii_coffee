@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class PaymentSuccessController extends GetxController {
 
@@ -20,7 +21,7 @@ class PaymentSuccessController extends GetxController {
       if (args == null ||
           args['transaction_id'] == null) {
 
-        Get.snackbar(
+       SnackbarHelper.error(
           'Error',
           'Transaction ID tidak ditemukan',
         );

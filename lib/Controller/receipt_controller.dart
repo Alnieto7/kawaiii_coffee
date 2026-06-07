@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class ReceiptController extends GetxController {
   final TransactionProvider _provider = TransactionProvider();
@@ -34,7 +35,7 @@ class ReceiptController extends GetxController {
 
       detailData.value = result;
     } catch (e) {
-      Get.snackbar(
+     SnackbarHelper.error(
         'Error',
         e.toString(),
       );

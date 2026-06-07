@@ -4,6 +4,7 @@ import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/TransactionReusableComponents.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/reusable_form_components.dart';
 import 'package:kawaiii_coffee/Controller/Admin/Kasir/TransactionDetailController.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class TransactionDetailPage extends StatelessWidget {
   const TransactionDetailPage({super.key});
@@ -197,10 +198,9 @@ class TransactionDetailPage extends StatelessWidget {
               // ── BUTTON PRINT ──
               ElevatedButton.icon(
                 onPressed: () {
-                  Get.snackbar(
+                 SnackbarHelper.info(
                     'Info',
                     'Fitur print nota segera ditambahkan',
-                    snackPosition: SnackPosition.BOTTOM,
                   );
                 },
                 icon: const Icon(Icons.print),

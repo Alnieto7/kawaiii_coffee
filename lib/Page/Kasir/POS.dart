@@ -41,7 +41,7 @@ class PosPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Coffee Street",
+                            "Kawaiii Coffee",
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           Text(

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 import 'package:kawaiii_coffee/Model/ProductModel.dart';
 import 'package:kawaiii_coffee/Provider/ProductProvider.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class PosController extends GetxController {
   // Gunakan find jika CartController sudah di-inject di binding/main
@@ -31,12 +32,9 @@ class PosController extends GetxController {
       final result = await ProductProvider.fetchProducts();
       products.assignAll(result);
     } catch (e) {
-      Get.snackbar(
+      SnackbarHelper.error(
         "Error",
-        e.toString().replaceAll('Exception: ', ''),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.withOpacity(0.8),
-        colorText: Colors.white,
+        e.toString().replaceAll('Exception: ', '')
       );
     } finally {
       isLoading.value = false;

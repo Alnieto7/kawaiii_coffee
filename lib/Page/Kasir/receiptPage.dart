@@ -6,6 +6,7 @@ import 'package:kawaiii_coffee/Component/struk/receipt_item_title.dart';
 import 'package:kawaiii_coffee/Component/struk/receipt_total_row.dart';
 import 'package:kawaiii_coffee/Controller/receipt_controller.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class ReceiptPage extends StatelessWidget {
   const ReceiptPage({super.key});
@@ -213,7 +214,7 @@ class ReceiptPage extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton.icon(
                             onPressed: () {
-                              Get.snackbar('Info', 'Fitur print segera ditambahkan', snackPosition: SnackPosition.BOTTOM);
+                              SnackbarHelper.info('Info', 'Fitur print segera ditambahkan', );
                             },
                             icon: const Icon(Icons.print),
                             label: const Text('Print'),

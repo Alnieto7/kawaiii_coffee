@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Routes/Pages.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -54,14 +55,10 @@ Future<void> _setupFCM() async {
   // Notifikasi saat app terbuka (foreground)
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     if (message.notification != null) {
-      Get.snackbar(
+      SnackbarHelper.info(
         message.notification!.title ?? 'Notifikasi',
         message.notification!.body ?? '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: const Color(0xFF1a6b45),
-        colorText: Colors.white,
-        duration: const Duration(seconds: 4),
-        icon: const Icon(Icons.notifications, color: Colors.white),
+        
       );
     }
   });

@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Model/IngredientModel.dart';
 import 'package:kawaiii_coffee/Provider/IngredientsProvider.dart';
 import 'package:kawaiii_coffee/Provider/StockMovementProvider.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class InputStokController extends GetxController {
   // --- STATE VARIABEL ---
@@ -53,7 +54,7 @@ class InputStokController extends GetxController {
       final data = await _ingredientProvider.getIngredients();
       ingredients.value = data;
     } catch (e) {
-      Get.snackbar('Error', 'Gagal memuat daftar bahan baku');
+      SnackbarHelper.error('Error', 'Gagal memuat daftar bahan baku');
     } finally {
       isLoading.value = false;
     }
@@ -74,15 +75,15 @@ class InputStokController extends GetxController {
 
     // 1. Validasi Inputan
     if (selectedIngredient.value == null) {
-      Get.snackbar('Peringatan', 'Pilih Bahan Baku terlebih dahulu!');
+      SnackbarHelper.warning('Peringatan', 'Pilih Bahan Baku terlebih dahulu!');
       return;
     }
     if (selectedType.value == null) {
-      Get.snackbar('Peringatan', 'Pilih Jenis Pergerakan terlebih dahulu!');
+      SnackbarHelper.warning('Peringatan', 'Pilih Jenis Pergerakan terlebih dahulu!');
       return;
     }
     if (qtyController.text.isEmpty || int.tryParse(qtyController.text) == null) {
-      Get.snackbar('Peringatan', 'Jumlah harus diisi dengan angka yang valid!');
+      SnackbarHelper.warning('Peringatan', 'Jumlah harus diisi dengan angka yang valid!');
       return;
     }
 
@@ -142,11 +143,9 @@ class InputStokController extends GetxController {
         );
       }
     } catch (e) {
-      Get.snackbar(
+      SnackbarHelper.error(
         'Gagal', 
         e.toString().replaceAll('Exception: ', ''),
-        backgroundColor: Colors.red,
-        colorText: Colors.white
       );
     } finally {
       isSubmitting.value = false;
