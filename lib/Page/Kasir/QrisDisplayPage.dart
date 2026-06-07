@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Controller/QrisController.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class QrisDisplayPage extends StatelessWidget {
   const QrisDisplayPage({super.key});
@@ -114,10 +115,10 @@ class QrisDisplayPage extends StatelessWidget {
                     onPressed: () {
                       controller.stopPolling();
                       Get.back();
-                      Get.snackbar(
+                      SnackbarHelper.info(
                         'Info',
                         'Pesanan sedang diproses, cek status di riwayat',
-                        snackPosition: SnackPosition.BOTTOM,
+                        
                       );
                     },
                     style: ElevatedButton.styleFrom(

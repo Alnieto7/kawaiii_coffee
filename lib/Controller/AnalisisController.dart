@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 class AnalisisController extends GetxController {
   // --- FILTER STATE ---
   var selectedFilter = "7 Hari Terakhir".obs;
@@ -45,6 +46,6 @@ class AnalisisController extends GetxController {
   }
 
   void downloadReport() {
-    Get.snackbar("Download", "Laporan sedang diunduh...", snackPosition: SnackPosition.TOP);
+   SnackbarHelper.info("Download", "Laporan sedang diunduh...",);
   }
 }

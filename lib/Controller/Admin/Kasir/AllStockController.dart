@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:kawaiii_coffee/Model/IngredientModel.dart';
 import 'package:kawaiii_coffee/Provider/IngredientsProvider.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class AllStockController extends GetxController {
   var isLoading = true.obs;
@@ -21,7 +22,7 @@ class AllStockController extends GetxController {
       final data = await _ingredientProvider.getIngredients();
       stocks.value = data;
     } catch (e) {
-      Get.snackbar('Error', 'Gagal memuat data stok: $e');
+      SnackbarHelper.error('Error', 'Gagal memuat data stok: $e');
     } finally {
       isLoading.value = false;
     }

@@ -94,7 +94,7 @@ class DashboardkasirPage extends StatelessWidget {
                         Expanded(
                           child: GestureDetector(
                             onTap: c.goToInputStok,
-                            child: const ActionMenuCard(title: 'Input Stok Harian', icon: Icons.inventory_2_outlined),
+                            child: const ActionMenuCard(title: 'Input Stok ', icon: Icons.inventory_2_outlined),
                           ),
                         ),
                         const SizedBox(width: 12),

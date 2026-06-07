@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/cashpaymentsheet.dart';
 import 'package:kawaiii_coffee/Component/POS/carditem.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class CartController extends GetxController {
   var items = <CartItem>[].obs;
@@ -111,7 +112,7 @@ class CartController extends GetxController {
 
   void tampilkanInputCash() {
     if (items.isEmpty) {
-      Get.snackbar('Info', 'Keranjang kosong');
+      SnackbarHelper.info('Info', 'Keranjang kosong');
       return;
     }
 
@@ -163,7 +164,7 @@ class CartController extends GetxController {
     } catch (e) {
       print('CHECKOUT ERROR = $e');
 
-      Get.snackbar(
+      SnackbarHelper.error(
         'Transaksi Gagal',
         e.toString(),
       );
@@ -176,7 +177,7 @@ class CartController extends GetxController {
 
   Future<void> startMidtransPayment() async {
     if (items.isEmpty) {
-      Get.snackbar('Info', 'Keranjang kosong');
+      SnackbarHelper.info('Info', 'Keranjang kosong');
       return;
     }
 
@@ -199,7 +200,7 @@ class CartController extends GetxController {
         );
       }
     } catch (e) {
-      Get.snackbar(
+      SnackbarHelper.error(
         'Midtrans Error',
         e.toString(),
       );
@@ -212,7 +213,7 @@ class CartController extends GetxController {
 
   Future<void> startQrisPayment() async {
     if (items.isEmpty) {
-      Get.snackbar('Info', 'Keranjang kosong');
+      SnackbarHelper.info('Info', 'Keranjang kosong');
       return;
     }
 
@@ -253,7 +254,7 @@ class CartController extends GetxController {
     } catch (e) {
       print('QRIS ERROR = $e');
 
-      Get.snackbar(
+      SnackbarHelper.error(
         'QRIS Error',
         e.toString(),
       );

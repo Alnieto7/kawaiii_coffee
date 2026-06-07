@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Provider/AuthProvider.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -53,7 +54,7 @@ class LoginController extends GetxController {
 
     } else {
 
-      Get.snackbar(
+      SnackbarHelper.error(
         'Error',
         'Role tidak dikenali: $r',
       );
@@ -68,7 +69,7 @@ class LoginController extends GetxController {
     final password = passwordController.text;
 
     if (name.isEmpty || password.isEmpty) {
-      Get.snackbar('Peringatan', 'Nama dan password wajib diisi');
+      SnackbarHelper.warning('Peringatan', 'Nama dan password wajib diisi');
       return;
     }
 
@@ -87,11 +88,9 @@ class LoginController extends GetxController {
         throw Exception('Token tidak ditemukan dari server.');
       }
     } catch (e) {
-      Get.snackbar(
+      SnackbarHelper.error(
         'Login Gagal',
         e.toString().replaceAll('Exception: ', ''),
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;

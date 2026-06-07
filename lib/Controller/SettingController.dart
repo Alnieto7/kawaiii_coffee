@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class SettingsController extends GetxController {
   // Controller untuk Text Fields
@@ -22,12 +23,9 @@ class SettingsController extends GetxController {
 
   void saveSettings() {
     // Simulasi proses simpan
-    Get.snackbar(
+    SnackbarHelper.success(
       "Berhasil", 
       "Pengaturan sistem berhasil disimpan",
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.green.shade50,
-      colorText: Colors.green.shade800,
     );
   }
 

@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services") // ← tambah ini
+    id("com.google.gms.google-services") // ← apply di sini
 }
 
 android {
@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.kawaiii_coffee"
-        minSdk = flutter.minSdkVersion
+        minSdk = flutter.minSdkVersion  // ← ganti dari flutter.minSdkVersion, Firebase butuh min 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -35,8 +35,8 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:34.13.0")) // ← tambah ini
-    implementation("com.google.firebase:firebase-messaging")             // ← tambah ini
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-messaging")
 }
 
 flutter {
