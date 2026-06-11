@@ -13,8 +13,8 @@ class SplashScreen extends StatelessWidget {
       backgroundColor: AppColors.backgroundDark,
       body: Stack(
         children: [
-          SplashBackground(),
-          SplashContent(nextRoute: '/loginpage'),
+          SplashBackground(), 
+          SplashContent(),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart'; 
 import 'package:kawaiii_coffee/Model/IngredientModel.dart';
@@ -21,6 +22,7 @@ class DashboardKasirController extends GetxController {
   final TransactionProvider _transactionProvider = TransactionProvider();
   final SalesSummaryProvider _summaryProvider = SalesSummaryProvider();
   final IngredientProvider _ingredientProvider = IngredientProvider();
+  final _box = GetStorage();
 
   @override
   void onInit() {
@@ -94,4 +96,8 @@ class DashboardKasirController extends GetxController {
       isLoading.value = false;
     }
   }
+  void logout() {
+  _box.erase();
+  Get.offAllNamed(AppRoutes.loginPage);
+}
 }
