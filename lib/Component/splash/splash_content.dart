@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'dart:async';
 import 'splash_logo.dart';
 import 'splash_brand_text.dart';
 import 'splash_loader.dart';
 
 class SplashContent extends StatefulWidget {
-  final String nextRoute;
-
-  const SplashContent({
-    super.key,
-    this.nextRoute = '/loginpage',
-  });
+  const SplashContent({super.key}); // ← hapus nextRoute
 
   @override
   State<SplashContent> createState() => _SplashContentState();
@@ -39,34 +33,21 @@ class _SplashContentState extends State<SplashContent>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     );
-
     _slideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     );
-
     _loaderController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2500),
     );
 
-    _fadeAnim = CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeOut,
-    );
-
+    _fadeAnim = CurvedAnimation(parent: _fadeController, curve: Curves.easeOut);
     _slideAnim = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _slideController,
-      curve: Curves.easeOutCubic,
-    ));
-
-    _loaderAnim = CurvedAnimation(
-      parent: _loaderController,
-      curve: Curves.easeInOut,
-    );
+    ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
+    _loaderAnim = CurvedAnimation(parent: _loaderController, curve: Curves.easeInOut);
   }
 
   void _startSequence() {
@@ -81,10 +62,7 @@ class _SplashContentState extends State<SplashContent>
       _loaderController.forward();
     });
 
-    Timer(const Duration(seconds: 3), () {
-      if (!mounted) return;
-      Get.offAllNamed(widget.nextRoute);
-    });
+    // ← Hapus Timer navigasi, biarkan SplashController yang handle
   }
 
   @override

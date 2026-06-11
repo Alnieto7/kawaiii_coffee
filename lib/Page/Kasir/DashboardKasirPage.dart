@@ -4,11 +4,38 @@ import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/FullWidthActionCard.dart';
 import 'package:kawaiii_coffee/Controller/DashboardKasirController.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/ShiftInfoCard.dart';
-import 'package:kawaiii_coffee/Component/dashboardkasir/DashboardStockCard.dart'; 
+import 'package:kawaiii_coffee/Component/dashboardkasir/DashboardStockCard.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/TotalFloatCard.dart';
 
 class DashboardkasirPage extends StatelessWidget {
   const DashboardkasirPage({super.key});
+
+  void _confirmLogout() {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Keluar', style: TextStyle(fontWeight: FontWeight.bold)),
+        content: const Text('Yakin ingin keluar dari akun ini?'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Batal', style: TextStyle(color: AppColors.textHint)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () {
+              Get.back();
+              Get.find<DashboardKasirController>().logout();
+            },
+            child: const Text('Keluar', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +55,40 @@ class DashboardkasirPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Text('Dashboard Kasir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                      Text('COFFEE STREET UMKM', style: TextStyle(color: AppColors.primary, fontSize: 12)),
+                      Text(
+                        'Dashboard Kasir',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        'COFFEE STREET UMKM',
+                        style: TextStyle(color: AppColors.primary, fontSize: 12),
+                      ),
                     ],
                   ),
                   Row(
-                    children: const [
-                      CircleAvatar(radius: 18, backgroundColor: AppColors.primary, child: Icon(Icons.notifications, size: 18, color: AppColors.textOnPrimary)),
-                      SizedBox(width: 8),
+                    children: [
+                      // 🔔 Notifikasi
+                      const CircleAvatar(
+                        radius: 18,
+                        backgroundColor: AppColors.primary,
+                        child: Icon(Icons.notifications, size: 18, color: AppColors.textOnPrimary),
+                      ),
+                      const SizedBox(width: 8),
+                      // 🚪 Logout
+                      GestureDetector(
+                        onTap: _confirmLogout,
+                        child: const CircleAvatar(
+                          radius: 18,
+                          backgroundColor: AppColors.backgroundCard,
+                          child: Icon(Icons.logout, size: 18, color: AppColors.textPrimary),
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -50,17 +101,23 @@ class DashboardkasirPage extends StatelessWidget {
                   children: [
 
                     // INFO CARD PERFORM
-                    // 🔥 DI SINI KITA MENGIRIM VARIABEL PRODUK TERLARIS KE UI 🔥
-                    Obx(() => ShiftInfoCard (
-                          statusColor: Colors.green, 
-                          statusText: c.totalTransaksi.value, durationText: '', 
-                         
+                    Obx(() => ShiftInfoCard(
+                          statusColor: Colors.green,
+                          statusText: c.totalTransaksi.value,
+                          durationText: '',
                         )),
 
                     const SizedBox(height: 24),
 
                     // STOCK HEADER
-                    const Text('Stok Tersedia', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary)),
+                    const Text(
+                      'Stok Tersedia',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                     const SizedBox(height: 12),
 
                     // STOCK CARDS
@@ -72,7 +129,9 @@ class DashboardkasirPage extends StatelessWidget {
                           final status = e['status'] ?? '';
                           return Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(right: index == items.length - 1 ? 0 : 12),
+                              padding: EdgeInsets.only(
+                                right: index == items.length - 1 ? 0 : 12,
+                              ),
                               child: DashboardStockCard(
                                 name: e['name'] ?? '',
                                 value: e['value'] ?? '',
@@ -94,14 +153,20 @@ class DashboardkasirPage extends StatelessWidget {
                         Expanded(
                           child: GestureDetector(
                             onTap: c.goToInputStok,
-                            child: const ActionMenuCard(title: 'Input Stok ', icon: Icons.inventory_2_outlined),
+                            child: const ActionMenuCard(
+                              title: 'Input Stok',
+                              icon: Icons.inventory_2_outlined,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: GestureDetector(
                             onTap: c.goToAllStock,
-                            child: const ActionMenuCard(title: 'Semua Stok', icon: Icons.kitchen_outlined),
+                            child: const ActionMenuCard(
+                              title: 'Semua Stok',
+                              icon: Icons.kitchen_outlined,
+                            ),
                           ),
                         ),
                       ],
@@ -113,8 +178,18 @@ class DashboardkasirPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        Text('Transaksi Terakhir', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary)),
-                        Text('Hari Ini', style: TextStyle(fontSize: 12, color: AppColors.textHint)),
+                        Text(
+                          'Transaksi Terakhir',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          'Hari Ini',
+                          style: TextStyle(fontSize: 12, color: AppColors.textHint),
+                        ),
                       ],
                     ),
 
@@ -140,12 +215,30 @@ class DashboardkasirPage extends StatelessWidget {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                                      Text(
+                                        title,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textPrimary,
+                                        ),
+                                      ),
                                       const SizedBox(height: 2),
-                                      Text(time, style: const TextStyle(fontSize: 12, color: AppColors.textHint)),
+                                      Text(
+                                        time,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: AppColors.textHint,
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  Text('Rp $price', style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    'Rp $price',
+                                    style: const TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               ),
                             );

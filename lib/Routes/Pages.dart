@@ -26,15 +26,19 @@ import 'package:kawaiii_coffee/binding/MainAdminBinding.dart';
 import 'package:kawaiii_coffee/binding/MainKasirBinding.dart';
 import 'package:kawaiii_coffee/binding/POSBinding.dart';
 import 'package:kawaiii_coffee/binding/SettingBinding.dart';
-import 'package:kawaiii_coffee/binding/cart_menuBinding.dart';
 import 'package:kawaiii_coffee/binding/dashboardKasirBinding.dart';
-
+import 'package:kawaiii_coffee/binding/SplashBinding.dart';
 class AppPages {
   static final pages = [
     GetPage(
       name: AppRoutes.loginPage,
       page: () => LoginPage(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => SplashScreen(),
+      binding: SplashBinding(),
     ),
     GetPage(
       name: AppRoutes.dashboardadmin,
@@ -106,9 +110,6 @@ class AppPages {
       page: () => AllStockPage(),
       binding: AllStockBinding()
     ),
-      GetPage(
-        name: AppRoutes.splash,
-        page: () => SplashScreen(),
-      ),
+      
   ];
 }
