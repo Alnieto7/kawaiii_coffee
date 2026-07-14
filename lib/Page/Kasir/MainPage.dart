@@ -6,7 +6,8 @@ import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 import 'package:kawaiii_coffee/Page/Kasir/HistoryPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
-import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
+// 1. UBAH IMPORT INI MENGARAH KE FILE RESPONSIVE KAMU
+import 'package:kawaiii_coffee/Page/Kasir/responsive/DashboardKasirResponsivw.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({super.key});
@@ -19,7 +20,7 @@ class MainPage extends StatelessWidget {
     Get.put(CartController(), permanent: true);
 
     final pages = [
-      const DashboardkasirPage(),
+      DashboardkasirResponsive(), 
       PosPage(),
       const HistoryPage(),
       const Center(child: Text("Profil Page")),

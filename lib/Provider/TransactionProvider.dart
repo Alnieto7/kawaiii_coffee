@@ -14,10 +14,7 @@ class TransactionProvider {
     'Accept': 'application/json',
     'Authorization': 'Bearer $_token',
   };
-
-  // =========================
-  // GET — List Transaksi
-  // =========================
+  
   Future<List<TransactionModel>> getTransactions() async {
     try {
       final response = await http.get(
@@ -51,53 +48,48 @@ class TransactionProvider {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonBody = jsonDecode(response.body);
-        
+
         // 👇 CEK BUNGKUS DATA: Jika ada key 'data', ambil isinya. Jika tidak, ambil jsonBody langsung.
         if (jsonBody.containsKey('data') && jsonBody['data'] != null) {
           return jsonBody['data'] as Map<String, dynamic>;
         }
-        
+
         return jsonBody; // Mengembalikan data flat
       } else {
-        throw Exception('Gagal mengambil detail (Status: ${response.statusCode})');
+        throw Exception(
+          'Gagal mengambil detail (Status: ${response.statusCode})',
+        );
       }
     } catch (e) {
       throw Exception('Terjadi kesalahan koneksi: $e');
     }
   }
 
-  // =========================
-  // POST — Checkout (Cash/QRIS/Transfer)
-  // =========================
-Future<Map<String, dynamic>> checkout({
-  required String paymentMethod,
-  required int paidAmount,
-  required List items,
-}) async {
+  Future<Map<String, dynamic>> checkout({
+    required String paymentMethod,
+    required int paidAmount,
+    required List items,
+  }) async {
+    final body = {
+      'payment_method': paymentMethod,
+      'paid_amount': paidAmount,
+      'items': items,
+    };
 
-  final body = {
-    'payment_method': paymentMethod,
-    'paid_amount': paidAmount,
-    'items': items,
-  };
+    print('REQUEST BODY = $body');
 
-  print('REQUEST BODY = $body');
+    final response = await http.post(
+      Uri.parse(ApiConfig.transactions),
+      headers: _headers,
+      body: jsonEncode(body),
+    );
 
-  final response = await http.post(
-    Uri.parse(ApiConfig.transactions),
-    headers: _headers,
-    body: jsonEncode(body),
-  );
+    print('STATUS CODE = ${response.statusCode}');
+    print('RAW RESPONSE = ${response.body}');
 
-  print('STATUS CODE = ${response.statusCode}');
-  print('RAW RESPONSE = ${response.body}');
-
-  return jsonDecode(response.body);
-}
-
-  // =========================
-  // POST — Initiate Midtrans Snap
-  // =========================
+    return jsonDecode(response.body);
+  }
+    
   Future<Map<String, dynamic>> initiateSnap({required List items}) async {
     final response = await http.post(
       Uri.parse(ApiConfig.initiateSnap),
@@ -108,43 +100,40 @@ Future<Map<String, dynamic>> checkout({
     return jsonDecode(response.body);
   }
 
-  // =========================
-  // POST — Initiate QRIS Dynamic
-  // =========================
   Future<Map<String, dynamic>> initiateQris({required List items}) async {
-  try {
-    final response = await http.post(
-      Uri.parse(ApiConfig.initiateQris),
-      headers: _headers,
-      body: jsonEncode({'items': items}),
-    );
-
-    final Map<String, dynamic> jsonBody = jsonDecode(response.body);
-    print("Respons Backend: $jsonBody");
-    print("Status Code: ${response.statusCode}"); // ✅ tambah ini
-
-    // ✅ Cek status code dulu
-    if (response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception(
-        jsonBody['message'] ?? 'Server error (${response.statusCode})',
+    try {
+      final response = await http.post(
+        Uri.parse(ApiConfig.initiateQris),
+        headers: _headers,
+        body: jsonEncode({'items': items}),
       );
-    }
 
-    // ✅ Cek qr_url ada atau tidak sebelum return
-    if (jsonBody['qr_url'] == null) {
-      throw Exception(
-        jsonBody['message'] ?? 'QR URL tidak ditemukan dari server',
-      );
-    }
+      final Map<String, dynamic> jsonBody = jsonDecode(response.body);
+      print("Respons Backend: $jsonBody");
+      print("Status Code: ${response.statusCode}"); // ✅ tambah ini
 
-    return {
-      'qr_url': jsonBody['qr_url'],
-      'total': jsonBody['total'],
-      'transaction_code': jsonBody['transaction_code'],
-    };
-  } catch (e) {
-    print("Provider Error: $e");
-    rethrow; // ✅ rethrow agar CartController bisa catch dan tampilkan snackbar
+      // ✅ Cek status code dulu
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw Exception(
+          jsonBody['message'] ?? 'Server error (${response.statusCode})',
+        );
+      }
+
+      // ✅ Cek qr_url ada atau tidak sebelum return
+      if (jsonBody['qr_url'] == null) {
+        throw Exception(
+          jsonBody['message'] ?? 'QR URL tidak ditemukan dari server',
+        );
+      }
+
+      return {
+        'qr_url': jsonBody['qr_url'],
+        'total': jsonBody['total'],
+        'transaction_code': jsonBody['transaction_code'],
+      };
+    } catch (e) {
+      print("Provider Error: $e");
+      rethrow; 
+    }
   }
-}
 }

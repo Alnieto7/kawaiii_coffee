@@ -13,6 +13,8 @@ import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/PaymentSuccess.dart';
 import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/receiptPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/responsive/DashboardKasirResponsivw.dart';
+import 'package:kawaiii_coffee/Page/Kasir/responsive/LoginResponsive.dart';
 import 'package:kawaiii_coffee/Page/Kasir/splashscreenPage.dart';
 import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
@@ -32,7 +34,7 @@ class AppPages {
   static final pages = [
     GetPage(
       name: AppRoutes.loginPage,
-      page: () => LoginPage(),
+      page: () => LoginResponsive(),
       binding: LoginBinding(),
     ),
     GetPage(
@@ -47,7 +49,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.kasir,
-      page: () => DashboardkasirPage(),
+      page: () => DashboardkasirResponsive(),
       binding: Dashboardkasirbinding(),
     ),
     GetPage(

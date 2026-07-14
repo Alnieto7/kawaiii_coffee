@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:kawaiii_coffee/Component/app_colors.dart'; // Pastikan import warna
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart'; 
 import 'package:kawaiii_coffee/Model/IngredientModel.dart';
 import 'package:kawaiii_coffee/Provider/IngredientsProvider.dart';
@@ -10,10 +11,13 @@ import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart'; 
 
 class DashboardKasirController extends GetxController {
-  // --- STATE VARIABEL ---
+  // --- STATE VARIABEL LAYOUT ---
+  var isMobile = true.obs;
+
+  // --- STATE VARIABEL DATA ---
   var totalHariIni = 'Rp 0'.obs; 
-  var totalTransaksi = '0 Struk'.obs; // Pengganti status shift
-  var itemTerjual = '0 Pcs'.obs;      // Pengganti durasi
+  var totalTransaksi = '0 Struk'.obs; 
+  var itemTerjual = '0 Pcs'.obs;      
   var isLoading = true.obs;
 
   var stocks = <Map<String, String>>[].obs;
@@ -31,13 +35,53 @@ class DashboardKasirController extends GetxController {
   }
 
   // ==========================================
-  // 🔥 LOGIKA UI 🔥
+  // 🔥 LOGIKA UI & LAYOUT 🔥
   // ==========================================
   
+  void updateLayout(BoxConstraints constraints) {
+    isMobile.value = constraints.maxWidth < 600;
+  }
+
   Color getStockBgColor(String status) => status == 'AMAN' ? Colors.green[100]! : Colors.red[100]!;
   Color getStockTextColor(String status) => status == 'AMAN' ? Colors.green : Colors.red;
 
-  // Navigasi dengan Auto-Refresh
+  // Dialog Logout dipindah ke sini
+  void confirmLogout() {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Keluar', style: TextStyle(fontWeight: FontWeight.bold)),
+        content: const Text('Yakin ingin keluar dari akun ini?'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Batal', style: TextStyle(color: AppColors.textHint)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () {
+              Get.back();
+              logout();
+            },
+            child: const Text('Keluar', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void logout() {
+    _box.erase();
+    Get.offAllNamed(AppRoutes.loginPage);
+  }
+
+  // ==========================================
+  // 🔥 NAVIGASI & DATA 🔥
+  // ==========================================
+
   void goToInputStok() async {
     await Get.toNamed(AppRoutes.InputStock); 
     fetchDashboardData(); 
@@ -55,10 +99,7 @@ class DashboardKasirController extends GetxController {
       final summaryData = await _summaryProvider.getSalesSummary('daily');
       final List<IngredientModel> ingredientData = await _ingredientProvider.getIngredients(); 
 
-      // 1. Olah Data Summary (Total Rp, Total Trx, Total Item)
       int totalRevenue = summaryData['total_revenue'] ?? 0;
-      
-      // Mengambil data dari backend, jika backend belum sedia, kita hitung manual dari list data
       int trxCount = summaryData['total_transactions'] ?? data.length; 
       int itemsCount = summaryData['total_items'] ?? summaryData['total_items_sold'] ?? 0; 
 
@@ -66,7 +107,6 @@ class DashboardKasirController extends GetxController {
       totalTransaksi.value = '$trxCount Struk';
       itemTerjual.value = '$itemsCount Pcs';
 
-      // 2. Olah Data Transaksi (Ambil 3 Teratas)
       var recentData = data.take(3).toList();
       transactions.value = recentData.map((trx) {
         return {
@@ -76,7 +116,6 @@ class DashboardKasirController extends GetxController {
         };
       }).toList();
 
-      // 3. Olah Data Stok Bahan Baku (Ambil 2 Teratas)
       var topIngredients = ingredientData.take(2).toList();
       stocks.value = topIngredients.map((item) {
         String status = item.stock > item.minStock ? 'AMAN' : 'RENDAH';
@@ -96,8 +135,4 @@ class DashboardKasirController extends GetxController {
       isLoading.value = false;
     }
   }
-  void logout() {
-  _box.erase();
-  Get.offAllNamed(AppRoutes.loginPage);
-}
 }
