@@ -25,7 +25,6 @@ class SalesSummaryProvider {
       if (response.statusCode == 200) {
         final jsonBody = jsonDecode(response.body);
         
-        // Cek apakah data dibungkus di dalam array 'data' (standar Laravel)
         if (jsonBody is Map<String, dynamic> && jsonBody.containsKey('data')) {
           return jsonBody['data'];
         }
