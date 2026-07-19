@@ -37,16 +37,16 @@ class PosPage extends StatelessWidget {
                         child: const Icon(Icons.coffee, color: AppColors.primary),
                       ),
                       const SizedBox(width: 12),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Kawaiii Coffee",
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           Text(
-                            "Kasir: Ahmad Fauzi",
-                            style: TextStyle(color: AppColors.textHint, fontSize: 12),
+                            "Kasir: ${posController.cashierName}",
+                            style: const TextStyle(color: AppColors.textHint, fontSize: 12),
                           ),
                         ],
                       ),
@@ -160,4 +160,4 @@ class PosPage extends StatelessWidget {
       ),
     );
   }
-}
+} 

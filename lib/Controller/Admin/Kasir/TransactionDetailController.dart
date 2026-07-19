@@ -48,7 +48,7 @@ class TransactionDetailController extends GetxController {
     }
   }
 
-  String get cashierName => detailData['cashier_name'] ?? detailData['user']?['name'] ?? 'Kasir';
+  String get cashierName => detailData['cashier_name'] ?? detailData['cashier']?['name'] ?? detailData['user']?['name'] ?? 'Kasir';
   
   String get paymentMethod => (detailData['payment_method'] ?? 'CASH').toString().toUpperCase();
 

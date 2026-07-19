@@ -32,7 +32,7 @@ class LoginPage extends GetView<LoginController> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Coffee Street',
+                'Kawaiii Coffee',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
@@ -103,7 +103,7 @@ class LoginPage extends GetView<LoginController> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
-                  'Akses khusus untuk Internal Coffee Street.\n(Owner, Kasir, & Staff)',
+                  'Akses khusus untuk Internal Kawaiii Coffee.\n(Owner, Kasir, & Staff)',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.textHint,

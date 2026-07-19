@@ -20,8 +20,30 @@ class ReceiptLineItem {
 /// Dipakai oleh: auto-print saat checkout, tombol Print di ReceiptPage,
 /// dan tombol Print Nota di History > Detail Transaksi.
 class PrinterService {
-  static const String storeName = 'Kawaiii coffee';
+  static const String storeName = 'kawaii coffee';
   static const String tagline = 'Terima kasih telah berbelanja';
+
+  // Lebar kertas 58mm — angka ini menentukan berapa banyak spasi yang
+  // ditambahin sebelum value supaya rata kanan. Kalau value masih
+  // menjorok ke kiri (belum nyampe ke tepi kanan kertas), NAIKKAN angka
+  // ini. Kalau value malah kepotong/ke-wrap ke baris baru, TURUNKAN.
+  static const int _lineWidth = 42;
+
+  /// Bikin 1 baris "label ....... value" manual pakai padding spasi,
+  /// bukan generator.row(). Ini buat menghindari bug alignment kolom
+  /// yang muncul di beberapa printer generic waktu pakai fitur row()
+  /// bawaan esc_pos_utils_plus.
+  String _twoColumnLine(String label, String value) {
+    final totalTextLength = label.length + value.length;
+    final spaceCount = _lineWidth - totalTextLength;
+
+    if (spaceCount < 1) {
+      // Kalau kepanjangan, kasih 1 spasi minimal biar gak nempel
+      return '$label $value';
+    }
+
+    return label + (' ' * spaceCount) + value;
+  }
 
   Future<void> printReceipt({
     required String invoiceNumber,
@@ -67,45 +89,33 @@ class PrinterService {
     bytes.addAll(generator.feed(1));
 
     // ===== INFO TRANSAKSI =====
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Invoice', width: 5),
-      PosColumn(text: invoiceNumber, width: 7, styles: const PosStyles(align: PosAlign.right, bold: true)),
-    ]));
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Tanggal', width: 5),
-      PosColumn(text: transactionDate, width: 7, styles: const PosStyles(align: PosAlign.right)),
-    ]));
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Kasir', width: 5),
-      PosColumn(text: cashierName, width: 7, styles: const PosStyles(align: PosAlign.right)),
-    ]));
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Pembayaran', width: 5),
-      PosColumn(text: paymentMethod, width: 7, styles: const PosStyles(align: PosAlign.right)),
-    ]));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Invoice', invoiceNumber),
+      styles: const PosStyles(bold: true),
+    ));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Tanggal', transactionDate),
+    ));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Kasir', cashierName),
+    ));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Pembayaran', paymentMethod),
+    ));
     bytes.addAll(generator.hr());
 
     // ===== JUDUL KOLOM ITEM =====
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Item', width: 7),
-      PosColumn(text: 'Subtotal', width: 5, styles: const PosStyles(align: PosAlign.right)),
-    ]));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Item', 'Subtotal'),
+    ));
     bytes.addAll(generator.feed(1));
 
     // ===== DAFTAR ITEM =====
     for (final item in items) {
-      bytes.addAll(generator.row([
-        PosColumn(
-          text: item.name,
-          width: 7,
-          styles: const PosStyles(bold: true),
-        ),
-        PosColumn(
-          text: item.subtotalLabel,
-          width: 5,
-          styles: const PosStyles(align: PosAlign.right, bold: true),
-        ),
-      ]));
+      bytes.addAll(generator.text(
+        _twoColumnLine(item.name, item.subtotalLabel),
+        styles: const PosStyles(bold: true),
+      ));
       bytes.addAll(generator.text(
         item.qtyPriceLabel,
         styles: const PosStyles(fontType: PosFontType.fontB),
@@ -114,18 +124,17 @@ class PrinterService {
     bytes.addAll(generator.hr());
 
     // ===== RINGKASAN TOTAL =====
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Total', width: 7, styles: const PosStyles(bold: true)),
-      PosColumn(text: totalFormatted, width: 5, styles: const PosStyles(align: PosAlign.right, bold: true)),
-    ]));
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Dibayar', width: 7),
-      PosColumn(text: paidFormatted, width: 5, styles: const PosStyles(align: PosAlign.right)),
-    ]));
-    bytes.addAll(generator.row([
-      PosColumn(text: 'Kembalian', width: 7, styles: const PosStyles(bold: true)),
-      PosColumn(text: changeFormatted, width: 5, styles: const PosStyles(align: PosAlign.right, bold: true)),
-    ]));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Total', totalFormatted),
+      styles: const PosStyles(bold: true),
+    ));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Dibayar', paidFormatted),
+    ));
+    bytes.addAll(generator.text(
+      _twoColumnLine('Kembalian', changeFormatted),
+      styles: const PosStyles(bold: true),
+    ));
     bytes.addAll(generator.feed(1));
 
     // ===== FOOTER =====
