@@ -169,15 +169,36 @@ class CartController extends GetxController {
         final printChangeAmount = kembalian.value;
 
 
+        // Ambil detail transaksi lengkap (endpoint yang sama dipakai ReceiptPage),
+        // supaya cashier_name & data lain konsisten dengan yang tampil di struk digital.
+        Map<String, dynamic> detailData = {};
+        try {
+          detailData = await _transactionProvider.getTransactionDetail(transactionId);
+        } catch (fetchError) {
+          print('FETCH DETAIL FOR PRINT ERROR = $fetchError');
+          // Kalau gagal fetch detail, tetap lanjut print pakai fallback di bawah.
+        }
+
+        final printInvoiceNumber = detailData['invoice_number'] ??
+            detailData['transaction_code'] ??
+            'TRX-$transactionId';
+        final printCashierName = detailData['cashier_name'] ??
+            detailData['cashier']?['name'] ??
+            detailData['user']?['name'] ??
+            'Kasir';
+        final printTransactionDate = detailData['transaction_date'] ??
+            detailData['created_at'];
+
+
         // Cetak struk (satu sumber format: PrinterService)
         try {
           await _printerService.printReceipt(
-            invoiceNumber: data['invoice_number'] ??
-                data['transaction_code'] ??
-                'TRX-$transactionId',
-            transactionDate: DateFormat('dd MMM yyyy, HH:mm')
-                .format(DateTime.now()),
-            cashierName: data['cashier_name'] ?? 'Kasir',
+            invoiceNumber: printInvoiceNumber,
+            transactionDate: printTransactionDate != null
+                ? DateFormat('dd MMM yyyy, HH:mm')
+                    .format(DateTime.parse(printTransactionDate).toLocal())
+                : DateFormat('dd MMM yyyy, HH:mm').format(DateTime.now()),
+            cashierName: printCashierName,
             paymentMethod: printPayment.toUpperCase(),
             items: printItems.map((item) {
               return ReceiptLineItem(

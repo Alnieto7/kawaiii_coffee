@@ -76,7 +76,7 @@ class ReceiptPage extends StatelessWidget {
                       child: const Icon(Icons.coffee, color: AppColors.primary, size: 36),
                     ),
                     const SizedBox(height: 16),
-                    const Text('Coffee Street', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    const Text('Kawaii Coffee', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 6),
                     const Text('Terima kasih telah berbelanja', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
                     const SizedBox(height: 24),
@@ -156,7 +156,7 @@ class ReceiptPage extends StatelessWidget {
                           Icon(Icons.favorite, color: AppColors.primary),
                           SizedBox(height: 8),
                           Text(
-                            'Terima kasih telah berbelanja di Coffee Street',
+                            'Terima kasih telah berbelanja di Kawaiii Coffee!',
                             textAlign: TextAlign.center,
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),

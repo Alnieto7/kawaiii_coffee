@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 import 'package:kawaiii_coffee/Model/ProductModel.dart';
 import 'package:kawaiii_coffee/Provider/ProductProvider.dart';
@@ -16,10 +17,16 @@ class PosController extends GetxController {
   var searchQuery = ''.obs;
   var selectedCategory = 'Semua'.obs;
 
+  final _box = GetStorage();
+
   // Menggunakan List<ProductModel> yang sudah ter-import
   var products = <ProductModel>[].obs;
 
   final categories = ["Semua", "Coffee", "Non Coffee"];
+
+  // Nama kasir yang sedang login, diambil dari GetStorage
+  // (disimpan pas login lewat LoginController: box.write('name', ...))
+  String get cashierName => _box.read('name') ?? 'Kasir';
 
   @override
   void onInit() {

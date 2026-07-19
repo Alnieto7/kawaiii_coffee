@@ -37,7 +37,7 @@ class LoginWide extends GetView<LoginController> {
                   ),
                   const SizedBox(height: 32),
                   const Text(
-                    'Coffee Street',
+                    'Kawaiii Coffee',
                     style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.w900,

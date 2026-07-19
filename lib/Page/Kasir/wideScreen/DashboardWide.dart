@@ -37,7 +37,7 @@ class DashboardkasirWide extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'COFFEE STREET UMKM',
+                        'Kawaiii Coffee',
                         style: TextStyle(color: AppColors.primary, fontSize: 14),
                       ),
                     ],

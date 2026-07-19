@@ -177,7 +177,7 @@ double getItemPrice(dynamic item) =>
         'Printer belum terhubung',
         'Silakan hubungkan printer terlebih dahulu',
       );
-      Get.toNamed('/printer-settings'); // sesuaikan dengan nama route kamu
+      Get.toNamed('/PrinterSetting'); // sesuaikan dengan nama route kamu
       return;
     }
 

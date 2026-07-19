@@ -164,7 +164,7 @@ class ReceiptDropdownWidget extends StatelessWidget {
                     child: const Icon(Icons.coffee, color: AppColors.primary, size: 30),
                   ),
                   const SizedBox(height: 12),
-                  const Text('Coffee Street', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const Text('Kawaiii Coffee', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
                   const Text('Terima kasih telah berbelanja', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                   const SizedBox(height: 24),
