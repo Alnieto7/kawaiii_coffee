@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/cashpaymentsheet.dart';
 import 'package:kawaiii_coffee/Component/POS/carditem.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
+import 'package:kawaiii_coffee/services/printerservice.dart';
 import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class CartController extends GetxController {
@@ -12,6 +14,13 @@ class CartController extends GetxController {
   var isLoading = false.obs;
 
   final _transactionProvider = TransactionProvider();
+  final _printerService = PrinterService();
+
+  final _currencyFormatter = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: 'Rp ',
+    decimalDigits: 0,
+  );
 
   // ── State Tambahan untuk Pembayaran Cash ───────────────────────────────
   var uangDibayar = 0.obs;
@@ -146,21 +155,69 @@ class CartController extends GetxController {
         );
       }
 
-      final int transactionId =
-          response['data']['id'];
+        final data = response['data'];
+        final int transactionId = data['id'];
 
-      print('TRANSACTION ID = $transactionId');
+        print('TRANSACTION ID = $transactionId');
 
-      if (Get.isBottomSheetOpen == true) {
-        Get.back();
-      }
 
-      resetForNewTransaction();
+        // Simpan data untuk print sebelum cart dikosongkan
+        final printItems = List<CartItem>.from(items);
+        final printTotal = total;
+        final printPayment = paymentMethod.value;
+        final printPaidAmount = uangDibayar.value;
+        final printChangeAmount = kembalian.value;
 
-      Get.offNamed(
-        '/receipt',
-        arguments: transactionId,
-      );
+
+        // Cetak struk (satu sumber format: PrinterService)
+        try {
+          await _printerService.printReceipt(
+            invoiceNumber: data['invoice_number'] ??
+                data['transaction_code'] ??
+                'TRX-$transactionId',
+            transactionDate: DateFormat('dd MMM yyyy, HH:mm')
+                .format(DateTime.now()),
+            cashierName: data['cashier_name'] ?? 'Kasir',
+            paymentMethod: printPayment.toUpperCase(),
+            items: printItems.map((item) {
+              return ReceiptLineItem(
+                name: item.name,
+                qtyPriceLabel:
+                    '${item.qty} x ${_currencyFormatter.format(item.price)}',
+                subtotalLabel: _currencyFormatter
+                    .format(item.price * item.qty),
+              );
+            }).toList(),
+            totalFormatted:
+                _currencyFormatter.format(printTotal),
+            paidFormatted:
+                _currencyFormatter.format(printPaidAmount),
+            changeFormatted:
+                _currencyFormatter.format(printChangeAmount),
+          );
+        } catch (printError) {
+          // Checkout tetap dianggap berhasil walau print gagal
+          // (misal printer belum connect) — jangan blok alur transaksi.
+          print('AUTO-PRINT ERROR = $printError');
+          SnackbarHelper.info(
+            'Struk belum tercetak',
+            'Transaksi berhasil, tapi gagal cetak otomatis: $printError',
+          );
+        }
+
+
+        if (Get.isBottomSheetOpen == true) {
+          Get.back();
+        }
+
+
+        resetForNewTransaction();
+
+
+        Get.offNamed(
+          '/receipt',
+          arguments: transactionId,
+        );
     } catch (e) {
       print('CHECKOUT ERROR = $e');
 

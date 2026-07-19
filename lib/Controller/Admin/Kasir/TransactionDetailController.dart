@@ -2,11 +2,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
 import 'package:kawaiii_coffee/snackbarhelper.dart';
+import 'package:kawaiii_coffee/Controller/PrinterController.dart';
+import 'package:kawaiii_coffee/services/printerservice.dart';
 
 class TransactionDetailController extends GetxController {
   final TransactionProvider _provider = TransactionProvider();
   
   var isLoading = true.obs;
+  var isPrinting = false.obs; // <-- state baru untuk loading di tombol Print
   var detailData = {}.obs;
 
   final _currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
@@ -99,6 +102,56 @@ class TransactionDetailController extends GetxController {
       SnackbarHelper.error('Error', e.toString());
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  // =========================
+  // PRINT STRUK (manual, dari halaman History)
+  // =========================
+
+  /// Dipanggil dari tombol "Print Nota" di TransactionDetailPage.
+  /// Semua logic generate ESC/POS ada di PrinterService (satu sumber),
+  /// di sini cuma nyiapin data & handle UI feedback.
+  Future<void> printStruk() async {
+    if (isPrinting.value) return; // cegah double-tap
+
+    final printerController = Get.put(PrinterController());
+    final connected = await printerController.checkConnection();
+
+    if (!connected) {
+      SnackbarHelper.info(
+        'Printer belum terhubung',
+        'Silakan hubungkan printer terlebih dahulu',
+      );
+      Get.toNamed('/printer-settings'); // sesuaikan dengan nama route kamu
+      return;
+    }
+
+    isPrinting.value = true;
+
+    try {
+      await PrinterService().printReceipt(
+        invoiceNumber: invoiceNumber,
+        transactionDate: transactionDate,
+        cashierName: cashierName,
+        paymentMethod: paymentMethod,
+        items: items.map((item) {
+          return ReceiptLineItem(
+            name: getItemName(item),
+            qtyPriceLabel: '${getItemQty(item)} x ${formattedItemPrice(item)}',
+            subtotalLabel: formattedItemSubtotal(item),
+          );
+        }).toList(),
+        totalFormatted: formattedTotal,
+        paidFormatted: formattedPaidAmount,
+        changeFormatted: formattedChangeAmount,
+      );
+
+      SnackbarHelper.success('Berhasil', 'Struk berhasil dicetak ulang');
+    } catch (e) {
+      SnackbarHelper.error('Gagal', 'Gagal mencetak struk: $e');
+    } finally {
+      isPrinting.value = false;
     }
   }
 }
