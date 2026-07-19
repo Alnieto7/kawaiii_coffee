@@ -11,6 +11,7 @@ import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/PaymentSuccess.dart';
+import 'package:kawaiii_coffee/Page/Kasir/PrinterSetting.dart';
 import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/receiptPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/responsive/DashboardKasirResponsivw.dart';
@@ -112,6 +113,10 @@ class AppPages {
       page: () => AllStockPage(),
       binding: AllStockBinding()
     ),
+    GetPage(
+      name: AppRoutes.PrinterSetting,
+      page: () => PrinterSettingsPage(),
       
+    ),
   ];
 }

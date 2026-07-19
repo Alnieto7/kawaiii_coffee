@@ -212,12 +212,23 @@ class ReceiptPage extends StatelessWidget {
                       ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              SnackbarHelper.info('Info', 'Fitur print segera ditambahkan', );
-                            },
-                            icon: const Icon(Icons.print),
-                            label: const Text('Print'),
+                          child: Obx(() => ElevatedButton.icon(
+                            onPressed: controller.isPrinting.value
+                                ? null
+                                : () => controller.printStruk(),
+                            icon: controller.isPrinting.value
+                                ? const SizedBox(
+                                    width: 18,
+                                    height: 18,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: AppColors.textOnPrimary,
+                                    ),
+                                  )
+                                : const Icon(Icons.print),
+                            label: Text(
+                              controller.isPrinting.value ? 'Mencetak...' : 'Print',
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: AppColors.textOnPrimary,
@@ -225,7 +236,7 @@ class ReceiptPage extends StatelessWidget {
                               minimumSize: const Size(double.infinity, 52),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                             ),
-                          ),
+                          )),
                         ),
                       ],
                     ),

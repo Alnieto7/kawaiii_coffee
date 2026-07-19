@@ -2,11 +2,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
 import 'package:kawaiii_coffee/snackbarhelper.dart';
+import 'package:kawaiii_coffee/Controller/PrinterController.dart';
+import 'package:kawaiii_coffee/services/printerservice.dart';
 
 class ReceiptController extends GetxController {
   final TransactionProvider _provider = TransactionProvider();
 
   var isLoading = true.obs;
+  var isPrinting = false.obs; // <-- state baru untuk loading di tombol Print
   var detailData = <String, dynamic>{}.obs;
 
   final currencyFormatter = NumberFormat.currency(
@@ -155,4 +158,54 @@ double getItemPrice(dynamic item) =>
         item['subtotal'] ??
         (getItemPrice(item) * getItemQty(item)),
       );
+
+  // =========================
+  // PRINT STRUK
+  // =========================
+
+  /// Dipanggil dari tombol Print di ReceiptPage.
+  /// Semua logic generate ESC/POS ada di PrinterService (satu sumber),
+  /// di sini cuma nyiapin data & handle UI feedback (snackbar, loading, redirect).
+  Future<void> printStruk() async {
+    if (isPrinting.value) return; // cegah double-tap
+
+    final printerController = Get.put(PrinterController());
+    final connected = await printerController.checkConnection();
+
+    if (!connected) {
+      SnackbarHelper.info(
+        'Printer belum terhubung',
+        'Silakan hubungkan printer terlebih dahulu',
+      );
+      Get.toNamed('/printer-settings'); // sesuaikan dengan nama route kamu
+      return;
+    }
+
+    isPrinting.value = true;
+
+    try {
+      await PrinterService().printReceipt(
+        invoiceNumber: invoiceNumber,
+        transactionDate: transactionDate,
+        cashierName: cashierName,
+        paymentMethod: paymentMethod,
+        items: items.map((item) {
+          return ReceiptLineItem(
+            name: getItemName(item),
+            qtyPriceLabel: '${getItemQty(item)} x ${currencyFormatter.format(getItemPrice(item))}',
+            subtotalLabel: currencyFormatter.format(getItemSubtotal(item)),
+          );
+        }).toList(),
+        totalFormatted: currencyFormatter.format(total),
+        paidFormatted: currencyFormatter.format(paidAmount),
+        changeFormatted: currencyFormatter.format(changeAmount),
+      );
+
+      SnackbarHelper.success('Berhasil', 'Struk berhasil dicetak');
+    } catch (e) {
+      SnackbarHelper.error('Gagal', 'Gagal mencetak struk: $e');
+    } finally {
+      isPrinting.value = false;
+    }
+  }
 }

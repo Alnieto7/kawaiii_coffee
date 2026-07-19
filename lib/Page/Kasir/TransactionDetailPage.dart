@@ -4,7 +4,6 @@ import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/TransactionReusableComponents.dart';
 import 'package:kawaiii_coffee/Component/dashboardkasir/reusable_form_components.dart';
 import 'package:kawaiii_coffee/Controller/Admin/Kasir/TransactionDetailController.dart';
-import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class TransactionDetailPage extends StatelessWidget {
   const TransactionDetailPage({super.key});
@@ -196,15 +195,19 @@ class TransactionDetailPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               // ── BUTTON PRINT ──
-              ElevatedButton.icon(
-                onPressed: () {
-                 SnackbarHelper.info(
-                    'Info',
-                    'Fitur print nota segera ditambahkan',
-                  );
-                },
-                icon: const Icon(Icons.print),
-                label: const Text('Print Nota'),
+              Obx(() => ElevatedButton.icon(
+                onPressed: c.isPrinting.value ? null : () => c.printStruk(),
+                icon: c.isPrinting.value
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: AppColors.textOnPrimary,
+                        ),
+                      )
+                    : const Icon(Icons.print),
+                label: Text(c.isPrinting.value ? 'Mencetak...' : 'Print Nota'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.textOnPrimary,
@@ -214,7 +217,7 @@ class TransactionDetailPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-              ),
+              )),
               const SizedBox(height: 24),
             ],
           ),

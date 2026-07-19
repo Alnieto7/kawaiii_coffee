@@ -78,6 +78,16 @@ class DashboardkasirPage extends StatelessWidget {
                         child: Icon(Icons.notifications, size: 18, color: AppColors.textOnPrimary),
                       ),
                       const SizedBox(width: 8),
+                      // 🖨️ Printer Settings
+                      GestureDetector(
+                        onTap: () => Get.toNamed('/PrinterSetting'),
+                        child: const CircleAvatar(
+                          radius: 18,
+                          backgroundColor: AppColors.backgroundCard,
+                          child: Icon(Icons.print_outlined, size: 18, color: AppColors.textPrimary),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       // 🚪 Logout
                       GestureDetector(
                         onTap: _confirmLogout,
