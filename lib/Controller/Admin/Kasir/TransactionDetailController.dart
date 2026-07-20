@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
@@ -11,6 +12,9 @@ class TransactionDetailController extends GetxController {
   var isLoading = true.obs;
   var isPrinting = false.obs; // <-- state baru untuk loading di tombol Print
   var detailData = {}.obs;
+  // Tambahkan 2 baris ini di dalam TransactionDetailController
+  var isMobile = true.obs;
+  void updateLayout(BoxConstraints constraints) => isMobile.value = constraints.maxWidth < 800;
 
   final _currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
 

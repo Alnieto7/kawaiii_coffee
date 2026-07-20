@@ -4,10 +4,12 @@ import 'package:kawaiii_coffee/Component/app_colors.dart';
 import 'package:kawaiii_coffee/Controller/maincontroller.dart';
 import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
-import 'package:kawaiii_coffee/Page/Kasir/HistoryPage.dart';
-import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
-// 1. UBAH IMPORT INI MENGARAH KE FILE RESPONSIVE KAMU
+
+// --- IMPORT HALAMAN RESPONSIF ---
 import 'package:kawaiii_coffee/Page/Kasir/responsive/DashboardKasirResponsivw.dart';
+import 'package:kawaiii_coffee/Page/Kasir/responsive/HistoryResponsive.dart'; 
+// 1. TAMBAHKAN IMPORT POS RESPONSIVE DI SINI
+import 'package:kawaiii_coffee/Page/Kasir/responsive/PosResponsive.dart'; 
 
 class MainPage extends StatelessWidget {
   MainPage({super.key});
@@ -16,13 +18,17 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Inisialisasi controller yang dibutuhkan di halaman POS agar tetap hidup (permanent)
     Get.put(PosController(), permanent: true);
     Get.put(CartController(), permanent: true);
 
     final pages = [
       DashboardkasirResponsive(), 
-      PosPage(),
-      const HistoryPage(),
+      
+      // 2. UBAH PosPage() MENJADI PosResponsive() DI SINI
+      const PosResponsive(), 
+      
+      const HistoryResponsive(), 
       const Center(child: Text("Profil Page")),
     ];
 

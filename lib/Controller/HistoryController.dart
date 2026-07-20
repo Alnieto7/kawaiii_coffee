@@ -1,10 +1,21 @@
+import 'package:flutter/material.dart'; // Ditambahkan untuk BoxConstraints
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kawaiii_coffee/Provider/TransactionProvider.dart';
 import 'package:kawaiii_coffee/Provider/SalesSummaryProvider.dart';
 import 'package:kawaiii_coffee/Model/TransactionsModel.dart';
 
+// Ditambahkan untuk fungsi navigasi goToDetail
+import 'package:kawaiii_coffee/Binding/TransactionDetailBinding.dart';
+// 1. IMPORT DIUBAH MENGARAH KE FILE RESPONSIVE
+import 'package:kawaiii_coffee/Page/Kasir/responsive/TransactionDetailResponsive.dart';
+
 class HistoryController extends GetxController {
+  // =========================
+  // State Layout Responsif
+  // =========================
+  var isMobile = true.obs;
+
   // State Loading & Data
   var isLoading = true.obs;
   var isSummaryLoading = false.obs;
@@ -26,6 +37,24 @@ class HistoryController extends GetxController {
     super.onInit();
     fetchHistory();
     fetchSummaryCard('Hari Ini');
+  }
+
+  // =========================
+  // 🔥 Logika Layout & Navigasi
+  // =========================
+  void updateLayout(BoxConstraints constraints) {
+    isMobile.value = constraints.maxWidth < 800;
+  }
+
+  void goToDetail(int? trxId) {
+    if (trxId != null) {
+      Get.to(
+        // 2. PEMANGGILAN DIUBAH KE KELAS RESPONSIVE
+        () => const TransactionDetailResponsive(),
+        binding: TransactionDetailBinding(),
+        arguments: trxId,
+      );
+    }
   }
 
   // =========================

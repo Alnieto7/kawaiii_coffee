@@ -11,6 +11,8 @@ class InputStokController extends GetxController {
   // --- STATE VARIABEL ---
   var isLoading = false.obs;
   var isSubmitting = false.obs; 
+  var isMobile = true.obs;
+  void updateLayout(BoxConstraints constraints) => isMobile.value = constraints.maxWidth < 600;
 
   final box = GetStorage();
   var userName = ''.obs;

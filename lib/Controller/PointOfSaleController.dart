@@ -6,9 +6,19 @@ import 'package:kawaiii_coffee/Model/ProductModel.dart';
 import 'package:kawaiii_coffee/Provider/ProductProvider.dart';
 import 'package:kawaiii_coffee/snackbarhelper.dart';
 
-
 class PosController extends GetxController {
-  // Logic tetap sama, pastikan CartController di-import dengan benar
+  // =========================
+  // State Layout Responsif
+  // =========================
+  var isMobile = true.obs;
+  
+  void updateLayout(BoxConstraints constraints) {
+    isMobile.value = constraints.maxWidth < 800;
+  }
+
+  // =========================
+  // State POS & Cart
+  // =========================
   final CartController cart = Get.isRegistered<CartController>()
       ? Get.find<CartController>()
       : Get.put(CartController());
@@ -72,14 +82,19 @@ class PosController extends GetxController {
   void updateSearch(String value) => searchQuery.value = value;
 
   void changeCategory(String category) => selectedCategory.value = category;
-
-  // 🛒 ADD TO CART
+  
   void addToCart(ProductModel product) {
     cart.addItem(
       id: product.id,
       name: product.name,
       price: product.sellingPrice,
       image: product.image,
+    );
+    
+    // Tambahkan baris ini agar ada notifikasi sukses saat barang dipencet
+    SnackbarHelper.success(
+      "Berhasil!", 
+      "${product.name} dimasukkan ke keranjang.",
     );
   }
 }
