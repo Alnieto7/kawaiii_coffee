@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
@@ -11,7 +12,8 @@ class PrinterController extends GetxController {
 
   var printers = [].obs;
   var selectedPrinter = Rxn<dynamic>();
-
+  var isMobile = true.obs;
+  void updateLayout(BoxConstraints constraints) => isMobile.value = constraints.maxWidth < 600;
   var isConnected = false.obs;
   var isLoading = false.obs;
   var isConnecting = false.obs;

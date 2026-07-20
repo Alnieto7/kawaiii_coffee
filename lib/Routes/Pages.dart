@@ -17,6 +17,7 @@ import 'package:kawaiii_coffee/Page/Kasir/responsive/AllStockResponsive.dart';
 import 'package:kawaiii_coffee/Page/Kasir/responsive/DashboardKasirResponsivw.dart';
 import 'package:kawaiii_coffee/Page/Kasir/responsive/InputStockResponsive.dart';
 import 'package:kawaiii_coffee/Page/Kasir/responsive/LoginResponsive.dart';
+import 'package:kawaiii_coffee/Page/Kasir/responsive/PrinterSettingResponsive.dart';
 import 'package:kawaiii_coffee/Page/Kasir/splashscreenPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/AllStockBinding.dart';
@@ -116,7 +117,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.PrinterSetting,
-      page: () => PrinterSettingsPage(),
+      page: () => PrinterSettingsResponsive(),
       
     ),
   ];
