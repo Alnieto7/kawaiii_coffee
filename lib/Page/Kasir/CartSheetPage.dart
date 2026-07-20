@@ -7,6 +7,8 @@ import 'package:kawaiii_coffee/Component/CartSheet/CartSheetHandle.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartSheetHeader.dart';
 import 'package:kawaiii_coffee/Component/CartSheet/CartTotalBar.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
+import 'package:kawaiii_coffee/Controller/PointOfSaleController.dart'; // Tambahkan import ini untuk mendeteksi layout
+import 'package:kawaiii_coffee/Page/Kasir/wideScreen/CarSheetWide.dart';
 
 class CartSheetPage extends StatelessWidget {
   const CartSheetPage({super.key});
@@ -14,13 +16,22 @@ class CartSheetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Get.find<CartController>();
+    final posController = Get.find<PosController>(); // Memanggil controller POS
 
     return Obx(() {
+      // 1. Cek apakah ini mode layar lebar (Tablet/Desktop)
+      final isWide = !posController.isMobile.value;
+
+      // 2. Jika Layar Lebar, langsung tampilkan CartSheetWide tanpa Pop-up / Backdrop
+      if (isWide) {
+        return const CartSheetWide();
+      }
+      // Sembunyikan jika cart sedang ditutup (khusus mobile)
       if (!cart.isOpen.value) return const SizedBox();
 
       return Stack(
         children: [
-          // Backdrop
+          // Backdrop Hitam
           GestureDetector(
             onTap: () => cart.isOpen.value = false,
             child: Container(
@@ -30,7 +41,7 @@ class CartSheetPage extends StatelessWidget {
             ),
           ),
 
-          // Sheet
+          // Sheet yang muncul dari bawah
           Align(
             alignment: Alignment.bottomCenter,
             child: ConstrainedBox(

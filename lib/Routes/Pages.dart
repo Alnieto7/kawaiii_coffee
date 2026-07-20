@@ -9,15 +9,15 @@ import 'package:kawaiii_coffee/Page/Kasir/InputStockPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/MainPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/POS.dart';
 import 'package:kawaiii_coffee/Page/Kasir/CartSheetPage.dart';
-import 'package:kawaiii_coffee/Page/Kasir/DashboardKasirPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/PaymentSuccess.dart';
 import 'package:kawaiii_coffee/Page/Kasir/PrinterSetting.dart';
 import 'package:kawaiii_coffee/Page/Kasir/QrisDisplayPage.dart';
 import 'package:kawaiii_coffee/Page/Kasir/receiptPage.dart';
+import 'package:kawaiii_coffee/Page/Kasir/responsive/AllStockResponsive.dart';
 import 'package:kawaiii_coffee/Page/Kasir/responsive/DashboardKasirResponsivw.dart';
+import 'package:kawaiii_coffee/Page/Kasir/responsive/InputStockResponsive.dart';
 import 'package:kawaiii_coffee/Page/Kasir/responsive/LoginResponsive.dart';
 import 'package:kawaiii_coffee/Page/Kasir/splashscreenPage.dart';
-import 'package:kawaiii_coffee/Page/LoginPage.dart';
 import 'package:kawaiii_coffee/Routes/Routes.dart';
 import 'package:kawaiii_coffee/binding/AllStockBinding.dart';
 import 'package:kawaiii_coffee/binding/AnalisisBinding.dart';
@@ -31,6 +31,7 @@ import 'package:kawaiii_coffee/binding/POSBinding.dart';
 import 'package:kawaiii_coffee/binding/SettingBinding.dart';
 import 'package:kawaiii_coffee/binding/dashboardKasirBinding.dart';
 import 'package:kawaiii_coffee/binding/SplashBinding.dart';
+
 class AppPages {
   static final pages = [
     GetPage(
@@ -100,7 +101,7 @@ class AppPages {
     ),
      GetPage(
       name: AppRoutes.InputStock,
-      page: () => InputStokPage(),
+      page: () => InputStokResponsive(),
       binding: InputStokBinding()
     ),
     GetPage(
@@ -110,7 +111,7 @@ class AppPages {
       ),
      GetPage(
       name: AppRoutes.AllStock,
-      page: () => AllStockPage(),
+      page: () => AllStockResponsive(),
       binding: AllStockBinding()
     ),
     GetPage(

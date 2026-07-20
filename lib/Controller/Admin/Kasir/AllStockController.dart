@@ -7,6 +7,8 @@ import 'package:kawaiii_coffee/snackbarhelper.dart';
 class AllStockController extends GetxController {
   var isLoading = true.obs;
   var stocks = <IngredientModel>[].obs;
+  var isMobile = true.obs;
+  void updateLayout(BoxConstraints constraints) => isMobile.value = constraints.maxWidth < 600;
   
   final IngredientProvider _ingredientProvider = IngredientProvider();
 
