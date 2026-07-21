@@ -44,14 +44,27 @@ class DashboardkasirWide extends StatelessWidget {
                   ),
                   Row(
                     children: [
+                      // --- TOMBOL PRINTER BARU ---
+                      GestureDetector(
+                        onTap: () => Get.toNamed('/PrinterSetting'),
+                        child: const CircleAvatar(
+                          radius: 20, // Disesuaikan menjadi 20 agar sejajar dengan icon lain
+                          backgroundColor: AppColors.backgroundCard,
+                          child: Icon(Icons.print_outlined, size: 20, color: AppColors.textPrimary),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      
+                      // --- TOMBOL NOTIFIKASI ---
                       const CircleAvatar(
                         radius: 20,
                         backgroundColor: AppColors.primary,
                         child: Icon(Icons.notifications, size: 20, color: AppColors.textOnPrimary),
                       ),
                       const SizedBox(width: 12),
+                      
+                      // --- TOMBOL LOGOUT ---
                       GestureDetector(
-                        // Panggil logic logout dari controller
                         onTap: c.confirmLogout,
                         child: const CircleAvatar(
                           radius: 20,
@@ -127,7 +140,7 @@ class DashboardkasirWide extends StatelessWidget {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: c.goToInputStok,
-                                    child: const ActionMenuCard( // Asumsi ActionMenuCard ada di FullWidthActionCard.dart
+                                    child: const ActionMenuCard(
                                       title: 'Input Stok',
                                       icon: Icons.inventory_2_outlined,
                                     ),
