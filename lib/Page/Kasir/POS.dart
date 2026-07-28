@@ -134,11 +134,14 @@ class PosPage extends StatelessWidget {
                       itemCount: products.length,
                       itemBuilder: (context, index) {
                         final product = products[index];
+                        final isOutOfStock = !posController.isProductAvailable(product.id);
+                        
                         return ProductCard(
                           title: product.name,
                           price: "Rp ${product.sellingPrice}",
                           image: product.image,
-                          onAddToCart: () => posController.addToCart(product),
+                          isOutOfStock: isOutOfStock,
+                          onAddToCart: isOutOfStock ? null : () => posController.addToCart(product),
                         );
                       },
                     );

@@ -32,7 +32,7 @@ class SummaryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "TOTAL PENDAPATAN (HARI INI)",
+            "TOTAL PENDAPATAN ",
             style: TextStyle(
               fontSize: 12,
               color: AppColors.textSecondary,
