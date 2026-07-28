@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kawaiii_coffee/Controller/CartMenuController.dart';
 import 'package:kawaiii_coffee/Model/ProductModel.dart';
+import 'package:kawaiii_coffee/Model/productingredient.dart';
 import 'package:kawaiii_coffee/Provider/ProductProvider.dart';
+import 'package:kawaiii_coffee/Provider/ProductIngredientProvider.dart';
 import 'package:kawaiii_coffee/snackbarhelper.dart';
 
 class PosController extends GetxController {
@@ -11,7 +13,7 @@ class PosController extends GetxController {
   // State Layout Responsif
   // =========================
   var isMobile = true.obs;
-  
+
   void updateLayout(BoxConstraints constraints) {
     isMobile.value = constraints.maxWidth < 800;
   }
@@ -29,13 +31,13 @@ class PosController extends GetxController {
 
   final _box = GetStorage();
 
-  // Menggunakan List<ProductModel> yang sudah ter-import
   var products = <ProductModel>[].obs;
+
+  // 👇 Tambahan: peta resep tiap produk (productId -> daftar bahan baku)
+  var productIngredientsMap = <int, List<ProductIngredientModel>>{}.obs;
 
   final categories = ["Semua", "Coffee", "Non Coffee"];
 
-  // Nama kasir yang sedang login, diambil dari GetStorage
-  // (disimpan pas login lewat LoginController: box.write('name', ...))
   String get cashierName => _box.read('name') ?? 'Kasir';
 
   @override
@@ -44,15 +46,15 @@ class PosController extends GetxController {
     fetchProducts();
   }
 
-  // 🔥 FETCH API
+  // 🔥 FETCH PRODUCTS + RESEP
   Future<void> fetchProducts() async {
     try {
       isLoading.value = true;
-      // Pastikan class di ProductProvider bernama ProductProvider (bukan ProductService)
       final List<ProductModel> result = await ProductProvider.fetchProducts();
-
-      // Menggunakan .assignAll untuk mengupdate RxList
       products.assignAll(result);
+
+      // Ambil resep tiap produk setelah produk berhasil di-load
+      await _fetchAllProductIngredients(result);
     } catch (e) {
       SnackbarHelper.error(
         "Error",
@@ -61,6 +63,35 @@ class PosController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // 👇 Tambahan: ambil resep semua produk secara paralel
+  Future<void> _fetchAllProductIngredients(List<ProductModel> productList) async {
+    final Map<int, List<ProductIngredientModel>> map = {};
+
+    await Future.wait(productList.map((p) async {
+      try {
+        final recipe = await ProductIngredientProvider.fetchByProduct(p.id);
+        map[p.id] = recipe;
+      } catch (e) {
+        map[p.id] = []; // gagal fetch = anggap tidak ada resep (default: tersedia)
+      }
+    }));
+
+    productIngredientsMap.assignAll(map);
+  }
+
+  // 👇 Tambahan: cek ketersediaan produk berdasarkan stok bahan baku
+  bool isProductAvailable(int productId) {
+    final recipe = productIngredientsMap[productId];
+    if (recipe == null || recipe.isEmpty) return true;
+
+    for (var item in recipe) {
+      if (item.ingredient.stock < item.quantity) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // 🔍 FILTERED PRODUCTS
@@ -82,18 +113,26 @@ class PosController extends GetxController {
   void updateSearch(String value) => searchQuery.value = value;
 
   void changeCategory(String category) => selectedCategory.value = category;
-  
+
   void addToCart(ProductModel product) {
+    // 👇 Tambahan: guard stok habis
+    if (!isProductAvailable(product.id)) {
+      SnackbarHelper.error(
+        "Stok Habis",
+        "${product.name} tidak bisa ditambahkan, bahan baku habis.",
+      );
+      return;
+    }
+
     cart.addItem(
       id: product.id,
       name: product.name,
       price: product.sellingPrice,
       image: product.image,
     );
-    
-    // Tambahkan baris ini agar ada notifikasi sukses saat barang dipencet
+
     SnackbarHelper.success(
-      "Berhasil!", 
+      "Berhasil!",
       "${product.name} dimasukkan ke keranjang.",
     );
   }

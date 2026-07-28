@@ -8,6 +8,8 @@ class ApiConfig {
 
   // Products
   static const String products = '$apiUrl/products';
+  static String productIngredients(int productId) => '$apiUrl/products/$productId/ingredients';
+
 
   // Categories
   static const String categories = '$apiUrl/categories';
