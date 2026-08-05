@@ -40,7 +40,7 @@ class SnackbarHelper {
       title,
       message,
       snackPosition: SnackPosition.TOP,
-      backgroundColor: AppColors.warning,
+      backgroundColor: AppColors.primary,
       colorText: AppColors.textOnPrimary,
       icon: const Icon(Icons.warning_amber_outlined, color: AppColors.textOnPrimary),
       borderRadius: 12,
