@@ -6,6 +6,8 @@ import 'package:kawaiii_coffee/Model/IngredientModel.dart';
 import 'package:kawaiii_coffee/Provider/IngredientsProvider.dart';
 import 'package:kawaiii_coffee/Provider/StockMovementProvider.dart';
 import 'package:kawaiii_coffee/snackbarhelper.dart';
+// 🔥 TAMBAHKAN IMPORT APP COLORS DI SINI
+import 'package:kawaiii_coffee/Component/app_colors.dart'; 
 
 class InputStokController extends GetxController {
   // --- STATE VARIABEL ---
@@ -121,8 +123,8 @@ class InputStokController extends GetxController {
                     resetForm(); // Kosongkan form
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFFD97706),
-                    side: const BorderSide(color: Color(0xFFD97706)),
+                    foregroundColor: AppColors.primary, 
+                    side: const BorderSide(color: AppColors.primary), 
                   ),
                   child: const Text('Input Stock Lagi'),
                 ),
@@ -130,11 +132,11 @@ class InputStokController extends GetxController {
                 // Tombol Kembali
                 ElevatedButton(
                   onPressed: () {
-                    Get.back(); // Tutup Pop-up
-                    Get.back(); // Kembali ke halaman sebelumnya (Dashboard)
+                    Get.back(); 
+                    Get.back(); 
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD97706),
+                    backgroundColor: AppColors.primary, 
                     foregroundColor: Colors.white,
                   ),
                   child: const Text('Kembali'),
